@@ -1,0 +1,30 @@
+.admin-navbar { background: var(--green-dark) !important; }
+
+.summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+.summary-card { background: rgba(255,255,255,0.7); border: 1px solid rgba(201,169,110,0.4); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.summary-card .count { font-size: 2rem; font-weight: 700; color: var(--green-dark); font-family: 'Playfair Display', serif; }
+
+.pill-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; }
+.pill-row::-webkit-scrollbar { display: none; }
+.pill { flex-shrink: 0; font-size: 0.75rem; font-weight: 600; padding: 7px 16px; border-radius: 999px; background: var(--sand); color: var(--brown); border: none; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.pill.active { background: var(--green); color: #fff; }
+
+.res-card { margin-bottom: 12px; }
+.res-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.res-name  { font-weight: 700; color: var(--green-dark); }
+.res-meta  { font-size: 0.8rem; color: rgba(78,51,32,0.65); margin-top: 2px; }
+.res-notes { font-size: 0.75rem; color: rgba(78,51,32,0.5); font-style: italic; margin-top: 4px; }
+.res-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.menu-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.menu-row-info { flex: 1; min-width: 0; }
+.menu-row-name { font-weight: 700; color: var(--green-dark); font-size: 0.95rem; }
+.menu-row-meta { font-size: 0.75rem; color: rgba(78,51,32,0.6); }
+.menu-row-desc { font-size: 0.75rem; color: rgba(78,51,32,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.menu-row-btns { display: flex; gap: 6px; flex-shrink: 0; }
+
+.edit-panel { background: var(--sand-light); border: 1.5px solid var(--sand-dark); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; }
+.edit-panel h3 { font-size: 1.1rem; margin-bottom: 14px; color: var(--green-dark); }
+
+.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+.checkbox-row input { width: 20px; height: 20px; accent-color: var(--green); cursor: pointer; }

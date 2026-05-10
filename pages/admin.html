@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0d3d52" />
+  <title>Admin Login · Twenty Beach Bistro</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      background: var(--green-dark);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .login-box {
+      width: 100%; max-width: 360px;
+    }
+    .login-brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .login-brand h1 { font-size: 2rem; color: #fff; }
+    .login-brand p  { font-size: 0.85rem; color: rgba(245,237,216,0.5); margin-top: 4px; }
+    .login-note {
+      text-align: center;
+      font-size: 0.7rem;
+      color: rgba(245,237,216,0.25);
+      margin-top: 16px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+</head>
+<body>
+
+<div class="login-box">
+  <div class="login-brand">
+    <h1>Admin</h1>
+    <p>Twenty Beach Bistro</p>
+  </div>
+
+  <div class="card gap-stack">
+    <div>
+      <label class="field-label" for="email">Email</label>
+      <input class="input" id="email" type="email" placeholder="admin@bistro.com" autocomplete="email" />
+    </div>
+    <div>
+      <label class="field-label" for="password">Password</label>
+      <input class="input" id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+
+    <p class="error-msg hidden" id="login-error"></p>
+
+    <button class="btn btn-ocean btn-full" id="login-btn" onclick="doLogin()">Sign In</button>
+  </div>
+
+  <p class="login-note">No cookies · session stored in sessionStorage</p>
+</div>
+
+
+<script>
+  // Redirect if already logged in
+  if (isLoggedIn()) location.replace('dashboard.html')
+
+  document.getElementById('password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin()
+  })
+
+  async function doLogin() {
+    const email    = document.getElementById('email').value.trim()
+    const password = document.getElementById('password').value
+    const errEl    = document.getElementById('login-error')
+    const btn      = document.getElementById('login-btn')
+
+    if (!email || !password) {
+      errEl.textContent = 'Fill in both fields.'
+      errEl.classList.remove('hidden')
+      return
+    }
+
+    errEl.classList.add('hidden')
+    btn.disabled = true
+    btn.textContent = 'Signing in…'
+
+    try {
+      await authLogin(email, password)
+      location.replace('dashboard.html')
+    } catch(e) {
+      errEl.textContent = e.message
+      errEl.classList.remove('hidden')
+      btn.disabled = false
+      btn.textContent = 'Sign In'
+    }
+  }
+</script>
+</body>
+</html>

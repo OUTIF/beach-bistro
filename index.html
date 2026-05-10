@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#2f5438" />
+  <title>Twenty Beach Bistro</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 80px 24px 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('main_page_pic.png') center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      backdrop-filter: blur(3px);
+      background: linear-gradient(
+        180deg,
+        rgba(30,55,35,0.55) 0%,
+        rgba(47,84,56,0.40) 40%,
+        rgba(20,35,22,0.75) 100%
+      );
+      z-index: 1;
+    }
+    .hero-content { position: relative; z-index: 2; color: #fff; }
+    .hero-logo {
+      width: 120px; height: 120px;
+      border-radius: 50%; object-fit: cover;
+      border: 3px solid rgba(232,213,163,0.6);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      margin: 0 auto 20px;
+    }
+    .hero h1 {
+      font-size: 2.6rem; line-height: 1.1; margin-bottom: 12px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+    }
+    .hero h1 em { color: var(--coral); font-style: italic; }
+    .hero-tagline {
+      color: rgba(245,237,216,0.85); font-size: 1rem; font-weight: 300;
+      max-width: 280px; margin: 0 auto 24px;
+    }
+    .hero-badges {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .hero-badge {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(4px);
+      border-radius: 999px; padding: 6px 16px;
+      font-size: 0.8rem; color: rgba(245,237,216,0.9);
+    }
+    .scroll-hint {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 2; color: rgba(255,255,255,0.45); font-size: 0.7rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100%{ transform: translateX(-50%) translateY(0); }
+      50%    { transform: translateX(-50%) translateY(7px); }
+    }
+    .section    { padding: 8px 0 20px; }
+    .section h2 { font-size: 1.2rem; color: var(--green-dark); margin-bottom: 14px; }
+    .info-row   { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: rgba(78,51,32,0.8); margin-bottom: 10px; }
+    .info-icon  { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .hours-table { width: 100%; font-size: 0.875rem; border-collapse: collapse; }
+    .hours-table td { padding: 4px 0; color: rgba(78,51,32,0.75); }
+    .hours-table td:last-child { text-align: right; }
+    .divider { border: none; border-top: 1px solid rgba(201,169,110,0.4); margin: 8px 0; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./js/config.js"></script>
+<script src="./js/api.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <img src="logo.jpg" alt="Logo" class="navbar-logo" />
+    Twenty <span>&nbsp;Beach</span>
+  </a>
+  <div class="navbar-links">
+    <a href="index.html"      class="nav-link active">Home</a>
+    <a href="pages/menu.html" class="nav-link">Menu</a>
+  </div>
+</nav>
+
+<!-- FULL-SCREEN HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <img src="logo.jpg" alt="Twenty Beach Bistro" class="hero-logo" />
+    <h1>Twenty<br><em>Beach Bistro</em></h1>
+    <p class="hero-tagline">Fresh coastal flavours, ocean views &amp; sun-soaked vibes.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">🌊 Beachfront</span>
+      <span class="hero-badge">🍽️ Fresh Daily</span>
+      <span class="hero-badge">🌅 Open Daily</span>
+    </div>
+    <a href="pages/menu.html" class="btn btn-coral" style="font-size:1rem;padding:14px 32px;box-shadow:0 4px 20px rgba(217,120,74,0.5)">
+      See Our Menu →
+    </a>
+  </div>
+  <div class="scroll-hint"><span>scroll</span><span>↓</span></div>
+</div>
+
+<!-- INFO + RESERVATION -->
+<div class="page-wrap pb-footer">
+
+  <div class="section">
+    <div class="card gap-stack">
+      <h2>Find Us</h2>
+      <div class="info-row"><span class="info-icon">📍</span>20 Beachfront Avenue, Coastal Bay</div>
+      <div class="info-row"><span class="info-icon">📞</span>(555) 020-2020</div>
+      <div class="info-row"><span class="info-icon">📧</span>hello@twentybeachbistro.com</div>
+      <hr class="divider" />
+      <table class="hours-table">
+        <tr><td><strong>Mon – Fri</strong></td><td>7:00 AM – 10:00 PM</td></tr>
+        <tr><td><strong>Sat – Sun</strong></td><td>8:00 AM – 11:00 PM</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card gap-stack">
+      <h2>Reserve a Table</h2>
+
+      <div id="res-success" class="hidden text-center" style="padding:16px 0">
+        <div style="font-size:2.5rem;margin-bottom:8px">🎉</div>
+        <p style="font-weight:700;color:#15803d">Reservation submitted!</p>
+        <p style="font-size:0.875rem;color:rgba(78,51,32,0.6);margin-top:4px">We'll confirm shortly.</p>
+        <button class="btn btn-green" style="margin-top:16px" onclick="resetResForm()">Make Another</button>
+      </div>
+
+      <div id="res-form">
+        <div class="gap-stack">
+          <div>
+            <label class="field-label" for="res-name">Your Name</label>
+            <input class="input" id="res-name" placeholder="Jane Smith" />
+          </div>
+          <div class="row">
+            <div>
+              <label class="field-label" for="res-datetime">Date &amp; Time</label>
+              <input class="input" id="res-datetime" type="datetime-local" />
+            </div>
+            <div style="max-width:90px">
+              <label class="field-label" for="res-guests">Guests</label>
+              <input class="input" id="res-guests" type="number" min="1" max="20" value="2" />
+            </div>
+          </div>
+          <div>
+            <label class="field-label" for="res-notes">Notes (optional)</label>
+            <textarea class="input" id="res-notes" rows="3" placeholder="Allergies, occasion…"></textarea>
+          </div>
+
+            <div>
+            <label class="field-label" for="phone">Phone Number</label>
+            <input class="input" id="phone" type="tel" placeholder="(543) 000 00 00" />
+          </div>
+          
+          <p class="error-msg hidden" id="res-error"></p>
+          <button class="btn btn-coral btn-full" id="res-submit" onclick="submitReservation()">
+            Request Reservation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <img src="logo.jpg" alt="Twenty Beach Bistro" />
+  © <span id="yr"></span> Twenty Beach Bistro · All rights reserved
+</footer>
+
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear()
+
+  async function submitReservation() {
+    const name   = document.getElementById('res-name').value.trim()
+    const dt     = document.getElementById('res-datetime').value
+    const guests = parseInt(document.getElementById('res-guests').value)
+    const notes  = document.getElementById('res-notes').value.trim()
+    const phone  = document.getElementById('phone').value.trim()
+    const errEl  = document.getElementById('res-error')
+    const btn    = document.getElementById('res-submit')
+    if (!name || !dt || !phone) { errEl.textContent = 'Name, date/time and phone number are required.'; errEl.classList.remove('hidden'); return }
+    errEl.classList.add('hidden')
+    btn.disabled = true; btn.textContent = 'Submitting…'
+    try {
+      await reservationCreate({ customer_name: name, party_size: guests, date_time: dt, notes, phone })
+      document.getElementById('res-form').classList.add('hidden')
+      document.getElementById('res-success').classList.remove('hidden')
+    } catch (e) { errEl.textContent = e.message; errEl.classList.remove('hidden') }
+    finally { btn.disabled = false; btn.textContent = 'Request Reservation' }
+  }
+
+  function resetResForm() {
+    document.getElementById('res-form').classList.remove('hidden')
+    document.getElementById('res-success').classList.add('hidden')
+    document.getElementById('res-name').value = ''
+    document.getElementById('res-datetime').value = ''
+    document.getElementById('res-guests').value = '2'
+    document.getElementById('res-notes').value = ''
+  }
+</script>
+</body>
+</html>

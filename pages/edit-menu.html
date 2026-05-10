@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0d3d52" />
+  <title>Edit Menu · Admin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+</head>
+<body>
+
+<!-- ADMIN NAVBAR -->
+<nav class="navbar admin-navbar">
+  <span class="navbar-brand"><img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:36px;width:36px;" /> Admin</span>
+  <div class="navbar-links">
+    <a href="dashboard.html" class="nav-link">Reservations</a>
+    <a href="edit-menu.html" class="nav-link active">Menu</a>
+    <button class="nav-link btn" style="background:rgba(255,255,255,0.1);border:none;cursor:pointer" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="page-wrap pt-nav pb-footer">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:16px">
+    <h1 style="font-size:1.5rem;color:var(--ocean-deep)">Menu Items</h1>
+    <button class="btn btn-coral btn-sm" onclick="openForm(null)">+ Add Item</button>
+  </div>
+
+  <!-- Edit / Add form (hidden by default) -->
+  <div class="edit-panel hidden" id="edit-panel">
+    <h3 id="form-title">New Item</h3>
+    <div class="gap-stack">
+      <div>
+        <label class="field-label">Name</label>
+        <input class="input" id="f-name" placeholder="Grilled Sea Bass" />
+      </div>
+      <div>
+        <label class="field-label">Description</label>
+        <textarea class="input" id="f-desc" rows="2" placeholder="Fresh daily catch…"></textarea>
+      </div>
+      <div class="row">
+        <div>
+          <label class="field-label">Price ($)</label>
+          <input class="input" id="f-price" type="number" step="0.01" min="0" placeholder="0.00" />
+        </div>
+        <div>
+          <label class="field-label">Category</label>
+          <input class="input" id="f-cat" list="cat-list" placeholder="Mains" />
+          <datalist id="cat-list"></datalist>
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Image URL (optional)</label>
+        <input class="input" id="f-img" placeholder="https://…" />
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" id="f-avail" checked />
+        Available
+      </label>
+
+      <p class="error-msg hidden" id="form-error"></p>
+      <p class="success-msg hidden" id="form-success">Saved ✓</p>
+
+      <div class="row">
+        <button class="btn btn-ocean" id="form-save-btn" onclick="saveItem()">Save</button>
+        <button class="btn btn-outline" onclick="closeForm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- List skeletons -->
+  <div id="skeletons" class="gap-stack">
+    <div class="skeleton" style="height:64px"></div>
+    <div class="skeleton" style="height:64px"></div>
+    <div class="skeleton" style="height:64px"></div>
+  </div>
+
+  <p class="error-msg hidden" id="list-error"></p>
+
+  <!-- Item list -->
+  <div id="item-list"></div>
+
+</div>
+
+
+<script>
+  if (!isLoggedIn()) location.replace('admin.html')
+  function logout() { authLogout(); location.replace('admin.html') }
+
+  let allItems   = []
+  let editingId  = null   // null = adding new item
+
+  async function loadItems() {
+    document.getElementById('skeletons').classList.remove('hidden')
+    document.getElementById('item-list').innerHTML = ''
+    try {
+      // fetch ALL items for admin (including unavailable)
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/menu_items?select=*&order=category,name`,
+        { headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${authToken()}`
+        }}
+      )
+      allItems = await res.json()
+      buildCatDatalist()
+      renderList()
+    } catch(e) {
+      document.getElementById('list-error').textContent = e.message
+      document.getElementById('list-error').classList.remove('hidden')
+    } finally {
+      document.getElementById('skeletons').classList.add('hidden')
+    }
+  }
+
+  function buildCatDatalist() {
+    const dl   = document.getElementById('cat-list')
+    const cats = [...new Set(allItems.map(i => i.category))]
+    dl.innerHTML = cats.map(c => `<option value="${c}">`).join('')
+  }
+
+  function renderList() {
+    const list = document.getElementById('item-list')
+    list.innerHTML = ''
+    allItems.forEach(item => list.appendChild(buildRow(item)))
+  }
+
+  function buildRow(item) {
+    const el = document.createElement('div')
+    el.className = 'card menu-row'
+    el.id = `item-${item.id}`
+    el.style.opacity = item.available ? '1' : '0.5'
+    el.innerHTML = `
+      <div class="menu-row-info">
+        <p class="menu-row-name">${item.name}</p>
+        <p class="menu-row-meta">${item.category} · $${Number(item.price).toFixed(2)}${item.available ? '' : ' · <em>hidden</em>'}</p>
+        ${item.description ? `<p class="menu-row-desc">${item.description}</p>` : ''}
+      </div>
+      <div class="menu-row-btns">
+        <button class="btn btn-sm btn-ocean" onclick="openForm('${item.id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteItem('${item.id}')">Del</button>
+      </div>
+    `
+    return el
+  }
+
+  function openForm(id) {
+    editingId = id
+    const panel = document.getElementById('edit-panel')
+    panel.classList.remove('hidden')
+    document.getElementById('form-error').classList.add('hidden')
+    document.getElementById('form-success').classList.add('hidden')
+
+    if (id) {
+      const item = allItems.find(i => i.id === id)
+      document.getElementById('form-title').textContent = `Edit: ${item.name}`
+      document.getElementById('f-name').value  = item.name
+      document.getElementById('f-desc').value  = item.description || ''
+      document.getElementById('f-price').value = item.price
+      document.getElementById('f-cat').value   = item.category
+      document.getElementById('f-img').value   = item.image_url || ''
+      document.getElementById('f-avail').checked = item.available
+    } else {
+      document.getElementById('form-title').textContent = 'New Item'
+      document.getElementById('f-name').value  = ''
+      document.getElementById('f-desc').value  = ''
+      document.getElementById('f-price').value = ''
+      document.getElementById('f-cat').value   = ''
+      document.getElementById('f-img').value   = ''
+      document.getElementById('f-avail').checked = true
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  function closeForm() {
+    document.getElementById('edit-panel').classList.add('hidden')
+    editingId = null
+  }
+
+  async function saveItem() {
+    const name  = document.getElementById('f-name').value.trim()
+    const desc  = document.getElementById('f-desc').value.trim()
+    const price = parseFloat(document.getElementById('f-price').value)
+    const cat   = document.getElementById('f-cat').value.trim()
+    const img   = document.getElementById('f-img').value.trim() || null
+    const avail = document.getElementById('f-avail').checked
+    const errEl = document.getElementById('form-error')
+    const okEl  = document.getElementById('form-success')
+    const btn   = document.getElementById('form-save-btn')
+
+    if (!name || !cat || isNaN(price)) {
+      errEl.textContent = 'Name, category, and price are required.'
+      errEl.classList.remove('hidden')
+      return
+    }
+    errEl.classList.add('hidden')
+    btn.disabled = true; btn.textContent = 'Saving…'
+
+    const payload = { name, description: desc || null, price, category: cat, image_url: img, available: avail }
+
+    try {
+      if (editingId) await menuUpdate(editingId, payload)
+      else           await menuCreate(payload)
+
+      okEl.classList.remove('hidden')
+      setTimeout(() => { okEl.classList.add('hidden'); closeForm(); loadItems() }, 800)
+    } catch(e) {
+      errEl.textContent = e.message
+      errEl.classList.remove('hidden')
+    } finally {
+      btn.disabled = false; btn.textContent = 'Save'
+    }
+  }
+
+  async function deleteItem(id) {
+    if (!confirm('Delete this menu item?')) return
+    try {
+      await menuDelete(id)
+      allItems = allItems.filter(i => i.id !== id)
+      renderList()
+    } catch(e) { alert(e.message) }
+  }
+
+  loadItems()
+</script>
+</body>
+</html>

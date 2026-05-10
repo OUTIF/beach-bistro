@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0d3d52" />
+  <title>Reservations · Admin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+</head>
+<body>
+
+<!-- ADMIN NAVBAR -->
+<nav class="navbar admin-navbar">
+  <span class="navbar-brand"><img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:36px;width:36px;" /> Admin</span>
+  <div class="navbar-links">
+    <a href="dashboard.html"  class="nav-link active">Reservations</a>
+    <a href="edit-menu.html"  class="nav-link">Menu</a>
+    <button class="nav-link btn" style="background:rgba(255,255,255,0.1);border:none;cursor:pointer" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="page-wrap pt-nav pb-footer">
+
+  <!-- Title row -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:16px">
+    <h1 style="font-size:1.5rem;color:var(--ocean-deep)">Reservations</h1>
+    <button class="btn btn-sm btn-outline" onclick="loadReservations()">↻ Refresh</button>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary-grid" id="summary-grid">
+    <div class="summary-card"><div class="count" id="cnt-pending">–</div><div class="badge badge-pending">pending</div></div>
+    <div class="summary-card"><div class="count" id="cnt-confirmed">–</div><div class="badge badge-confirmed">confirmed</div></div>
+    <div class="summary-card"><div class="count" id="cnt-cancelled">–</div><div class="badge badge-cancelled">cancelled</div></div>
+  </div>
+
+  <!-- Filter pills -->
+  <div class="pill-row">
+    <button class="pill active" data-f="all"       onclick="filterRes(this)">All</button>
+    <button class="pill"        data-f="pending"   onclick="filterRes(this)">Pending</button>
+    <button class="pill"        data-f="confirmed" onclick="filterRes(this)">Confirmed</button>
+    <button class="pill"        data-f="cancelled" onclick="filterRes(this)">Cancelled</button>
+  </div>
+
+  <!-- Error -->
+  <p class="error-msg hidden" id="res-error"></p>
+
+  <!-- Skeletons -->
+  <div id="skeletons" class="gap-stack">
+    <div class="skeleton" style="height:100px"></div>
+    <div class="skeleton" style="height:100px"></div>
+    <div class="skeleton" style="height:100px"></div>
+  </div>
+
+  <!-- List -->
+  <div id="res-list"></div>
+
+  <!-- Empty -->
+  <div id="res-empty" class="hidden" style="text-align:center;padding:48px 0;color:rgba(92,74,50,0.4)">
+    <p style="font-size:2.5rem">📅</p>
+    <p style="margin-top:8px">No reservations found.</p>
+  </div>
+
+</div>
+
+
+<script>
+  // Auth guard
+  if (!isLoggedIn()) location.replace('admin.html')
+
+  function logout() { authLogout(); location.replace('admin.html') }
+
+  let allRes = []
+  let currentFilter = 'all'
+
+  const fmt = dt => new Date(dt).toLocaleString('en-US', {
+    weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit'
+  })
+
+  async function loadReservations() {
+    document.getElementById('skeletons').classList.remove('hidden')
+    document.getElementById('res-list').innerHTML = ''
+    document.getElementById('res-empty').classList.add('hidden')
+    document.getElementById('res-error').classList.add('hidden')
+
+    try {
+      allRes = await reservationsFetch()
+      updateSummary()
+      renderRes()
+    } catch(e) {
+      document.getElementById('res-error').textContent = e.message
+      document.getElementById('res-error').classList.remove('hidden')
+    } finally {
+      document.getElementById('skeletons').classList.add('hidden')
+    }
+  }
+
+  function updateSummary() {
+    const counts = { pending:0, confirmed:0, cancelled:0 }
+    allRes.forEach(r => counts[r.status]++)
+    document.getElementById('cnt-pending').textContent   = counts.pending
+    document.getElementById('cnt-confirmed').textContent = counts.confirmed
+    document.getElementById('cnt-cancelled').textContent = counts.cancelled
+  }
+
+  function filterRes(btn) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'))
+    btn.classList.add('active')
+    currentFilter = btn.dataset.f
+    renderRes()
+  }
+
+  function renderRes() {
+    const items = currentFilter === 'all' ? allRes : allRes.filter(r => r.status === currentFilter)
+    const list  = document.getElementById('res-list')
+    list.innerHTML = ''
+
+    if (items.length === 0) {
+      document.getElementById('res-empty').classList.remove('hidden')
+      return
+    }
+    document.getElementById('res-empty').classList.add('hidden')
+
+    items.forEach(r => list.appendChild(buildResCard(r)))
+  }
+
+  function buildResCard(r) {
+    const el = document.createElement('div')
+    el.className = 'card res-card'
+    el.id = `res-${r.id}`
+
+    const confirmBtn = r.status !== 'confirmed'
+      ? `<button class="btn btn-sm btn-ocean" onclick="setStatus('${r.id}','confirmed')">Confirm</button>` : ''
+    const cancelBtn  = r.status !== 'cancelled'
+      ? `<button class="btn btn-sm btn-warn"   onclick="setStatus('${r.id}','cancelled')">Cancel</button>`  : ''
+
+    el.innerHTML = `
+      <div class="res-card-top">
+        <div>
+          <p class="res-name">${r.customer_name}</p>
+          <p class="res-meta">${fmt(r.date_time)} · Party of ${r.party_size}</p>
+          ${r.phone ? `<p class="res-notes">📞 ${r.phone}</p>` : ''}
+          ${r.notes ? `<p class="res-notes">${r.notes}</p>` : ''}
+        </div>
+        <span class="badge badge-${r.status}">${r.status}</span>
+      </div>
+      <div class="res-actions">
+        ${confirmBtn}
+        ${cancelBtn}
+        <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="delRes('${r.id}')">Delete</button>
+      </div>
+    `
+    return el
+  }
+
+  async function setStatus(id, status) {
+    try {
+      await reservationUpdateStatus(id, status)
+      const r = allRes.find(x => x.id === id)
+      if (r) r.status = status
+      updateSummary()
+      renderRes()
+    } catch(e) { alert(e.message) }
+  }
+
+  async function delRes(id) {
+    if (!confirm('Delete this reservation?')) return
+    try {
+      await reservationDelete(id)
+      allRes = allRes.filter(r => r.id !== id)
+      updateSummary()
+      renderRes()
+    } catch(e) { alert(e.message) }
+  }
+
+  loadReservations()
+</script>
+</body>
+</html>
