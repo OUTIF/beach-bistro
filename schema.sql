@@ -1,4 +1,5 @@
 -- Run this in: Supabase Dashboard → SQL Editor
+-- ⚠️  If you already ran the previous schema.sql, only run the ALTER sections below.
 
 -- TABLES
 create table if not exists menu_items (
@@ -21,27 +22,38 @@ create table if not exists reservations (
   status        text not null default 'pending'
                   check (status in ('pending','confirmed','cancelled')),
   notes         text,
+  phone         text,           -- ← ADD THIS if you ran the old schema
   created_at    timestamptz default now()
 );
+
+-- If reservations table already exists, just add the phone column:
+-- ALTER TABLE reservations ADD COLUMN IF NOT EXISTS phone text;
 
 -- RLS
 alter table menu_items   enable row level security;
 alter table reservations enable row level security;
 
-create policy "public_read_menu"         on menu_items   for select using (true);
-create policy "public_insert_reservation" on reservations for insert with check (true);
-create policy "admin_all_menu"           on menu_items   for all using (auth.role() = 'authenticated');
-create policy "admin_all_reservations"   on reservations for all using (auth.role() = 'authenticated');
+-- Drop existing policies if re-running (safe to ignore errors)
+drop policy if exists "public_read_menu"          on menu_items;
+drop policy if exists "public_insert_reservation" on reservations;
+drop policy if exists "admin_all_menu"            on menu_items;
+drop policy if exists "admin_all_reservations"    on reservations;
 
--- SEED
+create policy "public_read_menu"          on menu_items   for select using (true);
+create policy "public_insert_reservation" on reservations for insert with check (true);
+create policy "admin_all_menu"            on menu_items   for all    using (auth.role() = 'authenticated');
+create policy "admin_all_reservations"    on reservations for all    using (auth.role() = 'authenticated');
+
+-- SEED (skip if already seeded)
 insert into menu_items (name, description, price, category) values
-  ('Grilled Sea Bass',    'Fresh daily catch, lemon butter, capers, dill', 28.00, 'Mains'),
-  ('Shrimp Tacos',        'Crispy shrimp, slaw, chipotle crema, lime',     18.00, 'Mains'),
-  ('Lobster Bisque',      'Rich cream soup, cognac, chive oil',             16.00, 'Starters'),
-  ('Calamari Fritti',     'Light batter, marinara, lemon aioli',           14.00, 'Starters'),
-  ('Açaí Bowl',           'Granola, banana, honey, coconut flakes',         12.00, 'Breakfast'),
-  ('Avocado Toast',       'Sourdough, poached egg, chilli flakes',          13.00, 'Breakfast'),
-  ('Mango Sorbet',        'House-made, coconut cream',                       8.00, 'Desserts'),
-  ('Churro Bites',        'Cinnamon sugar, dark chocolate dip',              9.00, 'Desserts'),
-  ('Sunset Margarita',    'Tequila, triple sec, fresh lime, tajín rim',     14.00, 'Drinks'),
-  ('Fresh Coconut Water', 'Young coconut, served chilled',                   6.00, 'Drinks');
+  ('Izgara Levrek',      'Günlük taze balık, limon tereyağı, kapari, dereotu', 28.00, 'Ana Yemekler'),
+  ('Karides Taco',       'Çıtır karides, lahana salatası, chipotle kreması',   18.00, 'Ana Yemekler'),
+  ('Istakoz Çorbası',    'Kremalı çorba, konyak, frenk soğanı yağı',           16.00, 'Başlangıçlar'),
+  ('Kalamar Fritti',     'Hafif hamur, marinara sosu, limon aioli',             14.00, 'Başlangıçlar'),
+  ('Açaí Bowl',          'Granola, muz, bal, hindistancevizi',                  12.00, 'Kahvaltı'),
+  ('Avokado Toast',      'Ekşi maya ekmek, poşe yumurta, chili pul biber',     13.00, 'Kahvaltı'),
+  ('Mango Sorbet',       'Ev yapımı, hindistancevizi kreması',                   8.00, 'Tatlılar'),
+  ('Churro Bites',       'Tarçın şeker, bitter çikolata sosu',                   9.00, 'Tatlılar'),
+  ('Gün Batımı Margarita','Tekila, triple sec, taze limon, tajín',              14.00, 'İçecekler'),
+  ('Taze Hindistancevizi Suyu','Genç hindistancevizi, soğuk servis',             6.00, 'İçecekler')
+on conflict do nothing;

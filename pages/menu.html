@@ -1,200 +1,595 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#0d3d52" />
-  <title>Menu · Twenty Beach Bistro</title>
+  <meta name="theme-color" content="#2f5438" />
+  <title>Menü | Twenty Beach Bistro — Antalya Konyaaltı Sahil Restoranı</title>
+  <meta name="description" content="Twenty Beach Bistro'nun tam menüsü. Antalya Konyaaltı sahilinde taze deniz ürünleri, kahvaltı, kokteyller ve daha fazlası. Günlük açık." />
+  <meta name="keywords" content="antalya beach restaurant, konyaaltı restoran, konyaaltı sahil cafe, antalya beach bistro, twenty beach antalya, konyaaltı yemek, antalya sahil yemek, twenty beach bistro menü" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://twentybeachbistro.com/pages/menu.html" />
+  <meta property="og:type" content="restaurant.menu" />
+  <meta property="og:title" content="Twenty Beach Bistro — Antalya Konyaaltı Menü" />
+  <meta property="og:description" content="Konyaaltı sahilinde taze lezzetler. Sabah kahvaltısından gece kokteyllerine kadar tam menü." />
+  <meta property="og:url" content="https://twentybeachbistro.com/pages/menu.html" />
+  <meta property="og:locale" content="tr_TR" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"Twenty Beach Bistro","url":"https://twentybeachbistro.com","telephone":"+905335036237","address":{"@type":"PostalAddress","streetAddress":"Konyaaltı Sahili","addressLocality":"Antalya","addressCountry":"TR"},"servesCuisine":["Seafood","Mediterranean"],"hasMenu":"https://twentybeachbistro.com/pages/menu.html"}</script>
+
   <link rel="stylesheet" href="../css/style.css" />
   <style>
-    .menu-header {
-      background: var(--green-dark);
-      color: #fff;
-      padding: 72px 20px 28px;
-      text-align: center;
+    /* ══════════════════════════════════════════════════
+       LAYOUT: full-height flex column so footer always
+       sticks to the very bottom of the viewport on short
+       pages and flows naturally below content on long ones.
+    ══════════════════════════════════════════════════ */
+    html, body {
+      height: 100%;
+      margin: 0; padding: 0;
     }
-    .menu-header h1 { font-size: 2rem; }
-    .menu-header p  { color: rgba(245,237,216,0.65); font-size: 0.875rem; margin-top: 4px; }
-
-    /* Sticky filter bar */
-    .filter-bar {
-      position: sticky; top: 56px; z-index: 90;
-      background: rgba(245,237,216,0.93);
-      backdrop-filter: blur(6px);
-      border-bottom: 1px solid rgba(232,213,176,0.7);
-      padding: 10px 16px;
-    }
-    .filter-bar .pill-row { margin-bottom: 0; }
-
-    /* Category section */
-    .cat-section   { margin-bottom: 30px; }
-    .cat-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      color: var(--ocean-deep);
-      border-bottom: 2px solid rgba(224,123,84,0.3);
-      padding-bottom: 6px;
-      margin-bottom: 12px;
-    }
-
-    /* Menu item card */
-    .menu-item {
+    body {
       display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(232,213,176,0.5);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 10px;
+      flex-direction: column;
+      background: var(--sand-light);
+      min-height: 100vh;
     }
-    .menu-item-img {
-      width: 72px; height: 72px;
-      border-radius: 10px;
-      object-fit: cover;
+
+    /* Language buttons inside navbar */
+    .nav-lang-btn {
+      font-size: 0.68rem; font-weight: 700;
+      padding: 4px 9px; border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,0.28);
+      background: transparent; color: rgba(255,255,255,0.65);
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      line-height: 1;
+    }
+    .nav-lang-btn.active { background: var(--coral); border-color: var(--coral); color: #fff; }
+    .nav-lang-btn:hover:not(.active) { background: rgba(255,255,255,0.12); color: #fff; }
+
+    /* The scrollable content area grows to fill available space */
+    .page-content {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══ STICKY BOTTOM FOOTER ══════════════════════════ */
+    .site-footer {
       flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(26,95,122,0.15), rgba(224,123,84,0.15));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem;
+      position: sticky;        /* sticks to viewport bottom */
+      bottom: 0;
+      z-index: 80;
+      background: var(--green-dark);
+      border-top: 1px solid rgba(232,213,163,0.2);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .site-footer img {
+      height: 32px; width: 32px;
+      border-radius: 50%; object-fit: cover;
+      border: 1.5px solid rgba(232,213,163,0.35);
+      opacity: 0.85;
+      display: block; flex-shrink: 0;
+    }
+    .site-footer-txt {
+      color: rgba(245,237,216,0.55);
+      font-size: 0.72rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .site-footer-txt strong {
+      color: rgba(245,237,216,0.75);
+      font-weight: 600;
+      display: block;
+    }
+
+    /* ══ MENU HEADER ═══════════════════════════════════ */
+    .menu-header {
+      background: var(--green-dark); color: #fff;
+      padding: 76px 20px 0; text-align: center;
+    }
+    .menu-header h1 { font-size: 1.9rem; }
+    .menu-header p  { color: rgba(245,237,216,0.6); font-size: 0.85rem; margin-top: 3px; }
+
+    /* ══ DARK TOP BAR (lang + search) ═════════════════ */
+    .dark-bar {
+      background: var(--green-dark);
+      padding: 10px 16px 14px;
+      display: flex; flex-direction: column; gap: 9px;
+    }
+    .lang-bar { display: flex; gap: 5px; justify-content: flex-end; }
+    .lang-btn {
+      font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      background: transparent; color: rgba(255,255,255,0.65);
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-btn.active { background: var(--coral); border-color: var(--coral); color: #fff; }
+
+    .search-wrap { position: relative; max-width: 640px; margin: 0 auto; width: 100%; }
+    .search-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:0.9rem; pointer-events:none; }
+    .search-input {
+      width: 100%;
+      background: rgba(255,255,255,0.13); border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 11px; padding: 10px 36px 10px 38px;
+      font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: #fff; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .search-input::placeholder { color: rgba(255,255,255,0.42); }
+    .search-input:focus { background: rgba(255,255,255,0.2); border-color: var(--coral); }
+    .search-clear {
+      position:absolute; right:10px; top:50%; transform:translateY(-50%);
+      background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.5);
+      font-size:1rem; display:none; padding:4px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ══════════════════════════════════════════════════
+       CATEGORY GRID
+       auto-fill with a sensible min column width so the
+       grid always fills the row and never overlaps cards.
+       Fixed height cards — no aspect-ratio tricks.
+    ══════════════════════════════════════════════════ */
+    #cat-view {
+      flex: 1;
+    }
+    .cat-grid-wrap {
+      max-width: 1100px; margin: 0 auto;
+      padding: 14px 14px 90px;
+    }
+    .cat-section-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: rgba(78,51,32,0.38);
+      margin-bottom: 12px; padding-left: 2px;
+    }
+
+    .cat-grid {
+      display: grid;
+      /* Each column is at least 150px wide; browser picks column count automatically.
+         This means 2 cols on tiny phones, 3–4 on tablet, 5+ on desktop — naturally. */
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    @media (min-width: 500px)  { .cat-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; } }
+    @media (min-width: 800px)  { .cat-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; } }
+    @media (min-width: 1100px) { .cat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; } }
+
+    .cat-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      border: none;
+      background: #1a3d2a;
+      /* Fixed heights — clean and predictable, no aspect-ratio overlap issues */
+      height: 150px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s cubic-bezier(.2,.8,.4,1), box-shadow 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 500px)  { .cat-card { height: 170px; } }
+    @media (min-width: 800px)  { .cat-card { height: 200px; border-radius: 20px; } }
+    @media (min-width: 1100px) { .cat-card { height: 220px; } }
+
+    .cat-card:hover  {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.26);
+    }
+    .cat-card:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+    /* Background image / gradient */
+    .cat-card-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transition: transform 0.4s cubic-bezier(.2,.8,.4,1);
+    }
+    .cat-card:hover .cat-card-bg { transform: scale(1.07); }
+
+    /* Gradient overlay — stronger at bottom for legibility */
+    .cat-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.00) 0%,
+        rgba(0,0,0,0.10) 45%,
+        rgba(0,0,0,0.68) 100%
+      );
+    }
+    /* Subtle top shimmer when card has photo */
+    .cat-card-shine {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Big centred emoji (shown when no photo) */
+    .cat-card-emoji {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      font-size: 2.8rem;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+      line-height: 1;
+    }
+    @media (min-width: 600px) { .cat-card-emoji { font-size: 3.2rem; } }
+    @media (min-width: 900px) { .cat-card-emoji { font-size: 3.8rem; } }
+
+    /* Category name */
+    .cat-card-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 12px 13px;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.55);
+    }
+    @media (min-width: 600px) { .cat-card-label { font-size: 1.1rem; padding: 12px 14px 15px; } }
+    @media (min-width: 900px) { .cat-card-label { font-size: 1.2rem; padding: 14px 16px 18px; } }
+
+    /* Item count badge */
+    .cat-card-count {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff; font-size: 0.68rem; font-weight: 700;
+      padding: 3px 8px; border-radius: 999px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ══ ITEMS / SEARCH CONTENT VIEWS ════════════════ */
+    .content-view {
+      display: none;
+      max-width: 740px; margin: 0 auto;
+      padding: 0 14px 100px; /* bottom pad for footer */
+      width: 100%;
+    }
+    .content-view.visible { display: block; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(47,84,56,0.08); border: none; cursor: pointer;
+      font-size: 0.88rem; font-weight: 700; color: var(--green-dark);
+      padding: 8px 14px 8px 10px; border-radius: 10px;
+      margin: 16px 0 14px;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-btn:hover  { background: rgba(47,84,56,0.14); }
+    .back-btn:active { opacity: 0.7; }
+
+    .items-cat-title {
+      font-family: 'Playfair Display', serif; font-size: 1.4rem;
+      color: var(--ocean-deep);
+      border-bottom: 2px solid rgba(224,123,84,0.28);
+      padding-bottom: 9px; margin-bottom: 16px;
+    }
+    .search-count-lbl {
+      font-size: 0.75rem; font-weight: 600;
+      color: rgba(78,51,32,0.4); padding: 14px 0 6px;
+    }
+
+    /* ══ MENU ITEM CARD ══════════════════════════════ */
+    .menu-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(232,213,176,0.5);
+      border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
+      transition: box-shadow 0.15s;
+    }
+    .menu-item:hover { box-shadow: 0 4px 16px rgba(78,51,32,0.1); }
+    .menu-item-img {
+      width: 72px; height: 72px; border-radius: 10px; object-fit: cover; flex-shrink: 0;
+      background: linear-gradient(135deg,rgba(26,95,122,0.15),rgba(224,123,84,0.15));
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
     }
     .menu-item-body { flex: 1; min-width: 0; }
     .menu-item-top  { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
     .menu-item-name { font-weight: 700; color: var(--ocean-deep); font-family: 'Playfair Display', serif; font-size: 0.95rem; line-height: 1.3; }
-    .menu-item-price { color: var(--coral); font-weight: 700; font-size: 0.9rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .menu-item-price { color: var(--coral); font-weight: 700; font-size: 0.9rem; white-space: nowrap; }
     .menu-item-desc { font-size: 0.8rem; color: rgba(92,74,50,0.65); margin-top: 5px; line-height: 1.4; }
 
-    /* Skeleton */
-    .skel-item { height: 90px; margin-bottom: 10px; }
+    /* ══ SKELETON ═══════════════════════════════════ */
+    .skel-cat {
+      border-radius: 18px;
+      height: 150px;
+    }
+    @media (min-width:500px) { .skel-cat { height: 170px; } }
+    @media (min-width:800px) { .skel-cat { height: 200px; } }
   </style>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/config.js"></script>
-<script src="../js/api.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <a href="../index.html" class="navbar-brand"><img src="../logo.jpg" alt="Logo" class="navbar-logo" /> Twenty <span>&nbsp;Beach</span></a>
-  <div class="navbar-links">
-    <a href="../index.html"   class="nav-link">Home</a>
-    <a href="menu.html"       class="nav-link active">Menu</a>
+<!-- ── NAVBAR ───────────────────────────────────── -->
+<nav class="navbar" style="gap:8px">
+  <a href="../index.html" class="navbar-brand">
+    <img src="../logo.jpg" alt="Twenty Beach Bistro" class="navbar-logo" />
+    Twenty<span style="color:var(--coral);margin-left:4px">Beach</span>
+  </a>
+  <div class="navbar-links" style="gap:4px;align-items:center">
+    <a href="../index.html" class="nav-link" id="nav-home">Ana Sayfa</a>
+    <a href="menu.html"     class="nav-link active" id="nav-menu">Menü</a>
+    <div style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
+    <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+    <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
+    <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
   </div>
 </nav>
 
-<!-- HEADER -->
-<div class="menu-header">
-  <h1>Our Menu</h1>
-  <p>Fresh · Local · Coastal</p>
-</div>
+<!-- ── SCROLLABLE CONTENT ───────────────────────── -->
+<div class="page-content">
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <div class="pill-row" id="filter-pills">
-    <button class="pill active" data-cat="all" onclick="filterCat(this)">All</button>
-  </div>
-</div>
-
-<!-- MENU LIST -->
-<div class="page-wrap pt-nav pb-footer" style="padding-top:16px">
-  <div id="menu-skeletons" class="gap-stack">
-    <div class="skeleton skel-item"></div>
-    <div class="skeleton skel-item"></div>
-    <div class="skeleton skel-item"></div>
-    <div class="skeleton skel-item"></div>
+  <!-- Header -->
+  <div class="menu-header">
+    <h1 id="hdr-title">Menümüz</h1>
+    <p id="hdr-sub">Taze · Yerel · Sahil Lezzetleri</p>
   </div>
 
-  <div id="menu-error" class="hidden" style="text-align:center;padding:40px 0">
-    <p style="font-size:2rem">😔</p>
-    <p class="error-msg" id="menu-error-msg"></p>
+  <!-- Search dark bar -->
+  <div class="dark-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" placeholder="Yemek ara…"
+             oninput="onSearch(this.value)" autocomplete="off" />
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
   </div>
 
-  <div id="menu-content"></div>
-</div>
+  <!-- ── CATEGORY GRID VIEW ─────────────────────── -->
+  <div id="cat-view">
+    <div class="cat-grid-wrap">
+      <p class="cat-section-label" id="cat-section-label">Kategoriler</p>
+      <div class="cat-grid" id="cat-grid">
+        <!-- Skeletons while loading -->
+        <div class="skeleton skel-cat"></div>
+        <div class="skeleton skel-cat"></div>
+        <div class="skeleton skel-cat"></div>
+        <div class="skeleton skel-cat"></div>
+      </div>
+    </div>
+  </div>
 
-<footer class="footer">Menu updated regularly · Prices include tax</footer>
+  <!-- ── ITEMS VIEW ──────────────────────────────── -->
+  <div class="content-view" id="items-view">
+    <button class="back-btn" onclick="showCatGrid()">
+      ← <span id="back-label">Kategoriler</span>
+    </button>
+    <h2 class="items-cat-title" id="items-cat-title"></h2>
+    <div id="items-list"></div>
+  </div>
+
+  <!-- ── SEARCH RESULTS VIEW ────────────────────── -->
+  <div class="content-view" id="search-view">
+    <p class="search-count-lbl" id="search-count"></p>
+    <div id="search-list"></div>
+  </div>
+
+</div><!-- /page-content -->
+
+<!-- ══ STICKY BOTTOM FOOTER ══════════════════════ -->
+<footer class="site-footer">
+  <img src="../logo.jpg" alt="Twenty Beach Bistro" />
+  <div class="site-footer-txt">
+    <strong id="footer-tagline">Menü düzenli güncellenir · Fiyatlara KDV dahildir</strong>
+    © <span id="footer-year"></span> Twenty Beach Bistro · All rights reserved.
+  </div>
+</footer>
 
 <script>
-  const EMOJI = { Mains:'🍽️', Starters:'🥗', Breakfast:'🌅', Desserts:'🍮', Drinks:'🥤' }
+document.getElementById('footer-year').textContent = new Date().getFullYear()
 
-  let allItems = []
-
-  async function loadMenu() {
-    try {
-      allItems = await menuFetch()
-      buildFilterPills()
-      renderMenu(allItems)
-    } catch(e) {
-      document.getElementById('menu-skeletons').classList.add('hidden')
-      document.getElementById('menu-error').classList.remove('hidden')
-      document.getElementById('menu-error-msg').textContent = e.message
-    }
+/* ── TRANSLATIONS ─────────────────────────────── */
+const T = {
+  tr: {
+    hdrTitle:'Menümüz', hdrSub:'Taze · Yerel · Sahil Lezzetleri',
+    navHome:'Ana Sayfa', navMenu:'Menü',
+    searchPh:'Yemek ara…', backLabel:'Kategoriler', catLabel:'Kategoriler',
+    noItems:'Ürün bulunamadı.',
+    searchCount: n => `${n} sonuç`,
+    footerTag:'Menü düzenli güncellenir · Fiyatlara KDV dahildir',
+  },
+  en: {
+    hdrTitle:'Our Menu', hdrSub:'Fresh · Local · Coastal',
+    navHome:'Home', navMenu:'Menu',
+    searchPh:'Search items…', backLabel:'Categories', catLabel:'Categories',
+    noItems:'No items found.',
+    searchCount: n => `${n} result${n===1?'':'s'}`,
+    footerTag:'Menu updated regularly · Prices include tax',
+  },
+  ar: {
+    hdrTitle:'قائمة الطعام', hdrSub:'طازج · محلي · نكهات الشاطئ',
+    navHome:'الرئيسية', navMenu:'القائمة',
+    searchPh:'ابحث عن طعام…', backLabel:'الفئات', catLabel:'الفئات',
+    noItems:'لا توجد عناصر.',
+    searchCount: n => `${n} نتيجة`,
+    footerTag:'يُحدَّث القائمة بانتظام · الأسعار شاملة الضريبة',
+  },
+  ru: {
+    hdrTitle:'Наше меню', hdrSub:'Свежее · Местное · Прибрежное',
+    navHome:'Главная', navMenu:'Меню',
+    searchPh:'Поиск блюд…', backLabel:'Категории', catLabel:'Категории',
+    noItems:'Ничего не найдено.',
+    searchCount: n => `Найдено: ${n}`,
+    footerTag:'Меню обновляется регулярно · Цены включают налог',
   }
+}
 
-  function buildFilterPills() {
-    const cats = [...new Set(allItems.map(i => i.category))]
-    const bar  = document.getElementById('filter-pills')
-    cats.forEach(cat => {
-      const btn = document.createElement('button')
-      btn.className = 'pill'
-      btn.dataset.cat = cat
-      btn.textContent = cat
-      btn.onclick = function() { filterCat(this) }
-      bar.appendChild(btn)
-    })
+const CAT_EMOJI = {
+  'Ana Yemekler':'🍽️','Mains':'🍽️',
+  'Başlangıçlar':'🥗','Starters':'🥗',
+  'Kahvaltı':'🌅','Breakfast':'🌅',
+  'Tatlılar':'🍮','Desserts':'🍮',
+  'İçecekler':'🥤','Drinks':'🥤',
+}
+/* Rich gradient pairs per category */
+const CAT_BG = {
+  'Ana Yemekler': 'linear-gradient(145deg, #0d3d52 0%, #2f5438 100%)',
+  'Mains':        'linear-gradient(145deg, #0d3d52 0%, #2f5438 100%)',
+  'Başlangıçlar': 'linear-gradient(145deg, #1a5f7a 0%, #236b7e 100%)',
+  'Starters':     'linear-gradient(145deg, #1a5f7a 0%, #236b7e 100%)',
+  'Kahvaltı':     'linear-gradient(145deg, #b85c28 0%, #d9784a 100%)',
+  'Breakfast':    'linear-gradient(145deg, #b85c28 0%, #d9784a 100%)',
+  'Tatlılar':     'linear-gradient(145deg, #7a4a18 0%, #c9913d 100%)',
+  'Desserts':     'linear-gradient(145deg, #7a4a18 0%, #c9913d 100%)',
+  'İçecekler':    'linear-gradient(145deg, #0a2e42 0%, #1a5f7a 100%)',
+  'Drinks':       'linear-gradient(145deg, #0a2e42 0%, #1a5f7a 100%)',
+}
+
+let allItems = [], currentLang = 'tr'
+
+/* ── LANGUAGE ─────────────────────────────────── */
+function setLang(lang) {
+  currentLang = lang
+  const t = T[lang]
+  document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
+  document.getElementById('hdr-title').textContent         = t.hdrTitle
+  document.getElementById('hdr-sub').textContent           = t.hdrSub
+  document.getElementById('nav-home').textContent          = t.navHome
+  document.getElementById('nav-menu').textContent          = t.navMenu
+  document.getElementById('search-input').placeholder      = t.searchPh
+  document.getElementById('back-label').textContent        = t.backLabel
+  document.getElementById('cat-section-label').textContent = t.catLabel
+  document.getElementById('footer-tagline').textContent    = t.footerTag
+  document.documentElement.setAttribute('lang', lang)
+  const sv = document.getElementById('search-input').value.trim()
+  if (sv) onSearch(sv)
+}
+
+/* ── LOAD ─────────────────────────────────────── */
+async function loadMenu() {
+  try {
+    allItems = await menuFetch()
+    buildCatGrid()
+  } catch(e) {
+    document.getElementById('cat-grid').innerHTML =
+      `<p style="color:#dc2626;grid-column:1/-1;padding:20px 0;font-size:0.9rem">${e.message}</p>`
   }
+}
 
-  function filterCat(btn) {
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'))
-    btn.classList.add('active')
-    const cat = btn.dataset.cat
-    renderMenu(cat === 'all' ? allItems : allItems.filter(i => i.category === cat))
-  }
+/* ── CATEGORY GRID ───────────────────────────── */
+function buildCatGrid() {
+  const cats = [...new Set(allItems.map(i => i.category))]
+  const grid = document.getElementById('cat-grid')
+  grid.innerHTML = ''
 
-  function renderMenu(items) {
-    document.getElementById('menu-skeletons').classList.add('hidden')
+  cats.forEach(cat => {
+    const catItems = allItems.filter(i => i.category === cat)
+    const imgItem  = catItems.find(i => i.image_url)
+    const hasBg    = !!imgItem
+    const bgStyle  = hasBg
+      ? `url('${imgItem.image_url}') center/cover no-repeat`
+      : (CAT_BG[cat] || 'linear-gradient(145deg,#1a5f7a,#2f5438)')
+    const emoji = CAT_EMOJI[cat] || '🍽️'
 
-    const byCategory = {}
-    items.forEach(item => {
-      if (!byCategory[item.category]) byCategory[item.category] = []
-      byCategory[item.category].push(item)
-    })
-
-    const container = document.getElementById('menu-content')
-    container.innerHTML = ''
-
-    Object.entries(byCategory).forEach(([cat, catItems]) => {
-      const section = document.createElement('div')
-      section.className = 'cat-section'
-      section.innerHTML = `<h2 class="cat-title">${cat}</h2>`
-      catItems.forEach(item => section.appendChild(buildItemEl(item)))
-      container.appendChild(section)
-    })
-
-    if (items.length === 0) {
-      container.innerHTML = '<p style="text-align:center;padding:40px 0;color:rgba(92,74,50,0.4)">No items found.</p>'
-    }
-  }
-
-  function buildItemEl(item) {
-    const div = document.createElement('div')
-    div.className = 'menu-item'
-    const imgContent = item.image_url
-      ? `<img src="${item.image_url}" alt="${item.name}" style="width:72px;height:72px;border-radius:10px;object-fit:cover;flex-shrink:0" loading="lazy"/>`
-      : `<div class="menu-item-img">${EMOJI[item.category] || '🍽️'}</div>`
-    div.innerHTML = `
-      ${imgContent}
-      <div class="menu-item-body">
-        <div class="menu-item-top">
-          <span class="menu-item-name">${item.name}</span>
-          <span class="menu-item-price">$${Number(item.price).toFixed(2)}</span>
-        </div>
-        ${item.description ? `<p class="menu-item-desc">${item.description}</p>` : ''}
-      </div>
+    const card = document.createElement('div')
+    card.className = 'cat-card'
+    card.setAttribute('role', 'button')
+    card.setAttribute('aria-label', cat)
+    card.onclick = () => showCategory(cat)
+    card.innerHTML = `
+      <div class="cat-card-bg" style="background:${bgStyle}"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-shine"></div>
+      ${!hasBg ? `<span class="cat-card-emoji">${emoji}</span>` : ''}
+      <span class="cat-card-count">${catItems.length} ürün</span>
+      <span class="cat-card-label">${cat}</span>
     `
-    return div
-  }
+    grid.appendChild(card)
+  })
+}
 
-  loadMenu()
+/* ── SHOW CATEGORY ───────────────────────────── */
+function showCategory(cat) {
+  document.getElementById('cat-view').style.display = 'none'
+  document.getElementById('search-view').classList.remove('visible')
+  document.getElementById('items-view').classList.add('visible')
+  document.getElementById('items-cat-title').textContent = cat
+  renderItems(allItems.filter(i => i.category === cat), 'items-list')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+/* ── BACK ─────────────────────────────────────── */
+function showCatGrid() {
+  document.getElementById('items-view').classList.remove('visible')
+  document.getElementById('search-view').classList.remove('visible')
+  document.getElementById('cat-view').style.display = ''
+  document.getElementById('search-input').value = ''
+  document.getElementById('search-clear').style.display = 'none'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+/* ── SEARCH ──────────────────────────────────── */
+function onSearch(q) {
+  q = q.trim().toLowerCase()
+  document.getElementById('search-clear').style.display = q ? 'block' : 'none'
+  if (!q) {
+    document.getElementById('search-view').classList.remove('visible')
+    document.getElementById('items-view').classList.remove('visible')
+    document.getElementById('cat-view').style.display = ''
+    return
+  }
+  document.getElementById('cat-view').style.display = 'none'
+  document.getElementById('items-view').classList.remove('visible')
+  document.getElementById('search-view').classList.add('visible')
+  const results = allItems.filter(i =>
+    i.name.toLowerCase().includes(q) ||
+    (i.description && i.description.toLowerCase().includes(q)) ||
+    i.category.toLowerCase().includes(q)
+  )
+  document.getElementById('search-count').textContent = T[currentLang].searchCount(results.length)
+  renderItems(results, 'search-list')
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = ''
+  onSearch('')
+}
+
+/* ── RENDER ITEMS ────────────────────────────── */
+function renderItems(items, containerId) {
+  const c = document.getElementById(containerId)
+  c.innerHTML = ''
+  if (!items.length) {
+    c.innerHTML = `<p style="text-align:center;padding:40px 0;color:rgba(92,74,50,0.4)">${T[currentLang].noItems}</p>`
+    return
+  }
+  items.forEach(item => c.appendChild(buildItemEl(item)))
+}
+
+function buildItemEl(item) {
+  const div = document.createElement('div')
+  div.className = 'menu-item'
+  const img = item.image_url
+    ? `<img src="${item.image_url}" alt="${item.name}" class="menu-item-img" style="font-size:0" loading="lazy"/>`
+    : `<div class="menu-item-img">${CAT_EMOJI[item.category] || '🍽️'}</div>`
+  div.innerHTML = `
+    ${img}
+    <div class="menu-item-body">
+      <div class="menu-item-top">
+        <span class="menu-item-name">${item.name}</span>
+        <span class="menu-item-price">₺${Number(item.price).toFixed(2)}</span>
+      </div>
+      ${item.description ? `<p class="menu-item-desc">${item.description}</p>` : ''}
+    </div>
+  `
+  return div
+}
+
+loadMenu()
 </script>
 </body>
 </html>

@@ -1,222 +1,706 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <meta name="theme-color" content="#2f5438" />
-  <title>Twenty Beach Bistro</title>
+
+  <title>Twenty Beach Bistro — Antalya Konyaaltı Sahil Restoranı</title>
+  <meta name="description" content="Twenty Beach Bistro, Antalya Konyaaltı sahilinde taze deniz ürünleri, kahvaltı ve kokteyller sunan sahil restoranı. Online rezervasyon için tıklayın." />
+  <meta name="keywords" content="antalya beach restaurant, konyaaltı restoran, konyaaltı sahil cafe, antalya sahil yemek, twenty beach antalya, twenty beach bistro, antalya deniz kıyısı restoran, konyaaltı yemek, antalya beach bistro" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Twenty Beach Bistro" />
+  <meta name="geo.region" content="TR-07" />
+  <meta name="geo.placename" content="Antalya, Konyaaltı" />
+  <meta name="geo.position" content="36.8749;30.6281" />
+  <meta name="ICBM" content="36.8749, 30.6281" />
+  <link rel="canonical" href="https://twentybeachbistro.com/" />
+  <link rel="alternate" hreflang="tr" href="https://twentybeachbistro.com/" />
+  <link rel="alternate" hreflang="en" href="https://twentybeachbistro.com/?lang=en" />
+  <link rel="alternate" hreflang="ar" href="https://twentybeachbistro.com/?lang=ar" />
+  <link rel="alternate" hreflang="ru" href="https://twentybeachbistro.com/?lang=ru" />
+  <link rel="alternate" hreflang="x-default" href="https://twentybeachbistro.com/" />
+  <meta property="og:type" content="restaurant" />
+  <meta property="og:title" content="Twenty Beach Bistro — Antalya Konyaaltı" />
+  <meta property="og:description" content="Konyaaltı sahilinde taze lezzetler, okyanus manzarası ve güneşli atmosfer. Online rezervasyon alınır." />
+  <meta property="og:url" content="https://twentybeachbistro.com" />
+  <meta property="og:image" content="https://twentybeachbistro.com/main_page_pic.png" />
+  <meta property="og:locale" content="tr_TR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Twenty Beach Bistro — Antalya" />
+  <meta name="twitter:description" content="Konyaaltı sahilinde taze deniz ürünleri ve kokteyller." />
+  <meta name="twitter:image" content="https://twentybeachbistro.com/main_page_pic.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"Twenty Beach Bistro","description":"Antalya Konyaaltı sahilinde taze deniz ürünleri, kahvaltı ve kokteyller sunan beach bistro restoranı.","url":"https://twentybeachbistro.com","telephone":"+905335036237","email":"hello@twentybeachbistro.com","address":{"@type":"PostalAddress","streetAddress":"Konyaaltı Sahili","addressLocality":"Antalya","addressRegion":"Antalya","postalCode":"07070","addressCountry":"TR"},"geo":{"@type":"GeoCoordinates","latitude":36.8749,"longitude":30.6281},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"22:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"08:00","closes":"23:00"}],"servesCuisine":["Deniz Ürünleri","Akdeniz","Beach Food"],"priceRange":"$$","hasMenu":"https://twentybeachbistro.com/pages/menu.html","acceptsReservations":true}</script>
+
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    /* ══ HERO ═══════════════════════════════════════ */
     .hero {
-      position: relative;
-      min-height: 100vh;
+      position: relative; min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center;
+      text-align: center; overflow: hidden; padding: 80px 24px;
+    }
+    .hero-bg { position:absolute;inset:0;background:url('main_page_pic.png') center/cover no-repeat;z-index:0; }
+    .hero-overlay { position:absolute;inset:0;backdrop-filter:blur(3px);background:linear-gradient(180deg,rgba(30,55,35,0.55) 0%,rgba(47,84,56,0.40) 40%,rgba(20,35,22,0.75) 100%);z-index:1; }
+    .hero-content { position:relative;z-index:2;color:#fff; }
+    .hero-logo { width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid rgba(232,213,163,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.45);margin:0 auto 20px; }
+    .hero h1 { font-size:2.6rem;line-height:1.1;margin-bottom:12px;text-shadow:0 2px 14px rgba(0,0,0,0.55); }
+    .hero h1 em { color:var(--coral);font-style:italic; }
+    .hero-tagline { color:rgba(245,237,216,0.85);font-size:1rem;font-weight:300;max-width:280px;margin:0 auto 24px; }
+    .hero-badges { display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px; }
+    .hero-badge { background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.22);backdrop-filter:blur(4px);border-radius:999px;padding:6px 16px;font-size:0.8rem;color:rgba(245,237,216,0.9); }
+    .scroll-hint { position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,0.45);font-size:0.7rem;display:flex;flex-direction:column;align-items:center;gap:3px;animation:bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)} }
+
+    /* Language buttons in navbar */
+    .nav-lang-btn { font-size:0.68rem;font-weight:700;padding:4px 9px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.28);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background 0.15s,color 0.15s;line-height:1; }
+    .nav-lang-btn.active { background:var(--coral);border-color:var(--coral);color:#fff; }
+    .nav-lang-btn:hover:not(.active) { background:rgba(255,255,255,0.12);color:#fff; }
+
+    /* ══ INFO SECTION ════════════════════════════════ */
+    .section { padding:8px 0 20px; }
+    .section h2 { font-size:1.2rem;color:var(--green-dark);margin-bottom:14px; }
+    .info-row { display:flex;align-items:flex-start;gap:10px;font-size:0.9rem;color:rgba(78,51,32,0.8);margin-bottom:10px; }
+    .info-icon { font-size:1rem;flex-shrink:0;margin-top:1px; }
+    .hours-table { width:100%;font-size:0.875rem;border-collapse:collapse; }
+    .hours-table td { padding:4px 0;color:rgba(78,51,32,0.75); }
+    .hours-table td:last-child { text-align:right; }
+    .divider { border:none;border-top:1px solid rgba(201,169,110,0.4);margin:8px 0; }
+
+    /* ══ CUSTOM DATE PICKER ══════════════════════════
+       Replaces the ugly browser datetime-local input.
+       Shows a clean calendar + time selector.
+    ═════════════════════════════════════════════════ */
+
+    /* The visible trigger button */
+    .datepicker-trigger {
+      width: 100%;
+      background: rgba(255,255,255,0.9);
+      border: 1.5px solid rgba(201,169,110,0.4);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--brown-dark);
+      text-align: left;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .datepicker-trigger:focus,
+    .datepicker-trigger.open {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(58,143,163,0.18);
+      outline: none;
+    }
+    .datepicker-trigger-txt { flex: 1; }
+    .datepicker-trigger-placeholder { color: rgba(122,82,48,0.45); }
+    .datepicker-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* Dropdown panel */
+    .datepicker-panel {
+      display: none;
+      background: #fff;
+      border: 1.5px solid rgba(201,169,110,0.35);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(78,51,32,0.15);
       overflow: hidden;
-      padding: 80px 24px 80px;
+      margin-top: 6px;
     }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: url('main_page_pic.png') center center / cover no-repeat;
-      z-index: 0;
+    .datepicker-panel.open { display: block; }
+
+    /* Month nav */
+    .dp-header {
+      background: var(--green-dark);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
     }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      backdrop-filter: blur(3px);
-      background: linear-gradient(
-        180deg,
-        rgba(30,55,35,0.55) 0%,
-        rgba(47,84,56,0.40) 40%,
-        rgba(20,35,22,0.75) 100%
-      );
-      z-index: 1;
+    .dp-month-label {
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700;
     }
-    .hero-content { position: relative; z-index: 2; color: #fff; }
-    .hero-logo {
-      width: 120px; height: 120px;
-      border-radius: 50%; object-fit: cover;
-      border: 3px solid rgba(232,213,163,0.6);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-      margin: 0 auto 20px;
+    .dp-nav-btn {
+      background: rgba(255,255,255,0.15); border: none;
+      color: #fff; width: 32px; height: 32px; border-radius: 8px;
+      cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .hero h1 {
-      font-size: 2.6rem; line-height: 1.1; margin-bottom: 12px;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+    .dp-nav-btn:hover { background: rgba(255,255,255,0.28); }
+    .dp-nav-btn:active { background: rgba(255,255,255,0.1); }
+
+    /* Day-of-week headers */
+    .dp-weekdays {
+      display: grid; grid-template-columns: repeat(7,1fr);
+      padding: 8px 12px 2px;
+      gap: 2px;
     }
-    .hero h1 em { color: var(--coral); font-style: italic; }
-    .hero-tagline {
-      color: rgba(245,237,216,0.85); font-size: 1rem; font-weight: 300;
-      max-width: 280px; margin: 0 auto 24px;
+    .dp-wday {
+      text-align: center;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em;
+      color: rgba(78,51,32,0.4);
+      padding: 4px 0;
     }
-    .hero-badges {
-      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-      margin-bottom: 28px;
+
+    /* Days grid */
+    .dp-days {
+      display: grid; grid-template-columns: repeat(7,1fr);
+      padding: 2px 12px 12px;
+      gap: 3px;
     }
-    .hero-badge {
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.22);
-      backdrop-filter: blur(4px);
-      border-radius: 999px; padding: 6px 16px;
-      font-size: 0.8rem; color: rgba(245,237,216,0.9);
+    .dp-day {
+      text-align: center;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 8px 2px;
+      border-radius: 9px;
+      cursor: pointer;
+      color: var(--brown-dark);
+      transition: background 0.12s, color 0.12s;
+      -webkit-tap-highlight-color: transparent;
+      border: none; background: transparent;
     }
-    .scroll-hint {
-      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
-      z-index: 2; color: rgba(255,255,255,0.45); font-size: 0.7rem;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      animation: bounce 2s infinite;
+    .dp-day:hover:not(.dp-day-disabled):not(.dp-day-selected) {
+      background: rgba(47,84,56,0.1);
     }
-    @keyframes bounce {
-      0%,100%{ transform: translateX(-50%) translateY(0); }
-      50%    { transform: translateX(-50%) translateY(7px); }
+    .dp-day:active:not(.dp-day-disabled) { transform: scale(0.92); }
+    .dp-day-other  { color: rgba(78,51,32,0.25); }
+    .dp-day-today  { color: var(--coral); font-weight: 700; }
+    .dp-day-selected {
+      background: var(--green-dark) !important;
+      color: #fff !important;
+      border-radius: 9px;
     }
-    .section    { padding: 8px 0 20px; }
-    .section h2 { font-size: 1.2rem; color: var(--green-dark); margin-bottom: 14px; }
-    .info-row   { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: rgba(78,51,32,0.8); margin-bottom: 10px; }
-    .info-icon  { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-    .hours-table { width: 100%; font-size: 0.875rem; border-collapse: collapse; }
-    .hours-table td { padding: 4px 0; color: rgba(78,51,32,0.75); }
-    .hours-table td:last-child { text-align: right; }
-    .divider { border: none; border-top: 1px solid rgba(201,169,110,0.4); margin: 8px 0; }
+    .dp-day-disabled { color: rgba(78,51,32,0.2); cursor: not-allowed; pointer-events: none; }
+    .dp-day-empty { background: transparent !important; cursor: default; }
+
+    /* Divider between calendar and time */
+    .dp-divider { border: none; border-top: 1px solid rgba(201,169,110,0.3); margin: 0; }
+
+    /* Time selector */
+    .dp-time {
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .dp-time-label {
+      font-size: 0.8rem; font-weight: 600;
+      color: rgba(78,51,32,0.55); flex-shrink: 0;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .dp-time-selects {
+      display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end;
+    }
+    .dp-time-sep { font-weight: 700; color: var(--brown); font-size: 1.1rem; }
+    .dp-select {
+      appearance: none; -webkit-appearance: none;
+      background: var(--sand-light);
+      border: 1.5px solid rgba(201,169,110,0.4);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 600;
+      color: var(--brown-dark);
+      cursor: pointer; outline: none;
+      text-align: center;
+      transition: border-color 0.15s;
+    }
+    .dp-select:focus { border-color: var(--teal); }
+
+    /* Confirm button inside panel */
+    .dp-confirm {
+      padding: 0 16px 14px;
+    }
+    .dp-confirm-btn {
+      width: 100%;
+      background: var(--coral); color: #fff;
+      border: none; border-radius: 11px;
+      padding: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dp-confirm-btn:hover { opacity: 0.88; }
+    .dp-confirm-btn:active { opacity: 0.7; }
   </style>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./js/config.js"></script>
-<script src="./js/api.js"></script>
+  <script src="./js/config.js"></script>
+  <script src="./js/api.js"></script>
 </head>
 <body>
 
-<nav class="navbar">
+<nav class="navbar" style="gap:8px">
   <a href="index.html" class="navbar-brand">
-    <img src="logo.jpg" alt="Logo" class="navbar-logo" />
-    Twenty <span>&nbsp;Beach</span>
+    <img src="logo.jpg" alt="Twenty Beach Bistro" class="navbar-logo" />
+    Twenty<span style="color:var(--coral);margin-left:4px">Beach</span>
   </a>
-  <div class="navbar-links">
-    <a href="index.html"      class="nav-link active">Home</a>
-    <a href="pages/menu.html" class="nav-link">Menu</a>
+  <div class="navbar-links" style="gap:4px;align-items:center">
+    <a href="index.html"      class="nav-link active" id="nav-home">Ana Sayfa</a>
+    <a href="pages/menu.html" class="nav-link"        id="nav-menu">Menü</a>
+    <div style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
+    <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+    <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
+    <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
   </div>
 </nav>
 
-<!-- FULL-SCREEN HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <img src="logo.jpg" alt="Twenty Beach Bistro" class="hero-logo" />
+    <img src="logo.jpg" alt="Twenty Beach Bistro Logo" class="hero-logo" />
     <h1>Twenty<br><em>Beach Bistro</em></h1>
-    <p class="hero-tagline">Fresh coastal flavours, ocean views &amp; sun-soaked vibes.</p>
+    <p class="hero-tagline" id="hero-tagline">Taze sahil lezzetleri, okyanus manzarası &amp; güneşli atmosfer.</p>
     <div class="hero-badges">
-      <span class="hero-badge">🌊 Beachfront</span>
-      <span class="hero-badge">🍽️ Fresh Daily</span>
-      <span class="hero-badge">🌅 Open Daily</span>
+      <span class="hero-badge" id="badge-1">🏖️ Sahil Kenarı</span>
+      <span class="hero-badge" id="badge-2">🌿 Günlük Taze</span>
+      <span class="hero-badge" id="badge-3">🕐 Her Gün Açık</span>
     </div>
-    <a href="pages/menu.html" class="btn btn-coral" style="font-size:1rem;padding:14px 32px;box-shadow:0 4px 20px rgba(217,120,74,0.5)">
-      See Our Menu →
+    <a href="pages/menu.html" class="btn btn-coral" id="hero-cta"
+       style="font-size:1rem;padding:14px 32px;box-shadow:0 4px 20px rgba(217,120,74,0.5)">
+      Menüyü Gör →
     </a>
   </div>
-  <div class="scroll-hint"><span>scroll</span><span>↓</span></div>
+  <div class="scroll-hint"><span id="scroll-hint-txt">aşağı kaydır</span><span>↓</span></div>
 </div>
 
-<!-- INFO + RESERVATION -->
 <div class="page-wrap pb-footer">
 
+  <!-- Info card -->
   <div class="section">
     <div class="card gap-stack">
-      <h2>Find Us</h2>
-      <div class="info-row"><span class="info-icon">📍</span>20 Beachfront Avenue, Coastal Bay</div>
-      <div class="info-row"><span class="info-icon">📞</span>(555) 020-2020</div>
+      <h2 id="find-us-title">Bizi Bulun</h2>
+      <div class="info-row"><span class="info-icon">📍</span>Konyaaltı sahili, Antalya</div>
+      <div class="info-row"><span class="info-icon">📞</span>0 (533) 503 62 37</div>
       <div class="info-row"><span class="info-icon">📧</span>hello@twentybeachbistro.com</div>
       <hr class="divider" />
       <table class="hours-table">
-        <tr><td><strong>Mon – Fri</strong></td><td>7:00 AM – 10:00 PM</td></tr>
-        <tr><td><strong>Sat – Sun</strong></td><td>8:00 AM – 11:00 PM</td></tr>
+        <tr><td><strong id="days-weekday">Pzt – Cum</strong></td><td>07:00 – 22:00</td></tr>
+        <tr><td><strong id="days-weekend">Cmt – Paz</strong></td><td>08:00 – 23:00</td></tr>
       </table>
     </div>
   </div>
 
+  <!-- Reservation card -->
   <div class="section">
     <div class="card gap-stack">
-      <h2>Reserve a Table</h2>
+      <h2 id="reserve-title">Masa Rezervasyonu</h2>
 
+      <!-- Success state -->
       <div id="res-success" class="hidden text-center" style="padding:16px 0">
         <div style="font-size:2.5rem;margin-bottom:8px">🎉</div>
-        <p style="font-weight:700;color:#15803d">Reservation submitted!</p>
-        <p style="font-size:0.875rem;color:rgba(78,51,32,0.6);margin-top:4px">We'll confirm shortly.</p>
-        <button class="btn btn-green" style="margin-top:16px" onclick="resetResForm()">Make Another</button>
+        <p style="font-weight:700;color:#15803d" id="res-success-msg">Rezervasyon alındı!</p>
+        <p style="font-size:0.875rem;color:rgba(78,51,32,0.6);margin-top:4px" id="res-success-sub">Kısa süre içinde onaylayacağız.</p>
+        <button class="btn btn-green" style="margin-top:16px" id="res-another-btn" onclick="resetResForm()">Yeni Rezervasyon</button>
       </div>
 
+      <!-- Form -->
       <div id="res-form">
         <div class="gap-stack">
+
+          <!-- Name -->
           <div>
-            <label class="field-label" for="res-name">Your Name</label>
-            <input class="input" id="res-name" placeholder="Jane Smith" />
+            <label class="field-label" id="lbl-name">Adınız</label>
+            <input class="input" id="res-name" placeholder="Ahmet Yılmaz" />
           </div>
+
+          <!-- Date + Guests row -->
           <div class="row">
-            <div>
-              <label class="field-label" for="res-datetime">Date &amp; Time</label>
-              <input class="input" id="res-datetime" type="datetime-local" />
+            <div style="flex:2">
+              <label class="field-label" id="lbl-datetime">Tarih &amp; Saat</label>
+              <!-- Custom date picker trigger -->
+              <button type="button" class="datepicker-trigger" id="dp-trigger" onclick="toggleDatepicker()">
+                <span class="datepicker-trigger-txt" id="dp-display">
+                  <span class="datepicker-trigger-placeholder" id="dp-placeholder">Tarih seçin</span>
+                </span>
+                <span class="datepicker-icon">📅</span>
+              </button>
+              <!-- Hidden real value for form submission -->
+              <input type="hidden" id="res-datetime" />
+
+              <!-- Dropdown panel -->
+              <div class="datepicker-panel" id="dp-panel">
+                <!-- Month header -->
+                <div class="dp-header">
+                  <button type="button" class="dp-nav-btn" onclick="changeMonth(-1)">‹</button>
+                  <span class="dp-month-label" id="dp-month-label"></span>
+                  <button type="button" class="dp-nav-btn" onclick="changeMonth(1)">›</button>
+                </div>
+                <!-- Weekday headers -->
+                <div class="dp-weekdays" id="dp-weekdays"></div>
+                <!-- Days -->
+                <div class="dp-days" id="dp-days"></div>
+                <!-- Divider -->
+                <hr class="dp-divider" />
+                <!-- Time -->
+                <div class="dp-time">
+                  <span class="dp-time-label">🕐 <span id="lbl-time">Saat</span></span>
+                  <div class="dp-time-selects">
+                    <select class="dp-select" id="dp-hour" onchange="updateDateValue()"></select>
+                    <span class="dp-time-sep">:</span>
+                    <select class="dp-select" id="dp-minute" onchange="updateDateValue()"></select>
+                  </div>
+                </div>
+                <!-- Confirm -->
+                <div class="dp-confirm">
+                  <button type="button" class="dp-confirm-btn" id="dp-confirm-btn" onclick="confirmDate()">Onayla</button>
+                </div>
+              </div>
             </div>
             <div style="max-width:90px">
-              <label class="field-label" for="res-guests">Guests</label>
+              <label class="field-label" id="lbl-guests">Kişi</label>
               <input class="input" id="res-guests" type="number" min="1" max="20" value="2" />
             </div>
           </div>
+
+          <!-- Notes -->
           <div>
-            <label class="field-label" for="res-notes">Notes (optional)</label>
-            <textarea class="input" id="res-notes" rows="3" placeholder="Allergies, occasion…"></textarea>
+            <label class="field-label" id="lbl-notes">Not (isteğe bağlı)</label>
+            <textarea class="input" id="res-notes" rows="3" placeholder="Alerji, özel gün…"></textarea>
           </div>
 
-            <div>
-            <label class="field-label" for="phone">Phone Number</label>
+          <!-- Phone -->
+          <div>
+            <label class="field-label" id="lbl-phone">Telefon Numarası</label>
             <input class="input" id="phone" type="tel" placeholder="(543) 000 00 00" />
           </div>
-          
+
           <p class="error-msg hidden" id="res-error"></p>
           <button class="btn btn-coral btn-full" id="res-submit" onclick="submitReservation()">
-            Request Reservation
+            Rezervasyon Yap
           </button>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
 <footer class="footer">
   <img src="logo.jpg" alt="Twenty Beach Bistro" />
-  © <span id="yr"></span> Twenty Beach Bistro · All rights reserved
+  © <span id="yr"></span> Twenty Beach Bistro · <span id="footer-rights">Tüm hakları saklıdır</span>
 </footer>
 
-
 <script>
-  document.getElementById('yr').textContent = new Date().getFullYear()
+document.getElementById('yr').textContent = new Date().getFullYear()
 
-  async function submitReservation() {
-    const name   = document.getElementById('res-name').value.trim()
-    const dt     = document.getElementById('res-datetime').value
-    const guests = parseInt(document.getElementById('res-guests').value)
-    const notes  = document.getElementById('res-notes').value.trim()
-    const phone  = document.getElementById('phone').value.trim()
-    const errEl  = document.getElementById('res-error')
-    const btn    = document.getElementById('res-submit')
-    if (!name || !dt || !phone) { errEl.textContent = 'Name, date/time and phone number are required.'; errEl.classList.remove('hidden'); return }
-    errEl.classList.add('hidden')
-    btn.disabled = true; btn.textContent = 'Submitting…'
-    try {
-      await reservationCreate({ customer_name: name, party_size: guests, date_time: dt, notes, phone })
-      document.getElementById('res-form').classList.add('hidden')
-      document.getElementById('res-success').classList.remove('hidden')
-    } catch (e) { errEl.textContent = e.message; errEl.classList.remove('hidden') }
-    finally { btn.disabled = false; btn.textContent = 'Request Reservation' }
+/* ══════════════════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════════════════ */
+const LANG = {
+  tr: {
+    navHome:'Ana Sayfa', navMenu:'Menü',
+    tagline:'Taze sahil lezzetleri, okyanus manzarası & güneşli atmosfer.',
+    badge1:'🏖️ Sahil Kenarı', badge2:'🌿 Günlük Taze', badge3:'🕐 Her Gün Açık',
+    cta:'Menüyü Gör →', scrollHint:'aşağı kaydır',
+    findUs:'Bizi Bulun', reserve:'Masa Rezervasyonu',
+    lblName:'Adınız', lblDatetime:'Tarih & Saat', lblGuests:'Kişi',
+    lblNotes:'Not (isteğe bağlı)', lblPhone:'Telefon Numarası',
+    notesPlaceholder:'Alerji, özel gün…',
+    submitBtn:'Rezervasyon Yap', anotherBtn:'Yeni Rezervasyon',
+    successMsg:'Rezervasyon alındı!', successSub:'Kısa süre içinde onaylayacağız.',
+    errRequired:'Ad, tarih/saat ve telefon zorunludur.',
+    weekday:'Pzt – Cum', weekend:'Cmt – Paz',
+    footerRights:'Tüm hakları saklıdır',
+    dpPlaceholder:'Tarih seçin', dpConfirm:'Onayla', dpTime:'Saat',
+    months:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+    wdays:['Pt','Sa','Ça','Pe','Cu','Ct','Pz'],
+  },
+  en: {
+    navHome:'Home', navMenu:'Menu',
+    tagline:'Fresh coastal flavours, ocean views & sun-soaked vibes.',
+    badge1:'🏖️ Beachfront', badge2:'🌿 Fresh Daily', badge3:'🕐 Open Daily',
+    cta:'See Our Menu →', scrollHint:'scroll',
+    findUs:'Find Us', reserve:'Reserve a Table',
+    lblName:'Your Name', lblDatetime:'Date & Time', lblGuests:'Guests',
+    lblNotes:'Notes (optional)', lblPhone:'Phone Number',
+    notesPlaceholder:'Allergies, occasion…',
+    submitBtn:'Request Reservation', anotherBtn:'Make Another',
+    successMsg:'Reservation submitted!', successSub:'We\'ll confirm shortly.',
+    errRequired:'Name, date/time and phone number are required.',
+    weekday:'Mon – Fri', weekend:'Sat – Sun',
+    footerRights:'All rights reserved',
+    dpPlaceholder:'Select date', dpConfirm:'Confirm', dpTime:'Time',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    wdays:['Mo','Tu','We','Th','Fr','Sa','Su'],
+  },
+  ar: {
+    navHome:'الرئيسية', navMenu:'القائمة',
+    tagline:'نكهات شاطئية طازجة، إطلالات على البحر وأجواء مشمسة.',
+    badge1:'🏖️ على الشاطئ', badge2:'🌿 طازج يومياً', badge3:'🕐 مفتوح يومياً',
+    cta:'اطّلع على القائمة ←', scrollHint:'مرّر للأسفل',
+    findUs:'اعثر علينا', reserve:'احجز طاولة',
+    lblName:'اسمك', lblDatetime:'التاريخ والوقت', lblGuests:'عدد الأشخاص',
+    lblNotes:'ملاحظات (اختياري)', lblPhone:'رقم الهاتف',
+    notesPlaceholder:'حساسية، مناسبة خاصة…',
+    submitBtn:'طلب حجز', anotherBtn:'حجز آخر',
+    successMsg:'تم استلام الحجز!', successSub:'سنؤكده قريباً.',
+    errRequired:'الاسم والتاريخ ورقم الهاتف مطلوبة.',
+    weekday:'اثنين – جمعة', weekend:'سبت – أحد',
+    footerRights:'جميع الحقوق محفوظة',
+    dpPlaceholder:'اختر تاريخاً', dpConfirm:'تأكيد', dpTime:'الوقت',
+    months:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+    wdays:['إث','ثل','أر','خم','جم','سب','أح'],
+  },
+  ru: {
+    navHome:'Главная', navMenu:'Меню',
+    tagline:'Свежие прибрежные блюда, вид на океан и солнечная атмосфера.',
+    badge1:'🏖️ На пляже', badge2:'🌿 Свежее ежедневно', badge3:'🕐 Открыто ежедневно',
+    cta:'Смотреть меню →', scrollHint:'прокрутить',
+    findUs:'Как нас найти', reserve:'Забронировать стол',
+    lblName:'Ваше имя', lblDatetime:'Дата и время', lblGuests:'Гостей',
+    lblNotes:'Примечания (по желанию)', lblPhone:'Номер телефона',
+    notesPlaceholder:'Аллергии, повод…',
+    submitBtn:'Запросить бронь', anotherBtn:'Ещё раз',
+    successMsg:'Заявка принята!', successSub:'Мы подтвердим в ближайшее время.',
+    errRequired:'Имя, дата/время и телефон обязательны.',
+    weekday:'Пн – Пт', weekend:'Сб – Вс',
+    footerRights:'Все права защищены',
+    dpPlaceholder:'Выберите дату', dpConfirm:'Подтвердить', dpTime:'Время',
+    months:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+    wdays:['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
   }
+}
 
-  function resetResForm() {
-    document.getElementById('res-form').classList.remove('hidden')
-    document.getElementById('res-success').classList.add('hidden')
-    document.getElementById('res-name').value = ''
-    document.getElementById('res-datetime').value = ''
-    document.getElementById('res-guests').value = '2'
-    document.getElementById('res-notes').value = ''
+let currentLang = 'tr'
+
+function setLang(lang) {
+  currentLang = lang
+  const t = LANG[lang]
+  document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
+  document.getElementById('nav-home').textContent       = t.navHome
+  document.getElementById('nav-menu').textContent       = t.navMenu
+  document.getElementById('hero-tagline').textContent   = t.tagline
+  document.getElementById('badge-1').textContent        = t.badge1
+  document.getElementById('badge-2').textContent        = t.badge2
+  document.getElementById('badge-3').textContent        = t.badge3
+  document.getElementById('hero-cta').textContent       = t.cta
+  document.getElementById('scroll-hint-txt').textContent = t.scrollHint
+  document.getElementById('find-us-title').textContent  = t.findUs
+  document.getElementById('reserve-title').textContent  = t.reserve
+  document.getElementById('lbl-name').textContent       = t.lblName
+  document.getElementById('lbl-datetime').textContent   = t.lblDatetime
+  document.getElementById('lbl-guests').textContent     = t.lblGuests
+  document.getElementById('lbl-notes').textContent      = t.lblNotes
+  document.getElementById('lbl-phone').textContent      = t.lblPhone
+  document.getElementById('res-notes').placeholder      = t.notesPlaceholder
+  document.getElementById('res-submit').textContent     = t.submitBtn
+  document.getElementById('res-another-btn').textContent = t.anotherBtn
+  document.getElementById('res-success-msg').textContent = t.successMsg
+  document.getElementById('res-success-sub').textContent = t.successSub
+  document.getElementById('days-weekday').textContent   = t.weekday
+  document.getElementById('days-weekend').textContent   = t.weekend
+  document.getElementById('footer-rights').textContent  = t.footerRights
+  document.getElementById('dp-placeholder').textContent = t.dpPlaceholder
+  document.getElementById('dp-confirm-btn').textContent = t.dpConfirm
+  document.getElementById('lbl-time').textContent       = t.dpTime
+  document.documentElement.setAttribute('lang', lang)
+  document.documentElement.setAttribute('dir', 'ltr')
+  // Re-render calendar with new locale
+  renderCalendar()
+}
+
+/* ══════════════════════════════════════════════════
+   CUSTOM DATE PICKER
+══════════════════════════════════════════════════ */
+let dpYear, dpMonth, dpSelectedDate = null
+
+;(function initDatepicker() {
+  const now = new Date()
+  dpYear  = now.getFullYear()
+  dpMonth = now.getMonth()
+
+  // Populate hour select (07:00 – 22:00 business hours)
+  const hourSel = document.getElementById('dp-hour')
+  for (let h = 7; h <= 22; h++) {
+    const o = document.createElement('option')
+    o.value = h; o.textContent = String(h).padStart(2,'0')
+    if (h === 12) o.selected = true
+    hourSel.appendChild(o)
   }
+  // Populate minute select (00, 15, 30, 45)
+  const minSel = document.getElementById('dp-minute')
+  ;[0,15,30,45].forEach(m => {
+    const o = document.createElement('option')
+    o.value = m; o.textContent = String(m).padStart(2,'0')
+    minSel.appendChild(o)
+  })
+
+  renderCalendar()
+
+  // Close panel on outside click
+  document.addEventListener('click', e => {
+    const panel   = document.getElementById('dp-panel')
+    const trigger = document.getElementById('dp-trigger')
+    if (!panel.contains(e.target) && !trigger.contains(e.target)) {
+      panel.classList.remove('open')
+      trigger.classList.remove('open')
+    }
+  })
+})()
+
+function toggleDatepicker() {
+  const panel   = document.getElementById('dp-panel')
+  const trigger = document.getElementById('dp-trigger')
+  const isOpen  = panel.classList.contains('open')
+  panel.classList.toggle('open', !isOpen)
+  trigger.classList.toggle('open', !isOpen)
+}
+
+function changeMonth(delta) {
+  dpMonth += delta
+  if (dpMonth > 11) { dpMonth = 0; dpYear++ }
+  if (dpMonth < 0)  { dpMonth = 11; dpYear-- }
+  renderCalendar()
+}
+
+function renderCalendar() {
+  const t = LANG[currentLang]
+
+  // Month label
+  document.getElementById('dp-month-label').textContent = `${t.months[dpMonth]} ${dpYear}`
+
+  // Weekday headers — Monday-first
+  const wdEl = document.getElementById('dp-weekdays')
+  wdEl.innerHTML = ''
+  t.wdays.forEach(d => {
+    const span = document.createElement('div')
+    span.className = 'dp-wday'; span.textContent = d
+    wdEl.appendChild(span)
+  })
+
+  const daysEl  = document.getElementById('dp-days')
+  daysEl.innerHTML = ''
+
+  const today   = new Date(); today.setHours(0,0,0,0)
+  const firstDay = new Date(dpYear, dpMonth, 1)
+  // getDay() → 0=Sun…6=Sat; convert to Mon-first: (day+6)%7
+  const startOffset = (firstDay.getDay() + 6) % 7
+  const daysInMonth = new Date(dpYear, dpMonth+1, 0).getDate()
+  // Previous month filler days
+  const prevDays = new Date(dpYear, dpMonth, 0).getDate()
+
+  const total = Math.ceil((startOffset + daysInMonth) / 7) * 7
+
+  for (let i = 0; i < total; i++) {
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.className = 'dp-day'
+
+    let dayNum, isThisMonth = true
+    if (i < startOffset) {
+      dayNum = prevDays - startOffset + 1 + i
+      isThisMonth = false
+      btn.classList.add('dp-day-other')
+    } else if (i >= startOffset + daysInMonth) {
+      dayNum = i - startOffset - daysInMonth + 1
+      isThisMonth = false
+      btn.classList.add('dp-day-other')
+    } else {
+      dayNum = i - startOffset + 1
+    }
+
+    btn.textContent = dayNum
+
+    if (isThisMonth) {
+      const thisDate = new Date(dpYear, dpMonth, dayNum)
+      thisDate.setHours(0,0,0,0)
+
+      // Disable past dates
+      if (thisDate < today) {
+        btn.classList.add('dp-day-disabled')
+      } else {
+        // Today highlight
+        if (thisDate.getTime() === today.getTime()) btn.classList.add('dp-day-today')
+        // Selected highlight
+        if (dpSelectedDate &&
+            dpSelectedDate.getFullYear() === dpYear &&
+            dpSelectedDate.getMonth()   === dpMonth &&
+            dpSelectedDate.getDate()    === dayNum) {
+          btn.classList.add('dp-day-selected')
+        }
+        btn.onclick = () => selectDay(dayNum)
+      }
+    } else {
+      btn.classList.add('dp-day-disabled')
+    }
+
+    daysEl.appendChild(btn)
+  }
+}
+
+function selectDay(day) {
+  dpSelectedDate = new Date(dpYear, dpMonth, day)
+  updateDateValue()
+  renderCalendar()
+}
+
+function updateDateValue() {
+  if (!dpSelectedDate) return
+  const h   = document.getElementById('dp-hour').value
+  const m   = document.getElementById('dp-minute').value
+  const t   = LANG[currentLang]
+  const mon = t.months[dpSelectedDate.getMonth()]
+  const d   = dpSelectedDate.getDate()
+  const y   = dpSelectedDate.getFullYear()
+  // Display text
+  document.getElementById('dp-display').innerHTML =
+    `<strong>${d} ${mon} ${y}</strong> &nbsp;${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`
+  // Hidden ISO value for submission
+  const isoDate = `${y}-${String(dpSelectedDate.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`
+  document.getElementById('res-datetime').value = `${isoDate}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`
+}
+
+function confirmDate() {
+  if (!dpSelectedDate) return
+  updateDateValue()
+  document.getElementById('dp-panel').classList.remove('open')
+  document.getElementById('dp-trigger').classList.remove('open')
+}
+
+/* ══════════════════════════════════════════════════
+   RESERVATION SUBMIT
+══════════════════════════════════════════════════ */
+async function submitReservation() {
+  const name   = document.getElementById('res-name').value.trim()
+  const dt     = document.getElementById('res-datetime').value
+  const guests = parseInt(document.getElementById('res-guests').value)
+  const notes  = document.getElementById('res-notes').value.trim()
+  const phone  = document.getElementById('phone').value.trim()
+  const errEl  = document.getElementById('res-error')
+  const btn    = document.getElementById('res-submit')
+  const t      = LANG[currentLang]
+
+  if (!name || !dt || !phone) {
+    errEl.textContent = t.errRequired
+    errEl.classList.remove('hidden'); return
+  }
+  errEl.classList.add('hidden')
+  btn.disabled = true; btn.textContent = '…'
+  try {
+    await reservationCreate({ customer_name: name, party_size: guests, date_time: dt, notes, phone })
+    document.getElementById('res-form').classList.add('hidden')
+    document.getElementById('res-success').classList.remove('hidden')
+  } catch(e) {
+    errEl.textContent = e.message; errEl.classList.remove('hidden')
+  } finally {
+    btn.disabled = false; btn.textContent = LANG[currentLang].submitBtn
+  }
+}
+
+function resetResForm() {
+  document.getElementById('res-form').classList.remove('hidden')
+  document.getElementById('res-success').classList.add('hidden')
+  ;['res-name','res-notes','phone'].forEach(id => document.getElementById(id).value = '')
+  document.getElementById('res-guests').value = '2'
+  document.getElementById('res-datetime').value = ''
+  dpSelectedDate = null
+  document.getElementById('dp-display').innerHTML = `<span class="datepicker-trigger-placeholder" id="dp-placeholder">${LANG[currentLang].dpPlaceholder}</span>`
+}
 </script>
 </body>
 </html>

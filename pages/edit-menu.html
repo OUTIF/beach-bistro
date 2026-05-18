@@ -1,78 +1,167 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <meta name="theme-color" content="#0d3d52" />
-  <title>Edit Menu · Admin</title>
+  <title>Menü Düzenle · Admin</title>
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/admin.css" />
+  <style>
+    /* ── SEARCH BAR ─────────────────────────────────── */
+    .admin-search-wrap {
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .admin-search-input {
+      width: 100%;
+      background: rgba(255,255,255,0.9);
+      border: 1.5px solid rgba(201,169,110,0.4);
+      border-radius: 12px;
+      padding: 11px 16px 11px 40px;
+      font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--brown-dark);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .admin-search-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(58,143,163,0.18); }
+    .admin-search-icon {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem; pointer-events: none;
+      color: rgba(78,51,32,0.4);
+    }
+    .search-clear {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: rgba(78,51,32,0.4); font-size: 1rem;
+      display: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── CATEGORY FILTER FOR ADMIN ──────────────────── */
+    .admin-cat-tabs {
+      display: flex; gap: 6px; overflow-x: auto;
+      padding-bottom: 4px; margin-bottom: 14px;
+    }
+    .admin-cat-tabs::-webkit-scrollbar { display: none; }
+    .admin-tab {
+      flex-shrink: 0;
+      font-size: 0.75rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 999px;
+      background: var(--sand); color: var(--brown);
+      border: none; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .admin-tab.active { background: var(--green-dark); color: #fff; }
+
+    /* ── RESULT COUNT ───────────────────────────────── */
+    .result-count {
+      font-size: 0.75rem; color: rgba(78,51,32,0.45);
+      font-weight: 600; margin-bottom: 8px;
+    }
+
+    /* ── CATEGORY SECTION IN ADMIN LIST ─────────────── */
+    .admin-cat-section { margin-bottom: 24px; }
+    .admin-cat-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; color: var(--ocean-deep);
+      border-bottom: 2px solid rgba(224,123,84,0.2);
+      padding-bottom: 5px; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-cat-count {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem; color: rgba(78,51,32,0.4);
+      font-weight: 400;
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/config.js"></script>
-<script src="../js/api.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
 </head>
 <body>
 
 <!-- ADMIN NAVBAR -->
-<nav class="navbar admin-navbar">
-  <span class="navbar-brand"><img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:36px;width:36px;" /> Admin</span>
-  <div class="navbar-links">
-    <a href="dashboard.html" class="nav-link">Reservations</a>
-    <a href="edit-menu.html" class="nav-link active">Menu</a>
-    <button class="nav-link btn" style="background:rgba(255,255,255,0.1);border:none;cursor:pointer" onclick="logout()">Logout</button>
+<nav class="navbar admin-navbar" style="gap:8px">
+  <span class="navbar-brand">
+    <img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:36px;width:36px;" />
+    Twenty<span style="color:var(--coral);margin-left:4px">Beach</span> <span style="color:rgba(245,237,216,0.5);font-size:0.8rem;margin-left:2px">· Admin</span>
+  </span>
+  <div class="navbar-links" style="gap:4px;align-items:center">
+    <a href="dashboard.html" class="nav-link">Rezervasyonlar</a>
+    <a href="edit-menu.html" class="nav-link active">Menü</a>
+    <button class="nav-link btn" style="background:rgba(255,255,255,0.1);border:none;cursor:pointer" onclick="logout()">Çıkış</button>
   </div>
 </nav>
 
 <div class="page-wrap pt-nav pb-footer">
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:16px">
-    <h1 style="font-size:1.5rem;color:var(--ocean-deep)">Menu Items</h1>
-    <button class="btn btn-coral btn-sm" onclick="openForm(null)">+ Add Item</button>
+    <h1 style="font-size:1.5rem;color:var(--ocean-deep)">Menü Öğeleri</h1>
+    <button class="btn btn-coral btn-sm" onclick="openForm(null)">+ Ekle</button>
   </div>
 
   <!-- Edit / Add form (hidden by default) -->
   <div class="edit-panel hidden" id="edit-panel">
-    <h3 id="form-title">New Item</h3>
+    <h3 id="form-title">Yeni Öğe</h3>
     <div class="gap-stack">
       <div>
-        <label class="field-label">Name</label>
-        <input class="input" id="f-name" placeholder="Grilled Sea Bass" />
+        <label class="field-label">Ad</label>
+        <input class="input" id="f-name" placeholder="Izgara Levrek" />
       </div>
       <div>
-        <label class="field-label">Description</label>
-        <textarea class="input" id="f-desc" rows="2" placeholder="Fresh daily catch…"></textarea>
+        <label class="field-label">Açıklama</label>
+        <textarea class="input" id="f-desc" rows="2" placeholder="Günlük taze balık…"></textarea>
       </div>
       <div class="row">
         <div>
-          <label class="field-label">Price ($)</label>
+          <label class="field-label">Fiyat (₺)</label>
           <input class="input" id="f-price" type="number" step="0.01" min="0" placeholder="0.00" />
         </div>
         <div>
-          <label class="field-label">Category</label>
-          <input class="input" id="f-cat" list="cat-list" placeholder="Mains" />
+          <label class="field-label">Kategori</label>
+          <input class="input" id="f-cat" list="cat-list" placeholder="Ana Yemekler" />
           <datalist id="cat-list"></datalist>
         </div>
       </div>
       <div>
-        <label class="field-label">Image URL (optional)</label>
+        <label class="field-label">Görsel URL (isteğe bağlı)</label>
         <input class="input" id="f-img" placeholder="https://…" />
       </div>
       <label class="checkbox-row">
         <input type="checkbox" id="f-avail" checked />
-        Available
+        Aktif / Mevcut
       </label>
-
-      <p class="error-msg hidden" id="form-error"></p>
-      <p class="success-msg hidden" id="form-success">Saved ✓</p>
-
+      <p class="error-msg hidden"   id="form-error"></p>
+      <p class="success-msg hidden" id="form-success">Kaydedildi ✓</p>
       <div class="row">
-        <button class="btn btn-ocean" id="form-save-btn" onclick="saveItem()">Save</button>
-        <button class="btn btn-outline" onclick="closeForm()">Cancel</button>
+        <button class="btn btn-ocean" id="form-save-btn" onclick="saveItem()">Kaydet</button>
+        <button class="btn btn-outline" onclick="closeForm()">İptal</button>
       </div>
     </div>
   </div>
 
-  <!-- List skeletons -->
+  <!-- SEARCH + FILTER -->
+  <div class="admin-search-wrap">
+    <span class="admin-search-icon">🔍</span>
+    <input class="admin-search-input" id="admin-search" placeholder="Öğe veya kategori ara…" oninput="onAdminSearch(this.value)" autocomplete="off" />
+    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+  </div>
+
+  <!-- Category tabs -->
+  <div class="admin-cat-tabs" id="admin-cat-tabs">
+    <button class="admin-tab active" data-cat="all" onclick="filterAdminCat(this)">Tümü</button>
+  </div>
+
+  <!-- Result count -->
+  <p class="result-count" id="result-count"></p>
+
+  <!-- Skeletons -->
   <div id="skeletons" class="gap-stack">
     <div class="skeleton" style="height:64px"></div>
     <div class="skeleton" style="height:64px"></div>
@@ -81,33 +170,32 @@
 
   <p class="error-msg hidden" id="list-error"></p>
 
-  <!-- Item list -->
+  <!-- Item list (grouped by category) -->
   <div id="item-list"></div>
 
 </div>
-
 
 <script>
   if (!isLoggedIn()) location.replace('admin.html')
   function logout() { authLogout(); location.replace('admin.html') }
 
   let allItems   = []
-  let editingId  = null   // null = adding new item
+  let editingId  = null
+  let currentCat = 'all'
+  let searchQuery = ''
 
+  // ── LOAD ────────────────────────────────────────────
   async function loadItems() {
     document.getElementById('skeletons').classList.remove('hidden')
     document.getElementById('item-list').innerHTML = ''
     try {
-      // fetch ALL items for admin (including unavailable)
       const res = await fetch(
         `${SUPABASE_URL}/rest/v1/menu_items?select=*&order=category,name`,
-        { headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${authToken()}`
-        }}
+        { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${authToken()}` } }
       )
       allItems = await res.json()
       buildCatDatalist()
+      buildCatTabs()
       renderList()
     } catch(e) {
       document.getElementById('list-error').textContent = e.message
@@ -123,10 +211,85 @@
     dl.innerHTML = cats.map(c => `<option value="${c}">`).join('')
   }
 
+  function buildCatTabs() {
+    const tabs = document.getElementById('admin-cat-tabs')
+    const cats = [...new Set(allItems.map(i => i.category))]
+    // remove old dynamic tabs
+    tabs.querySelectorAll('[data-dynamic]').forEach(t => t.remove())
+    cats.forEach(cat => {
+      const btn = document.createElement('button')
+      btn.className = 'admin-tab'
+      btn.dataset.cat = cat
+      btn.dataset.dynamic = '1'
+      btn.textContent = cat
+      btn.onclick = function() { filterAdminCat(this) }
+      tabs.appendChild(btn)
+    })
+  }
+
+  // ── FILTER ──────────────────────────────────────────
+  function filterAdminCat(btn) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'))
+    btn.classList.add('active')
+    currentCat = btn.dataset.cat
+    renderList()
+  }
+
+  // ── SEARCH ──────────────────────────────────────────
+  function onAdminSearch(q) {
+    searchQuery = q.trim().toLowerCase()
+    document.getElementById('search-clear').style.display = q ? 'block' : 'none'
+    renderList()
+  }
+
+  function clearSearch() {
+    document.getElementById('admin-search').value = ''
+    onAdminSearch('')
+  }
+
+  // ── RENDER ──────────────────────────────────────────
   function renderList() {
+    let items = currentCat === 'all' ? allItems : allItems.filter(i => i.category === currentCat)
+    if (searchQuery) {
+      items = items.filter(i =>
+        i.name.toLowerCase().includes(searchQuery) ||
+        (i.description && i.description.toLowerCase().includes(searchQuery)) ||
+        i.category.toLowerCase().includes(searchQuery)
+      )
+    }
+
+    document.getElementById('result-count').textContent =
+      searchQuery || currentCat !== 'all'
+        ? `${items.length} öğe`
+        : ''
+
     const list = document.getElementById('item-list')
     list.innerHTML = ''
-    allItems.forEach(item => list.appendChild(buildRow(item)))
+
+    if (items.length === 0) {
+      list.innerHTML = '<p style="text-align:center;padding:32px 0;color:rgba(78,51,32,0.35)">Öğe bulunamadı.</p>'
+      return
+    }
+
+    // Group by category
+    if (currentCat === 'all' && !searchQuery) {
+      const cats = [...new Set(items.map(i => i.category))]
+      cats.forEach(cat => {
+        const catItems = items.filter(i => i.category === cat)
+        const section  = document.createElement('div')
+        section.className = 'admin-cat-section'
+        section.innerHTML = `
+          <div class="admin-cat-heading">
+            ${cat}
+            <span class="admin-cat-count">${catItems.length} öğe</span>
+          </div>
+        `
+        catItems.forEach(item => section.appendChild(buildRow(item)))
+        list.appendChild(section)
+      })
+    } else {
+      items.forEach(item => list.appendChild(buildRow(item)))
+    }
   }
 
   function buildRow(item) {
@@ -137,43 +300,38 @@
     el.innerHTML = `
       <div class="menu-row-info">
         <p class="menu-row-name">${item.name}</p>
-        <p class="menu-row-meta">${item.category} · $${Number(item.price).toFixed(2)}${item.available ? '' : ' · <em>hidden</em>'}</p>
+        <p class="menu-row-meta">${item.category} · ₺${Number(item.price).toFixed(2)}${item.available ? '' : ' · <em>gizli</em>'}</p>
         ${item.description ? `<p class="menu-row-desc">${item.description}</p>` : ''}
       </div>
       <div class="menu-row-btns">
-        <button class="btn btn-sm btn-ocean" onclick="openForm('${item.id}')">Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteItem('${item.id}')">Del</button>
+        <button class="btn btn-sm btn-ocean" onclick="openForm('${item.id}')">Düzenle</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteItem('${item.id}')">Sil</button>
       </div>
     `
     return el
   }
 
+  // ── FORM ────────────────────────────────────────────
   function openForm(id) {
     editingId = id
     const panel = document.getElementById('edit-panel')
     panel.classList.remove('hidden')
     document.getElementById('form-error').classList.add('hidden')
     document.getElementById('form-success').classList.add('hidden')
-
     if (id) {
       const item = allItems.find(i => i.id === id)
-      document.getElementById('form-title').textContent = `Edit: ${item.name}`
-      document.getElementById('f-name').value  = item.name
-      document.getElementById('f-desc').value  = item.description || ''
-      document.getElementById('f-price').value = item.price
-      document.getElementById('f-cat').value   = item.category
-      document.getElementById('f-img').value   = item.image_url || ''
+      document.getElementById('form-title').textContent = `Düzenle: ${item.name}`
+      document.getElementById('f-name').value    = item.name
+      document.getElementById('f-desc').value    = item.description || ''
+      document.getElementById('f-price').value   = item.price
+      document.getElementById('f-cat').value     = item.category
+      document.getElementById('f-img').value     = item.image_url || ''
       document.getElementById('f-avail').checked = item.available
     } else {
-      document.getElementById('form-title').textContent = 'New Item'
-      document.getElementById('f-name').value  = ''
-      document.getElementById('f-desc').value  = ''
-      document.getElementById('f-price').value = ''
-      document.getElementById('f-cat').value   = ''
-      document.getElementById('f-img').value   = ''
+      document.getElementById('form-title').textContent = 'Yeni Öğe'
+      ;['f-name','f-desc','f-price','f-cat','f-img'].forEach(id => document.getElementById(id).value = '')
       document.getElementById('f-avail').checked = true
     }
-
     panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -192,36 +350,31 @@
     const errEl = document.getElementById('form-error')
     const okEl  = document.getElementById('form-success')
     const btn   = document.getElementById('form-save-btn')
-
     if (!name || !cat || isNaN(price)) {
-      errEl.textContent = 'Name, category, and price are required.'
-      errEl.classList.remove('hidden')
-      return
+      errEl.textContent = 'Ad, kategori ve fiyat zorunludur.'
+      errEl.classList.remove('hidden'); return
     }
     errEl.classList.add('hidden')
-    btn.disabled = true; btn.textContent = 'Saving…'
-
+    btn.disabled = true; btn.textContent = 'Kaydediliyor…'
     const payload = { name, description: desc || null, price, category: cat, image_url: img, available: avail }
-
     try {
       if (editingId) await menuUpdate(editingId, payload)
       else           await menuCreate(payload)
-
       okEl.classList.remove('hidden')
       setTimeout(() => { okEl.classList.add('hidden'); closeForm(); loadItems() }, 800)
     } catch(e) {
-      errEl.textContent = e.message
-      errEl.classList.remove('hidden')
+      errEl.textContent = e.message; errEl.classList.remove('hidden')
     } finally {
-      btn.disabled = false; btn.textContent = 'Save'
+      btn.disabled = false; btn.textContent = 'Kaydet'
     }
   }
 
   async function deleteItem(id) {
-    if (!confirm('Delete this menu item?')) return
+    if (!confirm('Bu menü öğesini silmek istediğinizden emin misiniz?')) return
     try {
       await menuDelete(id)
       allItems = allItems.filter(i => i.id !== id)
+      buildCatTabs()
       renderList()
     } catch(e) { alert(e.message) }
   }
