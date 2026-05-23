@@ -54,7 +54,7 @@
     @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)} }
 
     /* Language buttons in navbar */
-    .nav-lang-btn { font-size:0.68rem;font-weight:700;padding:4px 9px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.28);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background 0.15s,color 0.15s;line-height:1; }
+    .nav-lang-btn { font-size:0.65rem;font-weight:700;padding:3px 7px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.28);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background 0.15s,color 0.15s;line-height:1;flex-shrink:0; }
     .nav-lang-btn.active { background:var(--coral);border-color:var(--coral);color:#fff; }
     .nav-lang-btn:hover:not(.active) { background:rgba(255,255,255,0.12);color:#fff; }
 
@@ -233,12 +233,12 @@
 </head>
 <body>
 
-<nav class="navbar" style="gap:8px">
+<nav class="navbar" style="gap:4px">
   <a href="index.html" class="navbar-brand">
     <img src="logo.jpg" alt="Twenty Beach Bistro" class="navbar-logo" />
     Twenty<span style="color:var(--coral);margin-left:4px">Beach</span>
   </a>
-  <div class="navbar-links" style="gap:4px;align-items:center">
+  <div class="navbar-links" style="gap:2px;align-items:center">
     <a href="index.html"      class="nav-link active" id="nav-home">Ana Sayfa</a>
     <a href="pages/menu.html" class="nav-link"        id="nav-menu">Menü</a>
     <div style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
