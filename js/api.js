@@ -117,5 +117,42 @@ async function reservationDelete(id) {
   if (!res.ok) throw new Error('Failed to delete reservation')
 }
 
+// ── CATEGORIES ────────────────────────────────────────────────────────────────
 
+async function categoriesFetch() {
+  const res = await fetch(
+    _url('categories', '?select=*&order=sort_order,name'),
+    { headers: _headers() }
+  )
+  if (!res.ok) throw new Error('Failed to load categories')
+  return res.json()
+}
 
+async function categoryCreate(data) {
+  const res = await fetch(_url('categories'), {
+    method: 'POST',
+    headers: { ..._headers(authToken()), 'Prefer': 'return=minimal' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.message || 'Failed to create category')
+  }
+}
+
+async function categoryUpdate(id, patch) {
+  const res = await fetch(_url('categories', `?id=eq.${id}`), {
+    method: 'PATCH',
+    headers: { ..._headers(authToken()), 'Prefer': 'return=minimal' },
+    body: JSON.stringify(patch),
+  })
+  if (!res.ok) throw new Error('Failed to update category')
+}
+
+async function categoryDelete(id) {
+  const res = await fetch(_url('categories', `?id=eq.${id}`), {
+    method: 'DELETE',
+    headers: _headers(authToken()),
+  })
+  if (!res.ok) throw new Error('Failed to delete category')
+}

@@ -54,7 +54,7 @@
     @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)} }
 
     /* Language buttons in navbar */
-    .nav-lang-btn { font-size:0.65rem;font-weight:700;padding:3px 7px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.28);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background 0.15s,color 0.15s;line-height:1;flex-shrink:0; }
+    .nav-lang-btn { font-size:0.72rem;font-weight:700;padding:4px 8px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.28);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background 0.15s,color 0.15s;line-height:1;flex-shrink:0;white-space:nowrap; }
     .nav-lang-btn.active { background:var(--coral);border-color:var(--coral);color:#fff; }
     .nav-lang-btn:hover:not(.active) { background:rgba(255,255,255,0.12);color:#fff; }
 
@@ -233,19 +233,37 @@
 </head>
 <body>
 
+<!-- ── PAGE LOADER ──────────────────────────────── -->
+<div id="page-loader">
+  <img src="logo.jpg" alt="Twenty Beach Bistro" class="loader-logo" />
+  <div class="loader-name">Twenty <em>Beach Bistro</em></div>
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var l = document.getElementById('page-loader')
+      l.classList.add('hidden')
+      document.body.style.animation = 'page-fadein 0.4s ease forwards'
+    }, 900)
+  })
+</script>
+
 <nav class="navbar" style="gap:4px">
   <a href="index.html" class="navbar-brand">
     <img src="logo.jpg" alt="Twenty Beach Bistro" class="navbar-logo" />
     Twenty<span style="color:var(--coral);margin-left:4px">Beach</span>
   </a>
-  <div class="navbar-links" style="gap:2px;align-items:center">
+  <div class="navbar-links">
     <a href="index.html"      class="nav-link active" id="nav-home">Ana Sayfa</a>
     <a href="pages/menu.html" class="nav-link"        id="nav-menu">Menü</a>
-    <div style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
-    <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
-    <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
-    <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    <div class="nav-divider" style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
+    <div class="navbar-lang-group">
+      <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+      <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
+      <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    </div>
   </div>
 </nav>
 
@@ -470,6 +488,7 @@ let currentLang = 'tr'
 
 function setLang(lang) {
   currentLang = lang
+  localStorage.setItem('bb_lang', lang)   // ← persist across pages
   const t = LANG[lang]
   document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
   document.getElementById('nav-home').textContent       = t.navHome
@@ -701,6 +720,12 @@ function resetResForm() {
   dpSelectedDate = null
   document.getElementById('dp-display').innerHTML = `<span class="datepicker-trigger-placeholder" id="dp-placeholder">${LANG[currentLang].dpPlaceholder}</span>`
 }
+
+// ── Apply saved language on page load ──────────────
+;(function() {
+  const saved = localStorage.getItem('bb_lang')
+  if (saved && LANG[saved]) setLang(saved)
+})()
 </script>
 </body>
 </html>

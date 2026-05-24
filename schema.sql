@@ -1,5 +1,5 @@
 -- Run this in: Supabase Dashboard → SQL Editor
--- ⚠️  If you already ran the previous schema.sql, only run the ALTER sections below.
+-- ⚠️  If you already ran the previous schema.sql, only run the NEW SECTION below.
 
 -- TABLES
 create table if not exists menu_items (
@@ -12,6 +12,18 @@ create table if not exists menu_items (
   available   boolean default true,
   created_at  timestamptz default now(),
   updated_at  timestamptz default now()
+);
+
+-- ── NEW: categories table ──────────────────────────────────────────────────────
+-- Stores the category list with its own cover image and emoji.
+-- Food item image_url is separate (used only on the item card).
+create table if not exists categories (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null unique,
+  emoji      text not null default '🍽️',
+  image_url  text,               -- cover photo shown on the category card
+  sort_order int  not null default 0,
+  created_at timestamptz default now()
 );
 
 create table if not exists reservations (
@@ -32,17 +44,22 @@ create table if not exists reservations (
 -- RLS
 alter table menu_items   enable row level security;
 alter table reservations enable row level security;
+alter table categories   enable row level security;
 
 -- Drop existing policies if re-running (safe to ignore errors)
 drop policy if exists "public_read_menu"          on menu_items;
 drop policy if exists "public_insert_reservation" on reservations;
 drop policy if exists "admin_all_menu"            on menu_items;
 drop policy if exists "admin_all_reservations"    on reservations;
+drop policy if exists "public_read_categories"    on categories;
+drop policy if exists "admin_all_categories"      on categories;
 
 create policy "public_read_menu"          on menu_items   for select using (true);
 create policy "public_insert_reservation" on reservations for insert with check (true);
 create policy "admin_all_menu"            on menu_items   for all    using (auth.role() = 'authenticated');
 create policy "admin_all_reservations"    on reservations for all    using (auth.role() = 'authenticated');
+create policy "public_read_categories"    on categories   for select using (true);
+create policy "admin_all_categories"      on categories   for all    using (auth.role() = 'authenticated');
 
 -- SEED (skip if already seeded)
 insert into menu_items (name, description, price, category) values
@@ -57,3 +74,12 @@ insert into menu_items (name, description, price, category) values
   ('Gün Batımı Margarita','Tekila, triple sec, taze limon, tajín',              14.00, 'İçecekler'),
   ('Taze Hindistancevizi Suyu','Genç hindistancevizi, soğuk servis',             6.00, 'İçecekler')
 on conflict do nothing;
+
+-- Seed categories (matches the menu_items above)
+insert into categories (name, emoji, sort_order) values
+  ('Ana Yemekler', '🍽️', 1),
+  ('Başlangıçlar', '🥗', 2),
+  ('Kahvaltı',     '🌅', 3),
+  ('Tatlılar',     '🍮', 4),
+  ('İçecekler',    '🥤', 5)
+on conflict (name) do nothing;

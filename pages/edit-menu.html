@@ -8,77 +8,72 @@
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/admin.css" />
   <style>
-    /* ── SEARCH BAR ─────────────────────────────────── */
-    .admin-search-wrap {
-      position: relative;
-      margin-bottom: 14px;
+    /* ── PAGE TABS ──────────────────────────────────── */
+    .page-tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid rgba(201,169,110,0.3);
+      margin-bottom: 20px; margin-top: 16px;
     }
+    .page-tab {
+      flex: 1; padding: 10px 0; text-align: center;
+      font-size: 0.85rem; font-weight: 700;
+      color: rgba(78,51,32,0.5); background: none; border: none;
+      cursor: pointer; border-bottom: 2.5px solid transparent;
+      margin-bottom: -2px; transition: color 0.15s, border-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .page-tab.active { color: var(--green-dark); border-bottom-color: var(--coral); }
+
+    /* ── SEARCH BAR ─────────────────────────────────── */
+    .admin-search-wrap { position: relative; margin-bottom: 14px; }
     .admin-search-input {
-      width: 100%;
-      background: rgba(255,255,255,0.9);
-      border: 1.5px solid rgba(201,169,110,0.4);
-      border-radius: 12px;
-      padding: 11px 16px 11px 40px;
-      font-size: 0.9rem;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--brown-dark);
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%; background: rgba(255,255,255,0.9);
+      border: 1.5px solid rgba(201,169,110,0.4); border-radius: 12px;
+      padding: 11px 16px 11px 40px; font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif; color: var(--brown-dark);
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
     }
     .admin-search-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(58,143,163,0.18); }
-    .admin-search-icon {
-      position: absolute; left: 13px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 1rem; pointer-events: none;
-      color: rgba(78,51,32,0.4);
-    }
-    .search-clear {
-      position: absolute; right: 12px; top: 50%;
-      transform: translateY(-50%);
-      background: none; border: none; cursor: pointer;
-      color: rgba(78,51,32,0.4); font-size: 1rem;
-      display: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .admin-search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; color: rgba(78,51,32,0.4); }
+    .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: rgba(78,51,32,0.4); font-size: 1rem; display: none; -webkit-tap-highlight-color: transparent; }
 
-    /* ── CATEGORY FILTER FOR ADMIN ──────────────────── */
-    .admin-cat-tabs {
-      display: flex; gap: 6px; overflow-x: auto;
-      padding-bottom: 4px; margin-bottom: 14px;
-    }
+    /* ── CATEGORY FILTER TABS ───────────────────────── */
+    .admin-cat-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; }
     .admin-cat-tabs::-webkit-scrollbar { display: none; }
-    .admin-tab {
-      flex-shrink: 0;
-      font-size: 0.75rem; font-weight: 600;
-      padding: 6px 14px; border-radius: 999px;
-      background: var(--sand); color: var(--brown);
-      border: none; cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .admin-tab { flex-shrink: 0; font-size: 0.75rem; font-weight: 600; padding: 6px 14px; border-radius: 999px; background: var(--sand); color: var(--brown); border: none; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
     .admin-tab.active { background: var(--green-dark); color: #fff; }
-
-    /* ── RESULT COUNT ───────────────────────────────── */
-    .result-count {
-      font-size: 0.75rem; color: rgba(78,51,32,0.45);
-      font-weight: 600; margin-bottom: 8px;
-    }
-
-    /* ── CATEGORY SECTION IN ADMIN LIST ─────────────── */
+    .result-count { font-size: 0.75rem; color: rgba(78,51,32,0.45); font-weight: 600; margin-bottom: 8px; }
     .admin-cat-section { margin-bottom: 24px; }
-    .admin-cat-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem; color: var(--ocean-deep);
-      border-bottom: 2px solid rgba(224,123,84,0.2);
-      padding-bottom: 5px; margin-bottom: 10px;
-      display: flex; align-items: center; justify-content: space-between;
+    .admin-cat-heading { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ocean-deep); border-bottom: 2px solid rgba(224,123,84,0.2); padding-bottom: 5px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .admin-cat-count { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: rgba(78,51,32,0.4); font-weight: 400; }
+
+    /* ── CATEGORY CARDS ─────────────────────────────── */
+    .cat-mgmt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .cat-mgmt-card {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(201,169,110,0.35);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 10px rgba(78,51,32,0.08);
     }
-    .admin-cat-count {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem; color: rgba(78,51,32,0.4);
-      font-weight: 400;
+    .cat-mgmt-preview {
+      height: 120px; position: relative; overflow: hidden;
+      background: var(--green-dark);
+      display: flex; align-items: center; justify-content: center;
     }
+    .cat-mgmt-preview img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .cat-mgmt-preview-overlay { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.55) 100%); }
+    .cat-mgmt-emoji-big { font-size: 2.8rem; position: relative; z-index: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
+    .cat-mgmt-body { padding: 12px 14px; }
+    .cat-mgmt-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; color: var(--green-dark); margin-bottom: 2px; }
+    .cat-mgmt-meta { font-size: 0.72rem; color: rgba(78,51,32,0.5); margin-bottom: 10px; }
+    .cat-mgmt-btns { display: flex; gap: 7px; }
+
+    /* ── EMPTY STATE ────────────────────────────────── */
+    .empty-state { text-align: center; padding: 40px 0; color: rgba(78,51,32,0.35); }
+    .empty-state p:first-child { font-size: 2.5rem; }
+
+    /* image size hint */
+    .img-hint { font-size: 0.7rem; color: rgba(78,51,32,0.45); margin-top: 4px; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/config.js"></script>
@@ -87,12 +82,12 @@
 <body>
 
 <!-- ADMIN NAVBAR -->
-<nav class="navbar admin-navbar" style="gap:8px">
+<nav class="navbar admin-navbar" style="gap:4px">
   <span class="navbar-brand">
     <img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:36px;width:36px;" />
     Twenty<span style="color:var(--coral);margin-left:4px">Beach</span> <span style="color:rgba(245,237,216,0.5);font-size:0.8rem;margin-left:2px">· Admin</span>
   </span>
-  <div class="navbar-links" style="gap:4px;align-items:center">
+  <div class="navbar-links" style="gap:2px;align-items:center">
     <a href="dashboard.html" class="nav-link">Rezervasyonlar</a>
     <a href="edit-menu.html" class="nav-link active">Menü</a>
     <button class="nav-link btn" style="background:rgba(255,255,255,0.1);border:none;cursor:pointer" onclick="logout()">Çıkış</button>
@@ -101,101 +96,267 @@
 
 <div class="page-wrap pt-nav pb-footer">
 
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:16px">
-    <h1 style="font-size:1.5rem;color:var(--ocean-deep)">Menü Öğeleri</h1>
-    <button class="btn btn-coral btn-sm" onclick="openForm(null)">+ Ekle</button>
+  <!-- Page-level tabs: Items | Categories -->
+  <div class="page-tabs">
+    <button class="page-tab active" id="tab-items"      onclick="switchTab('items')">🍽️ Menü Öğeleri</button>
+    <button class="page-tab"        id="tab-categories" onclick="switchTab('categories')">📂 Kategoriler</button>
   </div>
 
-  <!-- Edit / Add form (hidden by default) -->
-  <div class="edit-panel hidden" id="edit-panel">
-    <h3 id="form-title">Yeni Öğe</h3>
-    <div class="gap-stack">
-      <div>
-        <label class="field-label">Ad</label>
-        <input class="input" id="f-name" placeholder="Izgara Levrek" />
-      </div>
-      <div>
-        <label class="field-label">Açıklama</label>
-        <textarea class="input" id="f-desc" rows="2" placeholder="Günlük taze balık…"></textarea>
-      </div>
-      <div class="row">
+  <!-- ═══════════════════════════════════════════════
+       TAB 1: MENU ITEMS
+  ═══════════════════════════════════════════════ -->
+  <div id="panel-items">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h1 style="font-size:1.4rem;color:var(--ocean-deep)">Menü Öğeleri</h1>
+      <button class="btn btn-coral btn-sm" onclick="openItemForm(null)">+ Ekle</button>
+    </div>
+
+    <!-- Edit / Add item form -->
+    <div class="edit-panel hidden" id="edit-panel">
+      <h3 id="form-title">Yeni Öğe</h3>
+      <div class="gap-stack">
         <div>
-          <label class="field-label">Fiyat (₺)</label>
-          <input class="input" id="f-price" type="number" step="0.01" min="0" placeholder="0.00" />
+          <label class="field-label">Ad</label>
+          <input class="input" id="f-name" placeholder="Izgara Levrek" />
         </div>
         <div>
-          <label class="field-label">Kategori</label>
-          <input class="input" id="f-cat" list="cat-list" placeholder="Ana Yemekler" />
-          <datalist id="cat-list"></datalist>
+          <label class="field-label">Açıklama</label>
+          <textarea class="input" id="f-desc" rows="2" placeholder="Günlük taze balık…"></textarea>
         </div>
-      </div>
-      <div>
-        <label class="field-label">Görsel URL (isteğe bağlı)</label>
-        <input class="input" id="f-img" placeholder="https://…" />
-      </div>
-      <label class="checkbox-row">
-        <input type="checkbox" id="f-avail" checked />
-        Aktif / Mevcut
-      </label>
-      <p class="error-msg hidden"   id="form-error"></p>
-      <p class="success-msg hidden" id="form-success">Kaydedildi ✓</p>
-      <div class="row">
-        <button class="btn btn-ocean" id="form-save-btn" onclick="saveItem()">Kaydet</button>
-        <button class="btn btn-outline" onclick="closeForm()">İptal</button>
+        <div class="row">
+          <div>
+            <label class="field-label">Fiyat (₺)</label>
+            <input class="input" id="f-price" type="number" step="0.01" min="0" placeholder="0.00" />
+          </div>
+          <div>
+            <label class="field-label">Kategori</label>
+            <select class="input" id="f-cat"></select>
+          </div>
+        </div>
+        <div>
+          <label class="field-label">Yemek Görseli URL (isteğe bağlı)</label>
+          <input class="input" id="f-img" placeholder="https://…" />
+          <p class="img-hint">📐 Önerilen boyut: <strong>400×400 px</strong> (kare, 1:1). Yemek kartında 80×80 px olarak gösterilir.</p>
+        </div>
+
+        <!-- ── TRANSLATIONS ─────────────────────── -->
+        <div style="border-top:1.5px solid rgba(201,169,110,0.35);padding-top:14px;margin-top:4px">
+          <p style="font-size:0.75rem;font-weight:700;color:rgba(78,51,32,0.5);margin-bottom:10px;letter-spacing:0.05em">🌍 ÇEVİRİLER (isteğe bağlı)</p>
+
+          <!-- English -->
+          <div style="background:rgba(58,143,163,0.07);border:1px solid rgba(58,143,163,0.2);border-radius:10px;padding:12px;margin-bottom:10px">
+            <p style="font-size:0.72rem;font-weight:700;color:var(--teal-dark);margin-bottom:8px">🇬🇧 İngilizce</p>
+            <div class="gap-stack">
+              <div>
+                <label class="field-label">Ad (EN)</label>
+                <input class="input" id="f-name-en" placeholder="Grilled Sea Bass" />
+              </div>
+              <div>
+                <label class="field-label">Açıklama (EN)</label>
+                <textarea class="input" id="f-desc-en" rows="2" placeholder="Daily fresh fish, lemon butter, capers, dill"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arabic -->
+          <div style="background:rgba(78,51,32,0.05);border:1px solid rgba(78,51,32,0.15);border-radius:10px;padding:12px;margin-bottom:10px">
+            <p style="font-size:0.72rem;font-weight:700;color:var(--brown);margin-bottom:8px">🇸🇦 Arapça</p>
+            <div class="gap-stack">
+              <div>
+                <label class="field-label">Ad (AR)</label>
+                <input class="input" id="f-name-ar" placeholder="سمك قاروص مشوي" dir="auto" />
+              </div>
+              <div>
+                <label class="field-label">Açıklama (AR)</label>
+                <textarea class="input" id="f-desc-ar" rows="2" placeholder="سمك طازج يومي، زبدة الليمون، الكبر، الشبت" dir="auto"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Russian -->
+          <div style="background:rgba(47,84,56,0.06);border:1px solid rgba(47,84,56,0.18);border-radius:10px;padding:12px">
+            <p style="font-size:0.72rem;font-weight:700;color:var(--green-dark);margin-bottom:8px">🇷🇺 Rusça</p>
+            <div class="gap-stack">
+              <div>
+                <label class="field-label">Ad (RU)</label>
+                <input class="input" id="f-name-ru" placeholder="Жареный морской окунь" />
+              </div>
+              <div>
+                <label class="field-label">Açıklama (RU)</label>
+                <textarea class="input" id="f-desc-ru" rows="2" placeholder="Свежая рыба, лимонное масло, каперсы, укроп"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="f-avail" checked />
+          Aktif / Mevcut
+        </label>
+        <p class="error-msg hidden"   id="form-error"></p>
+        <p class="success-msg hidden" id="form-success">Kaydedildi ✓</p>
+        <div class="row">
+          <button class="btn btn-ocean" id="form-save-btn" onclick="saveItem()">Kaydet</button>
+          <button class="btn btn-outline" onclick="closeItemForm()">İptal</button>
+        </div>
       </div>
     </div>
+
+    <!-- Search + filter -->
+    <div class="admin-search-wrap">
+      <span class="admin-search-icon">🔍</span>
+      <input class="admin-search-input" id="admin-search" placeholder="Öğe veya kategori ara…" oninput="onAdminSearch(this.value)" autocomplete="off" />
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="admin-cat-tabs" id="admin-cat-tabs">
+      <button class="admin-tab active" data-cat="all" onclick="filterAdminCat(this)">Tümü</button>
+    </div>
+    <p class="result-count" id="result-count"></p>
+
+    <!-- Skeletons -->
+    <div id="skeletons" class="gap-stack">
+      <div class="skeleton" style="height:64px"></div>
+      <div class="skeleton" style="height:64px"></div>
+      <div class="skeleton" style="height:64px"></div>
+    </div>
+    <p class="error-msg hidden" id="list-error"></p>
+    <div id="item-list"></div>
   </div>
 
-  <!-- SEARCH + FILTER -->
-  <div class="admin-search-wrap">
-    <span class="admin-search-icon">🔍</span>
-    <input class="admin-search-input" id="admin-search" placeholder="Öğe veya kategori ara…" oninput="onAdminSearch(this.value)" autocomplete="off" />
-    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
-  </div>
+  <!-- ═══════════════════════════════════════════════
+       TAB 2: CATEGORIES
+  ═══════════════════════════════════════════════ -->
+  <div id="panel-categories" class="hidden">
 
-  <!-- Category tabs -->
-  <div class="admin-cat-tabs" id="admin-cat-tabs">
-    <button class="admin-tab active" data-cat="all" onclick="filterAdminCat(this)">Tümü</button>
-  </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h1 style="font-size:1.4rem;color:var(--ocean-deep)">Kategoriler</h1>
+      <button class="btn btn-coral btn-sm" onclick="openCatForm(null)">+ Ekle</button>
+    </div>
 
-  <!-- Result count -->
-  <p class="result-count" id="result-count"></p>
+    <div class="card" style="margin-bottom:16px;background:rgba(232,213,163,0.25);border-color:rgba(201,169,110,0.4)">
+      <p style="font-size:0.8rem;color:rgba(78,51,32,0.65);line-height:1.6">
+        📌 <strong>Nasıl çalışır?</strong><br>
+        • Kategori görseli, menü sayfasındaki <em>kategori kartının</em> arka planıdır.<br>
+        • Yemek görseli ise öğe kartında ayrı gösterilir — birbirinden bağımsızdır.<br>
+        • Hiç öğesi olmayan kategoriler <strong>müşterilere gösterilmez</strong>, ancak buradan yönetilir.<br>
+        • Önerilen kategori kapak boyutu: <strong>800×500 px</strong> (yatay, 16:9).
+      </p>
+    </div>
 
-  <!-- Skeletons -->
-  <div id="skeletons" class="gap-stack">
-    <div class="skeleton" style="height:64px"></div>
-    <div class="skeleton" style="height:64px"></div>
-    <div class="skeleton" style="height:64px"></div>
-  </div>
+    <!-- Category form -->
+    <div class="edit-panel hidden" id="cat-edit-panel">
+      <h3 id="cat-form-title">Yeni Kategori</h3>
+      <div class="gap-stack">
+        <div>
+          <label class="field-label">Kategori Adı</label>
+          <input class="input" id="cf-name" placeholder="Ana Yemekler" />
+        </div>
+        <div class="row">
+          <div>
+            <label class="field-label">Emoji</label>
+            <input class="input" id="cf-emoji" placeholder="🍽️" style="font-size:1.4rem;text-align:center" maxlength="4" />
+          </div>
+          <div>
+            <label class="field-label">Sıralama</label>
+            <input class="input" id="cf-sort" type="number" min="0" placeholder="0" />
+          </div>
+        </div>
+        <div>
+          <label class="field-label">Kategori Kapak Görseli URL (isteğe bağlı)</label>
+          <input class="input" id="cf-img" placeholder="https://…" />
+          <p class="img-hint">📐 Önerilen boyut: <strong>800×500 px</strong> (yatay). Kategori kartında kapak fotoğrafı olarak görünür.</p>
+        </div>
 
-  <p class="error-msg hidden" id="list-error"></p>
+        <!-- ── CATEGORY TRANSLATIONS ─────────────── -->
+        <div style="border-top:1.5px solid rgba(201,169,110,0.35);padding-top:14px;margin-top:4px">
+          <p style="font-size:0.75rem;font-weight:700;color:rgba(78,51,32,0.5);margin-bottom:10px;letter-spacing:0.05em">🌍 KATEGORİ ADI ÇEVİRİLERİ (isteğe bağlı)</p>
+          <div class="row">
+            <div>
+              <label class="field-label">🇬🇧 İngilizce</label>
+              <input class="input" id="cf-name-en" placeholder="Main Dishes" />
+            </div>
+            <div>
+              <label class="field-label">🇸🇦 Arapça</label>
+              <input class="input" id="cf-name-ar" placeholder="الأطباق الرئيسية" dir="auto" />
+            </div>
+          </div>
+          <div style="margin-top:10px">
+            <label class="field-label">🇷🇺 Rusça</label>
+            <input class="input" id="cf-name-ru" placeholder="Основные блюда" />
+          </div>
+        </div>
+        <p class="error-msg hidden"   id="cat-form-error"></p>
+        <p class="success-msg hidden" id="cat-form-success">Kaydedildi ✓</p>
+        <div class="row">
+          <button class="btn btn-ocean" id="cat-form-save-btn" onclick="saveCat()">Kaydet</button>
+          <button class="btn btn-outline" onclick="closeCatForm()">İptal</button>
+        </div>
+      </div>
+    </div>
 
-  <!-- Item list (grouped by category) -->
-  <div id="item-list"></div>
+    <!-- Skeletons -->
+    <div id="cat-skeletons" class="gap-stack">
+      <div class="skeleton" style="height:80px"></div>
+      <div class="skeleton" style="height:80px"></div>
+    </div>
+    <p class="error-msg hidden" id="cat-list-error"></p>
 
-</div>
+    <!-- Category grid -->
+    <div class="cat-mgmt-grid" id="cat-mgmt-grid"></div>
+
+    <div id="cat-empty" class="empty-state hidden">
+      <p>📂</p>
+      <p style="margin-top:8px">Henüz kategori eklenmemiş.</p>
+    </div>
+
+  </div><!-- /panel-categories -->
+
+</div><!-- /page-wrap -->
 
 <script>
   if (!isLoggedIn()) location.replace('admin.html')
   function logout() { authLogout(); location.replace('admin.html') }
 
-  let allItems   = []
-  let editingId  = null
-  let currentCat = 'all'
+  /* ═══════════════════════════════════════════════
+     TAB SWITCHING
+  ═══════════════════════════════════════════════ */
+  function switchTab(tab) {
+    document.getElementById('tab-items').classList.toggle('active', tab === 'items')
+    document.getElementById('tab-categories').classList.toggle('active', tab === 'categories')
+    document.getElementById('panel-items').classList.toggle('hidden', tab !== 'items')
+    document.getElementById('panel-categories').classList.toggle('hidden', tab !== 'categories')
+    if (tab === 'categories') loadCategories()
+  }
+
+  /* ═══════════════════════════════════════════════
+     SHARED STATE
+  ═══════════════════════════════════════════════ */
+  let allItems    = []
+  let allCats     = []   // full categories list from DB
+  let editingId   = null
+  let editingCatId = null
+  let currentCat  = 'all'
   let searchQuery = ''
 
-  // ── LOAD ────────────────────────────────────────────
+  /* ═══════════════════════════════════════════════
+     MENU ITEMS — LOAD
+  ═══════════════════════════════════════════════ */
   async function loadItems() {
     document.getElementById('skeletons').classList.remove('hidden')
     document.getElementById('item-list').innerHTML = ''
     try {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/menu_items?select=*&order=category,name`,
-        { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${authToken()}` } }
-      )
-      allItems = await res.json()
-      buildCatDatalist()
-      buildCatTabs()
+      // Load both in parallel
+      const [items, cats] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=*&order=category,name`,
+          { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${authToken()}` } }
+        ).then(r => r.json()),
+        categoriesFetch()
+      ])
+      allItems = items
+      allCats  = cats
+      buildCatSelect()
+      buildAdminCatTabs()
       renderList()
     } catch(e) {
       document.getElementById('list-error').textContent = e.message
@@ -205,87 +366,78 @@
     }
   }
 
-  function buildCatDatalist() {
-    const dl   = document.getElementById('cat-list')
-    const cats = [...new Set(allItems.map(i => i.category))]
-    dl.innerHTML = cats.map(c => `<option value="${c}">`).join('')
+  /* Build the <select> in the item form from the categories table */
+  function buildCatSelect() {
+    const sel = document.getElementById('f-cat')
+    const prev = sel.value
+    sel.innerHTML = ''
+    // Use allCats if available, fallback to unique names from items
+    const names = allCats.length
+      ? allCats.map(c => c.name)
+      : [...new Set(allItems.map(i => i.category))]
+    names.forEach(n => {
+      const o = document.createElement('option')
+      o.value = n; o.textContent = n
+      sel.appendChild(o)
+    })
+    if (prev) sel.value = prev
   }
 
-  function buildCatTabs() {
+  function buildAdminCatTabs() {
     const tabs = document.getElementById('admin-cat-tabs')
-    const cats = [...new Set(allItems.map(i => i.category))]
-    // remove old dynamic tabs
     tabs.querySelectorAll('[data-dynamic]').forEach(t => t.remove())
-    cats.forEach(cat => {
+    // Use ONLY the categories table names (Turkish, correct order)
+    // Fall back to item-derived names only if categories table is empty
+    const catNames = allCats.length
+      ? allCats.map(c => c.name)
+      : [...new Set(allItems.map(i => i.category))]
+    catNames.forEach(cat => {
       const btn = document.createElement('button')
-      btn.className = 'admin-tab'
-      btn.dataset.cat = cat
-      btn.dataset.dynamic = '1'
+      btn.className = 'admin-tab'; btn.dataset.cat = cat; btn.dataset.dynamic = '1'
       btn.textContent = cat
       btn.onclick = function() { filterAdminCat(this) }
       tabs.appendChild(btn)
     })
   }
 
-  // ── FILTER ──────────────────────────────────────────
+  /* ── FILTER / SEARCH ─────────────────────────── */
   function filterAdminCat(btn) {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'))
-    btn.classList.add('active')
-    currentCat = btn.dataset.cat
-    renderList()
+    btn.classList.add('active'); currentCat = btn.dataset.cat; renderList()
   }
-
-  // ── SEARCH ──────────────────────────────────────────
   function onAdminSearch(q) {
     searchQuery = q.trim().toLowerCase()
     document.getElementById('search-clear').style.display = q ? 'block' : 'none'
     renderList()
   }
-
   function clearSearch() {
-    document.getElementById('admin-search').value = ''
-    onAdminSearch('')
+    document.getElementById('admin-search').value = ''; onAdminSearch('')
   }
 
-  // ── RENDER ──────────────────────────────────────────
+  /* ── RENDER ──────────────────────────────────── */
   function renderList() {
     let items = currentCat === 'all' ? allItems : allItems.filter(i => i.category === currentCat)
-    if (searchQuery) {
-      items = items.filter(i =>
-        i.name.toLowerCase().includes(searchQuery) ||
-        (i.description && i.description.toLowerCase().includes(searchQuery)) ||
-        i.category.toLowerCase().includes(searchQuery)
-      )
-    }
-
+    if (searchQuery) items = items.filter(i =>
+      i.name.toLowerCase().includes(searchQuery) ||
+      (i.description && i.description.toLowerCase().includes(searchQuery)) ||
+      i.category.toLowerCase().includes(searchQuery)
+    )
     document.getElementById('result-count').textContent =
-      searchQuery || currentCat !== 'all'
-        ? `${items.length} öğe`
-        : ''
-
+      (searchQuery || currentCat !== 'all') ? `${items.length} öğe` : ''
     const list = document.getElementById('item-list')
     list.innerHTML = ''
-
-    if (items.length === 0) {
+    if (!items.length) {
       list.innerHTML = '<p style="text-align:center;padding:32px 0;color:rgba(78,51,32,0.35)">Öğe bulunamadı.</p>'
       return
     }
-
-    // Group by category
     if (currentCat === 'all' && !searchQuery) {
       const cats = [...new Set(items.map(i => i.category))]
       cats.forEach(cat => {
-        const catItems = items.filter(i => i.category === cat)
-        const section  = document.createElement('div')
-        section.className = 'admin-cat-section'
-        section.innerHTML = `
-          <div class="admin-cat-heading">
-            ${cat}
-            <span class="admin-cat-count">${catItems.length} öğe</span>
-          </div>
-        `
-        catItems.forEach(item => section.appendChild(buildRow(item)))
-        list.appendChild(section)
+        const ci = items.filter(i => i.category === cat)
+        const sec = document.createElement('div'); sec.className = 'admin-cat-section'
+        sec.innerHTML = `<div class="admin-cat-heading">${cat}<span class="admin-cat-count">${ci.length} öğe</span></div>`
+        ci.forEach(item => sec.appendChild(buildRow(item)))
+        list.appendChild(sec)
       })
     } else {
       items.forEach(item => list.appendChild(buildRow(item)))
@@ -294,8 +446,7 @@
 
   function buildRow(item) {
     const el = document.createElement('div')
-    el.className = 'card menu-row'
-    el.id = `item-${item.id}`
+    el.className = 'card menu-row'; el.id = `item-${item.id}`
     el.style.opacity = item.available ? '1' : '0.5'
     el.innerHTML = `
       <div class="menu-row-info">
@@ -304,20 +455,20 @@
         ${item.description ? `<p class="menu-row-desc">${item.description}</p>` : ''}
       </div>
       <div class="menu-row-btns">
-        <button class="btn btn-sm btn-ocean" onclick="openForm('${item.id}')">Düzenle</button>
+        <button class="btn btn-sm btn-ocean"  onclick="openItemForm('${item.id}')">Düzenle</button>
         <button class="btn btn-sm btn-danger" onclick="deleteItem('${item.id}')">Sil</button>
-      </div>
-    `
+      </div>`
     return el
   }
 
-  // ── FORM ────────────────────────────────────────────
-  function openForm(id) {
+  /* ── ITEM FORM ───────────────────────────────── */
+  function openItemForm(id) {
     editingId = id
     const panel = document.getElementById('edit-panel')
     panel.classList.remove('hidden')
     document.getElementById('form-error').classList.add('hidden')
     document.getElementById('form-success').classList.add('hidden')
+    buildCatSelect()
     if (id) {
       const item = allItems.find(i => i.id === id)
       document.getElementById('form-title').textContent = `Düzenle: ${item.name}`
@@ -327,17 +478,23 @@
       document.getElementById('f-cat').value     = item.category
       document.getElementById('f-img').value     = item.image_url || ''
       document.getElementById('f-avail').checked = item.available
+      // translations
+      document.getElementById('f-name-en').value = item.name_en || ''
+      document.getElementById('f-desc-en').value = item.desc_en || ''
+      document.getElementById('f-name-ar').value = item.name_ar || ''
+      document.getElementById('f-desc-ar').value = item.desc_ar || ''
+      document.getElementById('f-name-ru').value = item.name_ru || ''
+      document.getElementById('f-desc-ru').value = item.desc_ru || ''
     } else {
       document.getElementById('form-title').textContent = 'Yeni Öğe'
-      ;['f-name','f-desc','f-price','f-cat','f-img'].forEach(id => document.getElementById(id).value = '')
+      ;['f-name','f-desc','f-price','f-img','f-name-en','f-desc-en','f-name-ar','f-desc-ar','f-name-ru','f-desc-ru'].forEach(id => document.getElementById(id).value = '')
       document.getElementById('f-avail').checked = true
     }
     panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  function closeForm() {
-    document.getElementById('edit-panel').classList.add('hidden')
-    editingId = null
+  function closeItemForm() {
+    document.getElementById('edit-panel').classList.add('hidden'); editingId = null
   }
 
   async function saveItem() {
@@ -351,17 +508,23 @@
     const okEl  = document.getElementById('form-success')
     const btn   = document.getElementById('form-save-btn')
     if (!name || !cat || isNaN(price)) {
-      errEl.textContent = 'Ad, kategori ve fiyat zorunludur.'
-      errEl.classList.remove('hidden'); return
+      errEl.textContent = 'Ad, kategori ve fiyat zorunludur.'; errEl.classList.remove('hidden'); return
     }
-    errEl.classList.add('hidden')
-    btn.disabled = true; btn.textContent = 'Kaydediliyor…'
-    const payload = { name, description: desc || null, price, category: cat, image_url: img, available: avail }
+    errEl.classList.add('hidden'); btn.disabled = true; btn.textContent = 'Kaydediliyor…'
+    const payload = {
+      name, description: desc || null, price, category: cat, image_url: img, available: avail,
+      name_en: document.getElementById('f-name-en').value.trim() || null,
+      desc_en: document.getElementById('f-desc-en').value.trim() || null,
+      name_ar: document.getElementById('f-name-ar').value.trim() || null,
+      desc_ar: document.getElementById('f-desc-ar').value.trim() || null,
+      name_ru: document.getElementById('f-name-ru').value.trim() || null,
+      desc_ru: document.getElementById('f-desc-ru').value.trim() || null,
+    }
     try {
       if (editingId) await menuUpdate(editingId, payload)
       else           await menuCreate(payload)
       okEl.classList.remove('hidden')
-      setTimeout(() => { okEl.classList.add('hidden'); closeForm(); loadItems() }, 800)
+      setTimeout(() => { okEl.classList.add('hidden'); closeItemForm(); loadItems() }, 800)
     } catch(e) {
       errEl.textContent = e.message; errEl.classList.remove('hidden')
     } finally {
@@ -374,11 +537,149 @@
     try {
       await menuDelete(id)
       allItems = allItems.filter(i => i.id !== id)
-      buildCatTabs()
-      renderList()
+      buildAdminCatTabs(); renderList()
     } catch(e) { alert(e.message) }
   }
 
+  /* ═══════════════════════════════════════════════
+     CATEGORIES — LOAD & RENDER
+  ═══════════════════════════════════════════════ */
+  async function loadCategories() {
+    document.getElementById('cat-skeletons').classList.remove('hidden')
+    document.getElementById('cat-mgmt-grid').innerHTML = ''
+    document.getElementById('cat-empty').classList.add('hidden')
+    document.getElementById('cat-list-error').classList.add('hidden')
+    try {
+      // also fetch item counts
+      const [cats, items] = await Promise.all([
+        categoriesFetch(),
+        fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=category`,
+          { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${authToken()}` } }
+        ).then(r => r.json())
+      ])
+      allCats = cats
+      // build count map
+      const countMap = {}
+      items.forEach(i => { countMap[i.category] = (countMap[i.category] || 0) + 1 })
+      renderCats(countMap)
+    } catch(e) {
+      document.getElementById('cat-list-error').textContent = e.message
+      document.getElementById('cat-list-error').classList.remove('hidden')
+    } finally {
+      document.getElementById('cat-skeletons').classList.add('hidden')
+    }
+  }
+
+  function renderCats(countMap) {
+    const grid = document.getElementById('cat-mgmt-grid')
+    grid.innerHTML = ''
+    if (!allCats.length) {
+      document.getElementById('cat-empty').classList.remove('hidden'); return
+    }
+    allCats.forEach(cat => {
+      const count = countMap[cat.name] || 0
+      const card  = document.createElement('div')
+      card.className = 'cat-mgmt-card'
+      const bgImg = cat.image_url
+        ? `<img src="${cat.image_url}" alt="${cat.name}" /><div class="cat-mgmt-preview-overlay"></div>`
+        : ''
+      const visibilityBadge = count === 0
+        ? `<span style="background:#fee2e2;color:#991b1b;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:999px">👁️ Gizli (öğe yok)</span>`
+        : `<span style="background:#dcfce7;color:#166534;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:999px">👁️ Görünür (${count} öğe)</span>`
+      card.innerHTML = `
+        <div class="cat-mgmt-preview">
+          ${bgImg}
+          <span class="cat-mgmt-emoji-big">${cat.emoji || '🍽️'}</span>
+        </div>
+        <div class="cat-mgmt-body">
+          <p class="cat-mgmt-name">${cat.name}</p>
+          <p class="cat-mgmt-meta">Sıra: ${cat.sort_order} &nbsp;·&nbsp; ${visibilityBadge}</p>
+          <div class="cat-mgmt-btns">
+            <button class="btn btn-sm btn-ocean"  onclick="openCatForm('${cat.id}')">Düzenle</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCat('${cat.id}','${cat.name.replace(/'/g,"\\'")}',${count})">Sil</button>
+          </div>
+        </div>`
+      grid.appendChild(card)
+    })
+  }
+
+  /* ── CATEGORY FORM ───────────────────────────── */
+  function openCatForm(id) {
+    editingCatId = id
+    const panel = document.getElementById('cat-edit-panel')
+    panel.classList.remove('hidden')
+    document.getElementById('cat-form-error').classList.add('hidden')
+    document.getElementById('cat-form-success').classList.add('hidden')
+    if (id) {
+      const cat = allCats.find(c => c.id === id)
+      document.getElementById('cat-form-title').textContent = `Düzenle: ${cat.name}`
+      document.getElementById('cf-name').value    = cat.name
+      document.getElementById('cf-emoji').value   = cat.emoji || '🍽️'
+      document.getElementById('cf-sort').value    = cat.sort_order
+      document.getElementById('cf-img').value     = cat.image_url || ''
+      document.getElementById('cf-name-en').value = cat.name_en || ''
+      document.getElementById('cf-name-ar').value = cat.name_ar || ''
+      document.getElementById('cf-name-ru').value = cat.name_ru || ''
+    } else {
+      document.getElementById('cat-form-title').textContent = 'Yeni Kategori'
+      document.getElementById('cf-name').value    = ''
+      document.getElementById('cf-emoji').value   = '🍽️'
+      document.getElementById('cf-sort').value    = allCats.length + 1
+      document.getElementById('cf-img').value     = ''
+      document.getElementById('cf-name-en').value = ''
+      document.getElementById('cf-name-ar').value = ''
+      document.getElementById('cf-name-ru').value = ''
+    }
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  function closeCatForm() {
+    document.getElementById('cat-edit-panel').classList.add('hidden'); editingCatId = null
+  }
+
+  async function saveCat() {
+    const name  = document.getElementById('cf-name').value.trim()
+    const emoji = document.getElementById('cf-emoji').value.trim() || '🍽️'
+    const sort  = parseInt(document.getElementById('cf-sort').value) || 0
+    const img   = document.getElementById('cf-img').value.trim() || null
+    const errEl = document.getElementById('cat-form-error')
+    const okEl  = document.getElementById('cat-form-success')
+    const btn   = document.getElementById('cat-form-save-btn')
+    if (!name) {
+      errEl.textContent = 'Kategori adı zorunludur.'; errEl.classList.remove('hidden'); return
+    }
+    errEl.classList.add('hidden'); btn.disabled = true; btn.textContent = 'Kaydediliyor…'
+    const payload = {
+      name, emoji, sort_order: sort, image_url: img,
+      name_en: document.getElementById('cf-name-en').value.trim() || null,
+      name_ar: document.getElementById('cf-name-ar').value.trim() || null,
+      name_ru: document.getElementById('cf-name-ru').value.trim() || null,
+    }
+    try {
+      if (editingCatId) await categoryUpdate(editingCatId, payload)
+      else              await categoryCreate(payload)
+      okEl.classList.remove('hidden')
+      setTimeout(() => { okEl.classList.add('hidden'); closeCatForm(); loadCategories() }, 800)
+    } catch(e) {
+      errEl.textContent = e.message; errEl.classList.remove('hidden')
+    } finally {
+      btn.disabled = false; btn.textContent = 'Kaydet'
+    }
+  }
+
+  async function deleteCat(id, name, itemCount) {
+    const warn = itemCount > 0
+      ? `⚠️ "${name}" kategorisinde ${itemCount} öğe var. Kategoriyi silmek öğeleri silmez, ancak onları kategorisiz bırakır.\n\nDevam etmek istiyor musunuz?`
+      : `"${name}" kategorisini silmek istediğinizden emin misiniz?`
+    if (!confirm(warn)) return
+    try {
+      await categoryDelete(id)
+      allCats = allCats.filter(c => c.id !== id)
+      loadCategories()
+    } catch(e) { alert(e.message) }
+  }
+
+  /* ── BOOT ────────────────────────────────────── */
   loadItems()
 </script>
 </body>

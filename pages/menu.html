@@ -36,13 +36,13 @@
 
     /* Language buttons inside navbar */
     .nav-lang-btn {
-      font-size: 0.65rem; font-weight: 700;
-      padding: 3px 7px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 700;
+      padding: 4px 8px; border-radius: 999px;
       border: 1.5px solid rgba(255,255,255,0.28);
       background: transparent; color: rgba(255,255,255,0.65);
       cursor: pointer; transition: background 0.15s, color 0.15s;
       -webkit-tap-highlight-color: transparent;
-      line-height: 1; flex-shrink: 0;
+      line-height: 1; flex-shrink: 0; white-space: nowrap;
     }
     .nav-lang-btn.active { background: var(--coral); border-color: var(--coral); color: #fff; }
     .nav-lang-btn:hover:not(.active) { background: rgba(255,255,255,0.12); color: #fff; }
@@ -288,7 +288,7 @@
     }
     .menu-item:hover { box-shadow: 0 4px 16px rgba(78,51,32,0.1); }
     .menu-item-img {
-      width: 72px; height: 72px; border-radius: 10px; object-fit: cover; flex-shrink: 0;
+      width: 80px; height: 80px; border-radius: 10px; object-fit: cover; flex-shrink: 0;
       background: linear-gradient(135deg,rgba(26,95,122,0.15),rgba(224,123,84,0.15));
       display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
     }
@@ -313,20 +313,38 @@
 </head>
 <body>
 
+<!-- ── PAGE LOADER ──────────────────────────────── -->
+<div id="page-loader">
+  <img src="../logo.jpg" alt="Twenty Beach Bistro" class="loader-logo" />
+  <div class="loader-name">Twenty <em>Beach Bistro</em></div>
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var l = document.getElementById('page-loader')
+      l.classList.add('hidden')
+      document.body.style.animation = 'page-fadein 0.4s ease forwards'
+    }, 900)
+  })
+</script>
+
 <!-- ── NAVBAR ───────────────────────────────────── -->
 <nav class="navbar" style="gap:4px">
   <a href="../index.html" class="navbar-brand">
     <img src="../logo.jpg" alt="Twenty Beach Bistro" class="navbar-logo" />
     Twenty<span style="color:var(--coral);margin-left:4px">Beach</span>
   </a>
-  <div class="navbar-links" style="gap:2px;align-items:center">
+  <div class="navbar-links">
     <a href="../index.html" class="nav-link" id="nav-home">Ana Sayfa</a>
     <a href="menu.html"     class="nav-link active" id="nav-menu">Menü</a>
-    <div style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
-    <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
-    <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
-    <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    <div class="nav-divider" style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
+    <div class="navbar-lang-group">
+      <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
+      <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
+      <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    </div>
   </div>
 </nav>
 
@@ -449,11 +467,12 @@ const CAT_BG = {
   'Drinks':       'linear-gradient(145deg, #0a2e42 0%, #1a5f7a 100%)',
 }
 
-let allItems = [], currentLang = 'tr'
+let allItems = [], allCats = [], currentLang = 'tr'
 
 /* ── LANGUAGE ─────────────────────────────────── */
 function setLang(lang) {
   currentLang = lang
+  localStorage.setItem('bb_lang', lang)   // ← persist across pages
   const t = T[lang]
   document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
   document.getElementById('hdr-title').textContent         = t.hdrTitle
@@ -465,6 +484,22 @@ function setLang(lang) {
   document.getElementById('cat-section-label').textContent = t.catLabel
   document.getElementById('footer-tagline').textContent    = t.footerTag
   document.documentElement.setAttribute('lang', lang)
+  // Rebuild grid so category names update instantly
+  if (allCats.length) buildCatGrid()
+  // Re-render open item list if visible
+  const itemsView = document.getElementById('items-view')
+  if (itemsView.classList.contains('visible')) {
+    const catTitle = document.getElementById('items-cat-title').textContent
+    // find the Turkish category name to re-filter items
+    const catObj = allCats.find(c =>
+      c.name === catTitle || c.name_en === catTitle || c.name_ar === catTitle || c.name_ru === catTitle
+    )
+    if (catObj) {
+      const displayName = lang !== 'tr' && catObj[`name_${lang}`] ? catObj[`name_${lang}`] : catObj.name
+      document.getElementById('items-cat-title').textContent = displayName
+      renderItems(allItems.filter(i => i.category === catObj.name), 'items-list')
+    }
+  }
   const sv = document.getElementById('search-input').value.trim()
   if (sv) onSearch(sv)
 }
@@ -472,7 +507,13 @@ function setLang(lang) {
 /* ── LOAD ─────────────────────────────────────── */
 async function loadMenu() {
   try {
-    allItems = await menuFetch()
+    // Fetch items and categories in parallel
+    const [items, cats] = await Promise.all([
+      menuFetch(),
+      categoriesFetch()
+    ])
+    allItems = items
+    allCats  = cats  // full category objects with image_url, emoji, sort_order
     buildCatGrid()
   } catch(e) {
     document.getElementById('cat-grid').innerHTML =
@@ -482,43 +523,75 @@ async function loadMenu() {
 
 /* ── CATEGORY GRID ───────────────────────────── */
 function buildCatGrid() {
-  const cats = [...new Set(allItems.map(i => i.category))]
   const grid = document.getElementById('cat-grid')
   grid.innerHTML = ''
 
-  cats.forEach(cat => {
-    const catItems = allItems.filter(i => i.category === cat)
-    const imgItem  = catItems.find(i => i.image_url)
-    const hasBg    = !!imgItem
-    const bgStyle  = hasBg
-      ? `url('${imgItem.image_url}') center/cover no-repeat`
-      : (CAT_BG[cat] || 'linear-gradient(145deg,#1a5f7a,#2f5438)')
-    const emoji = CAT_EMOJI[cat] || '🍽️'
+  // Build a map of category name → category object (from DB)
+  const catMap = {}
+  allCats.forEach(c => { catMap[c.name] = c })
+
+  // Determine which categories to show:
+  // Use allCats order if available, otherwise fall back to item-derived list.
+  // Only show categories that have at least 1 available item.
+  let orderedCats
+  if (allCats.length) {
+    orderedCats = allCats
+      .filter(c => allItems.some(i => i.category === c.name && i.available !== false))
+  } else {
+    // Fallback: derive from items
+    orderedCats = [...new Set(allItems.map(i => i.category))]
+      .map(name => ({ name, emoji: CAT_EMOJI[name] || '🍽️', image_url: null, sort_order: 0 }))
+  }
+
+  if (!orderedCats.length) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(78,51,32,0.4)">Menü yakında yayınlanacak.</p>'
+    return
+  }
+
+  orderedCats.forEach(catObj => {
+    const catName  = catObj.name
+    const catItems = allItems.filter(i => i.category === catName)
+
+    // Translated category name for the card label
+    const displayName = currentLang !== 'tr' && catObj[`name_${currentLang}`]
+      ? catObj[`name_${currentLang}`] : catName
+
+    // Category cover image comes from the categories table (separate from food item images)
+    const coverUrl = catObj.image_url || null
+    const emoji    = catObj.emoji || CAT_EMOJI[catName] || '🍽️'
+    const bgStyle  = coverUrl
+      ? `url('${coverUrl}') center/cover no-repeat`
+      : (CAT_BG[catName] || 'linear-gradient(145deg,#1a5f7a,#2f5438)')
 
     const card = document.createElement('div')
     card.className = 'cat-card'
     card.setAttribute('role', 'button')
-    card.setAttribute('aria-label', cat)
-    card.onclick = () => showCategory(cat)
+    card.setAttribute('aria-label', displayName)
+    card.onclick = () => showCategory(catName)
     card.innerHTML = `
       <div class="cat-card-bg" style="background:${bgStyle}"></div>
       <div class="cat-card-overlay"></div>
       <div class="cat-card-shine"></div>
-      ${!hasBg ? `<span class="cat-card-emoji">${emoji}</span>` : ''}
+      ${!coverUrl ? `<span class="cat-card-emoji">${emoji}</span>` : ''}
       <span class="cat-card-count">${catItems.length} ürün</span>
-      <span class="cat-card-label">${cat}</span>
+      <span class="cat-card-label">${displayName}</span>
     `
     grid.appendChild(card)
   })
 }
 
 /* ── SHOW CATEGORY ───────────────────────────── */
-function showCategory(cat) {
+function showCategory(catName) {
   document.getElementById('cat-view').style.display = 'none'
   document.getElementById('search-view').classList.remove('visible')
   document.getElementById('items-view').classList.add('visible')
-  document.getElementById('items-cat-title').textContent = cat
-  renderItems(allItems.filter(i => i.category === cat), 'items-list')
+  // Show translated category name in the heading
+  const catObj = allCats.find(c => c.name === catName)
+  const lang = currentLang
+  const displayCat = catObj && lang !== 'tr' && catObj[`name_${lang}`]
+    ? catObj[`name_${lang}`] : catName
+  document.getElementById('items-cat-title').textContent = displayCat
+  renderItems(allItems.filter(i => i.category === catName), 'items-list')
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
@@ -573,21 +646,32 @@ function renderItems(items, containerId) {
 function buildItemEl(item) {
   const div = document.createElement('div')
   div.className = 'menu-item'
+  // Pick translated name/description — fall back to Turkish if not set
+  const lang = currentLang
+  const displayName = (lang !== 'tr' && item[`name_${lang}`]) ? item[`name_${lang}`] : item.name
+  const displayDesc = (lang !== 'tr' && item[`desc_${lang}`]) ? item[`desc_${lang}`]
+                    : item.description
   const img = item.image_url
-    ? `<img src="${item.image_url}" alt="${item.name}" class="menu-item-img" style="font-size:0" loading="lazy"/>`
+    ? `<img src="${item.image_url}" alt="${displayName}" class="menu-item-img" style="font-size:0" loading="lazy"/>`
     : `<div class="menu-item-img">${CAT_EMOJI[item.category] || '🍽️'}</div>`
   div.innerHTML = `
     ${img}
     <div class="menu-item-body">
       <div class="menu-item-top">
-        <span class="menu-item-name">${item.name}</span>
+        <span class="menu-item-name">${displayName}</span>
         <span class="menu-item-price">₺${Number(item.price).toFixed(2)}</span>
       </div>
-      ${item.description ? `<p class="menu-item-desc">${item.description}</p>` : ''}
+      ${displayDesc ? `<p class="menu-item-desc">${displayDesc}</p>` : ''}
     </div>
   `
   return div
 }
+
+// ── Apply saved language on page load, then load menu ──
+;(function() {
+  const saved = localStorage.getItem('bb_lang')
+  if (saved && T[saved] && saved !== 'tr') setLang(saved)
+})()
 
 loadMenu()
 </script>
