@@ -92,6 +92,17 @@ async function reservationCreate(data) {
 }
 
 async function reservationsFetch() {
+  // Active reservations only (not soft-deleted)
+  const res = await fetch(
+    _url('reservations', '?select=*&order=date_time&deleted_at=is.null'),
+    { headers: _headers(authToken()) }
+  )
+  if (!res.ok) throw new Error('Failed to load reservations')
+  return res.json()
+}
+
+async function reservationsFetchAll() {
+  // All reservations including soft-deleted — for admin archive view
   const res = await fetch(
     _url('reservations', '?select=*&order=date_time'),
     { headers: _headers(authToken()) }
@@ -110,11 +121,22 @@ async function reservationUpdateStatus(id, status) {
 }
 
 async function reservationDelete(id) {
+  // Soft-delete: stamp deleted_at instead of destroying the row
+  const res = await fetch(_url('reservations', `?id=eq.${id}`), {
+    method: 'PATCH',
+    headers: { ..._headers(authToken()), 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ deleted_at: new Date().toISOString() }),
+  })
+  if (!res.ok) throw new Error('Failed to delete reservation')
+}
+
+async function reservationHardDelete(id) {
+  // Permanent delete — only used from the archive view
   const res = await fetch(_url('reservations', `?id=eq.${id}`), {
     method: 'DELETE',
     headers: _headers(authToken()),
   })
-  if (!res.ok) throw new Error('Failed to delete reservation')
+  if (!res.ok) throw new Error('Failed to permanently delete reservation')
 }
 
 // ── CATEGORIES ────────────────────────────────────────────────────────────────

@@ -3,36 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#0d3d52" />
+  <meta name="theme-color" content="#2f5438" />
   <title>Rezervasyonlar · Admin</title>
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/admin.css" />
+  <style>
+    /* ── ADMIN NAVBAR OVERRIDE — clear on all screens ── */
+    .admin-navbar {
+      background: #1e3d28 !important;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.45) !important;
+      height: auto !important;
+      min-height: 60px;
+      padding: 10px 16px !important;
+      flex-wrap: wrap;
+      gap: 8px !important;
+    }
+    .admin-navbar .navbar-brand {
+      font-size: 1.05rem !important;
+      color: #fff !important;
+      gap: 8px !important;
+    }
+    .admin-navbar .nav-link {
+      font-size: 0.8rem !important;
+      padding: 7px 14px !important;
+      color: rgba(255,255,255,0.8) !important;
+      border-radius: 8px;
+    }
+    .admin-navbar .nav-link:hover { background: rgba(255,255,255,0.12) !important; color: #fff !important; }
+    .admin-navbar .nav-link.active { background: var(--coral) !important; color: #fff !important; }
+    .admin-navbar .navbar-links { gap: 6px !important; }
+
+    /* ── DELETED CARD STYLE ─────────────────────── */
+    .res-card.is-deleted {
+      opacity: 0.6;
+      border-left: 3px solid #dc2626;
+      background: rgba(254,226,226,0.3);
+    }
+    .res-card.is-deleted .res-name { text-decoration: line-through; color: #991b1b; }
+    .badge-deleted { background: #fee2e2; color: #991b1b; }
+
+    /* ── SUMMARY GRID — 4 cols for deleted ─────── */
+    .summary-grid { grid-template-columns: repeat(4, 1fr); }
+
+    /* ── RESTORE BTN ────────────────────────────── */
+    .btn-restore { background: #dcfce7; color: #166534; }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/config.js"></script>
   <script src="../js/api.js"></script>
 </head>
 <body>
 
-<nav class="navbar admin-navbar" style="gap:8px">
+<nav class="navbar admin-navbar">
   <span class="navbar-brand">
-    <img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:36px;width:36px;" />
-    Twenty<span style="color:var(--coral);margin-left:4px">Beach</span> <span style="color:rgba(245,237,216,0.5);font-size:0.8rem;margin-left:2px">· Admin</span>
+    <img src="../logo.jpg" alt="Logo" class="navbar-logo" style="height:34px;width:34px;flex-shrink:0" />
+    Twenty<span style="color:var(--coral);margin-left:4px">Beach</span>
+    <span style="color:rgba(255,255,255,0.45);font-size:0.75rem;margin-left:4px">· Admin</span>
   </span>
-  <div class="navbar-links" style="gap:4px;align-items:center">
+  <div class="navbar-links" style="align-items:center">
     <a href="dashboard.html" class="nav-link active">Rezervasyonlar</a>
     <a href="edit-menu.html" class="nav-link">Menü</a>
-    <button class="nav-link btn" style="background:rgba(255,255,255,0.1);border:none;cursor:pointer" onclick="logout()">Çıkış</button>
+    <button class="nav-link" style="background:rgba(255,255,255,0.12);border:none;cursor:pointer;color:rgba(255,255,255,0.8);font-size:0.8rem;padding:7px 14px;border-radius:8px" onclick="logout()">Çıkış</button>
   </div>
 </nav>
 
 <div class="page-wrap pt-nav pb-footer">
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:16px">
-    <h1 style="font-size:1.5rem;color:var(--ocean-deep)">Rezervasyonlar</h1>
+    <h1 style="font-size:1.5rem;color:var(--green-dark)">Rezervasyonlar</h1>
     <button class="btn btn-sm btn-outline" onclick="loadReservations()">↻ Yenile</button>
   </div>
 
-  <!-- Summary cards -->
+  <!-- Summary cards: pending / confirmed / cancelled / deleted -->
   <div class="summary-grid" id="summary-grid">
     <div class="summary-card">
       <div class="count" id="cnt-pending">–</div>
@@ -44,7 +86,11 @@
     </div>
     <div class="summary-card">
       <div class="count" id="cnt-cancelled">–</div>
-      <div class="badge badge-cancelled">iptal</div>
+      <div class="badge badge-cancelled">reddedilen</div>
+    </div>
+    <div class="summary-card">
+      <div class="count" id="cnt-deleted">–</div>
+      <div class="badge badge-deleted">silinen</div>
     </div>
   </div>
 
@@ -53,7 +99,8 @@
     <button class="pill active" data-f="all"       onclick="filterRes(this)">Tümü</button>
     <button class="pill"        data-f="pending"   onclick="filterRes(this)">Bekleyen</button>
     <button class="pill"        data-f="confirmed" onclick="filterRes(this)">Onaylanan</button>
-    <button class="pill"        data-f="cancelled" onclick="filterRes(this)">İptal</button>
+    <button class="pill"        data-f="cancelled" onclick="filterRes(this)">Reddedilen</button>
+    <button class="pill"        data-f="deleted"   onclick="filterRes(this)">Silinen</button>
   </div>
 
   <p class="error-msg hidden" id="res-error"></p>
@@ -67,8 +114,8 @@
   <div id="res-list"></div>
 
   <div id="res-empty" class="hidden" style="text-align:center;padding:48px 0;color:rgba(92,74,50,0.4)">
-    <p style="font-size:2.5rem">📅</p>
-    <p style="margin-top:8px">Rezervasyon bulunamadı.</p>
+    <p style="font-size:1.5rem;margin-bottom:8px">—</p>
+    <p>Rezervasyon bulunamadı.</p>
   </div>
 
 </div>
@@ -80,7 +127,12 @@
   let allRes = []
   let currentFilter = 'all'
 
-  const STATUS_TR = { pending: 'bekleyen', confirmed: 'onaylanan', cancelled: 'iptal' }
+  const STATUS_TR = {
+    pending:   'Bekleyen',
+    confirmed: 'Onaylandı',
+    cancelled: 'Reddedildi',
+    deleted:   'Silindi',
+  }
 
   const fmt = dt => new Date(dt).toLocaleString('tr-TR', {
     weekday: 'short', month: 'short', day: 'numeric',
@@ -93,7 +145,8 @@
     document.getElementById('res-empty').classList.add('hidden')
     document.getElementById('res-error').classList.add('hidden')
     try {
-      allRes = await reservationsFetch()
+      // Fetch ALL including soft-deleted
+      allRes = await reservationsFetchAll()
       updateSummary()
       renderRes()
     } catch(e) {
@@ -105,11 +158,15 @@
   }
 
   function updateSummary() {
-    const counts = { pending:0, confirmed:0, cancelled:0 }
-    allRes.forEach(r => counts[r.status]++)
+    const counts = { pending:0, confirmed:0, cancelled:0, deleted:0 }
+    allRes.forEach(r => {
+      if (r.deleted_at) counts.deleted++
+      else counts[r.status] = (counts[r.status] || 0) + 1
+    })
     document.getElementById('cnt-pending').textContent   = counts.pending
     document.getElementById('cnt-confirmed').textContent = counts.confirmed
     document.getElementById('cnt-cancelled').textContent = counts.cancelled
+    document.getElementById('cnt-deleted').textContent   = counts.deleted
   }
 
   function filterRes(btn) {
@@ -120,8 +177,16 @@
   }
 
   function renderRes() {
-    const items = currentFilter === 'all' ? allRes : allRes.filter(r => r.status === currentFilter)
-    const list  = document.getElementById('res-list')
+    let items
+    if (currentFilter === 'all') {
+      items = allRes
+    } else if (currentFilter === 'deleted') {
+      items = allRes.filter(r => r.deleted_at)
+    } else {
+      items = allRes.filter(r => !r.deleted_at && r.status === currentFilter)
+    }
+
+    const list = document.getElementById('res-list')
     list.innerHTML = ''
     if (items.length === 0) {
       document.getElementById('res-empty').classList.remove('hidden')
@@ -132,28 +197,40 @@
   }
 
   function buildResCard(r) {
+    const isDeleted = !!r.deleted_at
     const el = document.createElement('div')
-    el.className = 'card res-card'
+    el.className = 'card res-card' + (isDeleted ? ' is-deleted' : '')
     el.id = `res-${r.id}`
-    const confirmBtn = r.status !== 'confirmed'
-      ? `<button class="btn btn-sm btn-ocean" onclick="setStatus('${r.id}','confirmed')">✓ Onayla</button>` : ''
-    const cancelBtn = r.status !== 'cancelled'
-      ? `<button class="btn btn-sm btn-warn" onclick="setStatus('${r.id}','cancelled')">✕ İptal Et</button>` : ''
+
+    const statusLabel = isDeleted ? 'Silindi' : (STATUS_TR[r.status] || r.status)
+    const badgeClass  = isDeleted ? 'badge-deleted' : `badge-${r.status}`
+
+    // Action buttons
+    let actions = ''
+    if (!isDeleted) {
+      if (r.status !== 'confirmed')
+        actions += `<button class="btn btn-sm btn-ocean" onclick="setStatus('${r.id}','confirmed')">Onayla</button>`
+      if (r.status !== 'cancelled')
+        actions += `<button class="btn btn-sm btn-warn" onclick="setStatus('${r.id}','cancelled')">Reddet</button>`
+      actions += `<button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="softDel('${r.id}')">Sil</button>`
+    } else {
+      // Deleted: offer restore or permanent delete
+      actions += `<button class="btn btn-sm btn-restore" onclick="restoreRes('${r.id}')">Geri Al</button>`
+      actions += `<button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="hardDel('${r.id}')">Kalıcı Sil</button>`
+      actions += `<small style="font-size:0.68rem;color:rgba(78,51,32,0.4);align-self:center;margin-left:4px">Silinme: ${new Date(r.deleted_at).toLocaleDateString('tr-TR')}</small>`
+    }
+
     el.innerHTML = `
       <div class="res-card-top">
         <div>
           <p class="res-name">${r.customer_name}</p>
           <p class="res-meta">${fmt(r.date_time)} · ${r.party_size} kişi</p>
-          ${r.phone ? `<p class="res-notes">📞 ${r.phone}</p>` : ''}
-          ${r.notes ? `<p class="res-notes">📝 ${r.notes}</p>` : ''}
+          ${r.phone ? `<p class="res-notes">${r.phone}</p>` : ''}
+          ${r.notes ? `<p class="res-notes">${r.notes}</p>` : ''}
         </div>
-        <span class="badge badge-${r.status}">${STATUS_TR[r.status] || r.status}</span>
+        <span class="badge ${badgeClass}">${statusLabel}</span>
       </div>
-      <div class="res-actions">
-        ${confirmBtn}
-        ${cancelBtn}
-        <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="delRes('${r.id}')">Sil</button>
-      </div>
+      <div class="res-actions">${actions}</div>
     `
     return el
   }
@@ -163,18 +240,41 @@
       await reservationUpdateStatus(id, status)
       const r = allRes.find(x => x.id === id)
       if (r) r.status = status
-      updateSummary()
-      renderRes()
+      updateSummary(); renderRes()
     } catch(e) { alert(e.message) }
   }
 
-  async function delRes(id) {
-    if (!confirm('Bu rezervasyonu silmek istediğinizden emin misiniz?')) return
+  async function softDel(id) {
+    if (!confirm('Bu rezervasyonu silmek istediğinizden emin misiniz?\nSilinen rezervasyonlar "Silinen" sekmesinde görünmeye devam eder.')) return
     try {
       await reservationDelete(id)
+      const r = allRes.find(x => x.id === id)
+      if (r) r.deleted_at = new Date().toISOString()
+      updateSummary(); renderRes()
+    } catch(e) { alert(e.message) }
+  }
+
+  async function restoreRes(id) {
+    try {
+      // Clear deleted_at to restore
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/reservations?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type':'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${authToken()}`, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ deleted_at: null }),
+      })
+      if (!res.ok) throw new Error('Geri alma başarısız')
+      const r = allRes.find(x => x.id === id)
+      if (r) r.deleted_at = null
+      updateSummary(); renderRes()
+    } catch(e) { alert(e.message) }
+  }
+
+  async function hardDel(id) {
+    if (!confirm('Bu rezervasyonu KALICI olarak silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz.')) return
+    try {
+      await reservationHardDelete(id)
       allRes = allRes.filter(r => r.id !== id)
-      updateSummary()
-      renderRes()
+      updateSummary(); renderRes()
     } catch(e) { alert(e.message) }
   }
 

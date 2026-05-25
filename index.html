@@ -244,8 +244,8 @@
     setTimeout(function() {
       var l = document.getElementById('page-loader')
       l.classList.add('hidden')
-      document.body.style.animation = 'page-fadein 0.4s ease forwards'
-    }, 900)
+      document.body.style.animation = 'page-fadein 0.35s ease forwards'
+    }, 600)
   })
 </script>
 
@@ -285,7 +285,16 @@
     </a>
   </div>
   <div class="scroll-hint"><span id="scroll-hint-txt">aşağı kaydır</span><span>↓</span></div>
+  <!-- A: Hero wave -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,45 C180,90 360,0 540,45 C720,90 900,0 1080,45 C1260,90 1380,20 1440,45 L1440,90 L0,90 Z" fill="#f5edd8"/>
+    </svg>
+  </div>
 </div>
+
+<!-- D: Confetti canvas -->
+<canvas id="confetti-canvas"></canvas>
 
 <div class="page-wrap pb-footer">
 
@@ -293,14 +302,27 @@
   <div class="section">
     <div class="card gap-stack">
       <h2 id="find-us-title">Bizi Bulun</h2>
-      <div class="info-row"><span class="info-icon">📍</span>Konyaaltı sahili, Antalya</div>
-      <div class="info-row"><span class="info-icon">📞</span>0 (533) 503 62 37</div>
-      <div class="info-row"><span class="info-icon">📧</span>hello@twentybeachbistro.com</div>
+      <div class="info-row"><a href="tel:+905335036237" style="color:inherit;text-decoration:none">0 (533) 503 62 37</a></div>
+      <div class="info-row"><a href="tel:+902423348585" style="color:inherit;text-decoration:none">0 (242) 334 85 85</a></div>
+      <div class="info-row"><a href="mailto:hello@twentybeachbistro.com" style="color:inherit;text-decoration:none">hello@twentybeachbistro.com</a></div>
       <hr class="divider" />
       <table class="hours-table">
         <tr><td><strong id="days-weekday">Pzt – Cum</strong></td><td>07:00 – 22:00</td></tr>
         <tr><td><strong id="days-weekend">Cmt – Paz</strong></td><td>08:00 – 23:00</td></tr>
       </table>
+      <hr class="divider" />
+      <!-- Google Maps embed -->
+      <div style="border-radius:12px;overflow:hidden;line-height:0">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.3345717159114!2d30.644139147588564!3d36.86684031140032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c3916575e36287%3A0x937835068723fc57!2sTwenty%20Beach%20%26%20Bistro%20-%20Konyaalt%C4%B1%20Beach%20Park!5e1!3m2!1sen!2str!4v1779658667438!5m2!1sen!2str"
+          width="100%" height="200" style="border:0;display:block;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <a href="https://maps.app.goo.gl/zwaEZm9qQsDC6G7N9" target="_blank" rel="noopener"
+         class="btn btn-outline btn-full" style="font-size:0.85rem;padding:10px" id="map-link">
+        Google Maps'te Aç
+      </a>
     </div>
   </div>
 
@@ -311,7 +333,7 @@
 
       <!-- Success state -->
       <div id="res-success" class="hidden text-center" style="padding:16px 0">
-        <div style="font-size:2.5rem;margin-bottom:8px">🎉</div>
+        <div style="font-size:2.5rem;margin-bottom:8px"></div>
         <p style="font-weight:700;color:#15803d" id="res-success-msg">Rezervasyon alındı!</p>
         <p style="font-size:0.875rem;color:rgba(78,51,32,0.6);margin-top:4px" id="res-success-sub">Kısa süre içinde onaylayacağız.</p>
         <button class="btn btn-green" style="margin-top:16px" id="res-another-btn" onclick="resetResForm()">Yeni Rezervasyon</button>
@@ -336,7 +358,7 @@
                 <span class="datepicker-trigger-txt" id="dp-display">
                   <span class="datepicker-trigger-placeholder" id="dp-placeholder">Tarih seçin</span>
                 </span>
-                <span class="datepicker-icon">📅</span>
+                <span class="datepicker-icon" style="font-size:0.85rem;color:var(--teal)">▼</span>
               </button>
               <!-- Hidden real value for form submission -->
               <input type="hidden" id="res-datetime" />
@@ -357,7 +379,7 @@
                 <hr class="dp-divider" />
                 <!-- Time -->
                 <div class="dp-time">
-                  <span class="dp-time-label">🕐 <span id="lbl-time">Saat</span></span>
+                  <span class="dp-time-label"><span id="lbl-time">Saat</span></span>
                   <div class="dp-time-selects">
                     <select class="dp-select" id="dp-hour" onchange="updateDateValue()"></select>
                     <span class="dp-time-sep">:</span>
@@ -399,8 +421,40 @@
 </div>
 
 <footer class="footer">
-  <img src="logo.jpg" alt="Twenty Beach Bistro" />
-  © <span id="yr"></span> Twenty Beach Bistro · <span id="footer-rights">Tüm hakları saklıdır</span>
+  <div class="footer-wave">
+    <svg viewBox="0 0 1440 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,25 C180,50 360,0 540,25 C720,50 900,0 1080,25 C1260,50 1380,10 1440,25 L1440,50 L0,50 Z" fill="#2f5438"/>
+    </svg>
+  </div>
+  <div class="footer-inner">
+    <img src="logo.jpg" alt="Twenty Beach Bistro" class="footer-logo" />
+    <p class="footer-name">Twenty <em>Beach Bistro</em></p>
+    <p class="footer-tagline">Konyaaltı Sahili · Antalya</p>
+    <div class="footer-info">
+      <a href="tel:+905335036237">0 (533) 503 62 37</a>
+      <a href="tel:+902423348585">0 (242) 334 85 85</a>
+      <a href="mailto:hello@twentybeachbistro.com">hello@twentybeachbistro.com</a>
+      <a href="https://maps.app.goo.gl/zwaEZm9qQsDC6G7N9" target="_blank" rel="noopener">Konyaaltı Sahili, Antalya</a>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/twenty.beachh/" target="_blank" rel="noopener" class="footer-social-btn" title="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://maps.app.goo.gl/zwaEZm9qQsDC6G7N9" target="_blank" rel="noopener" class="footer-social-btn" title="Google Maps">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+        </svg>
+      </a>
+      <a href="tel:+905335036237" class="footer-social-btn" title="Telefon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.9v2.02z"/>
+        </svg>
+      </a>
+    </div>
+    <p class="footer-copy">© <span id="yr"></span> Twenty Beach Bistro · <span id="footer-rights">Tüm hakları saklıdır</span></p>
+  </div>
 </footer>
 
 <script>
@@ -413,7 +467,7 @@ const LANG = {
   tr: {
     navHome:'Ana Sayfa', navMenu:'Menü',
     tagline:'Taze sahil lezzetleri, okyanus manzarası & güneşli atmosfer.',
-    badge1:'🏖️ Sahil Kenarı', badge2:'🌿 Günlük Taze', badge3:'🕐 Her Gün Açık',
+    badge1:'Sahil Kenarı', badge2:'Günlük Taze', badge3:'Her Gün Açık',
     cta:'Menüyü Gör →', scrollHint:'aşağı kaydır',
     findUs:'Bizi Bulun', reserve:'Masa Rezervasyonu',
     lblName:'Adınız', lblDatetime:'Tarih & Saat', lblGuests:'Kişi',
@@ -423,7 +477,7 @@ const LANG = {
     successMsg:'Rezervasyon alındı!', successSub:'Kısa süre içinde onaylayacağız.',
     errRequired:'Ad, tarih/saat ve telefon zorunludur.',
     weekday:'Pzt – Cum', weekend:'Cmt – Paz',
-    footerRights:'Tüm hakları saklıdır',
+    footerRights:'Tüm hakları saklıdır', mapLink:'Google Maps\'te Aç',
     dpPlaceholder:'Tarih seçin', dpConfirm:'Onayla', dpTime:'Saat',
     months:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
     wdays:['Pt','Sa','Ça','Pe','Cu','Ct','Pz'],
@@ -431,7 +485,7 @@ const LANG = {
   en: {
     navHome:'Home', navMenu:'Menu',
     tagline:'Fresh coastal flavours, ocean views & sun-soaked vibes.',
-    badge1:'🏖️ Beachfront', badge2:'🌿 Fresh Daily', badge3:'🕐 Open Daily',
+    badge1:'Beachfront', badge2:'Fresh Daily', badge3:'Open Daily',
     cta:'See Our Menu →', scrollHint:'scroll',
     findUs:'Find Us', reserve:'Reserve a Table',
     lblName:'Your Name', lblDatetime:'Date & Time', lblGuests:'Guests',
@@ -441,7 +495,7 @@ const LANG = {
     successMsg:'Reservation submitted!', successSub:'We\'ll confirm shortly.',
     errRequired:'Name, date/time and phone number are required.',
     weekday:'Mon – Fri', weekend:'Sat – Sun',
-    footerRights:'All rights reserved',
+    footerRights:'All rights reserved', mapLink:'Open in Google Maps',
     dpPlaceholder:'Select date', dpConfirm:'Confirm', dpTime:'Time',
     months:['January','February','March','April','May','June','July','August','September','October','November','December'],
     wdays:['Mo','Tu','We','Th','Fr','Sa','Su'],
@@ -449,7 +503,7 @@ const LANG = {
   ar: {
     navHome:'الرئيسية', navMenu:'القائمة',
     tagline:'نكهات شاطئية طازجة، إطلالات على البحر وأجواء مشمسة.',
-    badge1:'🏖️ على الشاطئ', badge2:'🌿 طازج يومياً', badge3:'🕐 مفتوح يومياً',
+    badge1:'على الشاطئ', badge2:'طازج يومياً', badge3:'مفتوح يومياً',
     cta:'اطّلع على القائمة ←', scrollHint:'مرّر للأسفل',
     findUs:'اعثر علينا', reserve:'احجز طاولة',
     lblName:'اسمك', lblDatetime:'التاريخ والوقت', lblGuests:'عدد الأشخاص',
@@ -459,7 +513,7 @@ const LANG = {
     successMsg:'تم استلام الحجز!', successSub:'سنؤكده قريباً.',
     errRequired:'الاسم والتاريخ ورقم الهاتف مطلوبة.',
     weekday:'اثنين – جمعة', weekend:'سبت – أحد',
-    footerRights:'جميع الحقوق محفوظة',
+    footerRights:'جميع الحقوق محفوظة', mapLink:'فتح في خرائط غوغل',
     dpPlaceholder:'اختر تاريخاً', dpConfirm:'تأكيد', dpTime:'الوقت',
     months:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
     wdays:['إث','ثل','أر','خم','جم','سب','أح'],
@@ -467,7 +521,7 @@ const LANG = {
   ru: {
     navHome:'Главная', navMenu:'Меню',
     tagline:'Свежие прибрежные блюда, вид на океан и солнечная атмосфера.',
-    badge1:'🏖️ На пляже', badge2:'🌿 Свежее ежедневно', badge3:'🕐 Открыто ежедневно',
+    badge1:'На пляже', badge2:'Свежее ежедневно', badge3:'Открыто ежедневно',
     cta:'Смотреть меню →', scrollHint:'прокрутить',
     findUs:'Как нас найти', reserve:'Забронировать стол',
     lblName:'Ваше имя', lblDatetime:'Дата и время', lblGuests:'Гостей',
@@ -477,7 +531,7 @@ const LANG = {
     successMsg:'Заявка принята!', successSub:'Мы подтвердим в ближайшее время.',
     errRequired:'Имя, дата/время и телефон обязательны.',
     weekday:'Пн – Пт', weekend:'Сб – Вс',
-    footerRights:'Все права защищены',
+    footerRights:'Все права защищены', mapLink:'Открыть в Google Maps',
     dpPlaceholder:'Выберите дату', dpConfirm:'Подтвердить', dpTime:'Время',
     months:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
     wdays:['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
@@ -488,32 +542,33 @@ let currentLang = 'tr'
 
 function setLang(lang) {
   currentLang = lang
-  localStorage.setItem('bb_lang', lang)   // ← persist across pages
+  localStorage.setItem('bb_lang', lang)
   const t = LANG[lang]
   document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
-  document.getElementById('nav-home').textContent       = t.navHome
-  document.getElementById('nav-menu').textContent       = t.navMenu
-  document.getElementById('hero-tagline').textContent   = t.tagline
-  document.getElementById('badge-1').textContent        = t.badge1
-  document.getElementById('badge-2').textContent        = t.badge2
-  document.getElementById('badge-3').textContent        = t.badge3
-  document.getElementById('hero-cta').textContent       = t.cta
+  document.getElementById('nav-home').textContent        = t.navHome
+  document.getElementById('nav-menu').textContent        = t.navMenu
+  document.getElementById('hero-tagline').textContent    = t.tagline
+  document.getElementById('badge-1').textContent         = t.badge1
+  document.getElementById('badge-2').textContent         = t.badge2
+  document.getElementById('badge-3').textContent         = t.badge3
+  document.getElementById('hero-cta').textContent        = t.cta
   document.getElementById('scroll-hint-txt').textContent = t.scrollHint
-  document.getElementById('find-us-title').textContent  = t.findUs
-  document.getElementById('reserve-title').textContent  = t.reserve
-  document.getElementById('lbl-name').textContent       = t.lblName
-  document.getElementById('lbl-datetime').textContent   = t.lblDatetime
-  document.getElementById('lbl-guests').textContent     = t.lblGuests
-  document.getElementById('lbl-notes').textContent      = t.lblNotes
-  document.getElementById('lbl-phone').textContent      = t.lblPhone
-  document.getElementById('res-notes').placeholder      = t.notesPlaceholder
-  document.getElementById('res-submit').textContent     = t.submitBtn
+  document.getElementById('find-us-title').textContent   = t.findUs
+  document.getElementById('reserve-title').textContent   = t.reserve
+  document.getElementById('lbl-name').textContent        = t.lblName
+  document.getElementById('lbl-datetime').textContent    = t.lblDatetime
+  document.getElementById('lbl-guests').textContent      = t.lblGuests
+  document.getElementById('lbl-notes').textContent       = t.lblNotes
+  document.getElementById('lbl-phone').textContent       = t.lblPhone
+  document.getElementById('res-notes').placeholder       = t.notesPlaceholder
+  document.getElementById('res-submit').textContent      = t.submitBtn
   document.getElementById('res-another-btn').textContent = t.anotherBtn
   document.getElementById('res-success-msg').textContent = t.successMsg
   document.getElementById('res-success-sub').textContent = t.successSub
-  document.getElementById('days-weekday').textContent   = t.weekday
-  document.getElementById('days-weekend').textContent   = t.weekend
-  document.getElementById('footer-rights').textContent  = t.footerRights
+  document.getElementById('days-weekday').textContent    = t.weekday
+  document.getElementById('days-weekend').textContent    = t.weekend
+  document.getElementById('footer-rights').textContent   = t.footerRights
+  if (document.getElementById('map-link')) document.getElementById('map-link').textContent = t.mapLink
   document.getElementById('dp-placeholder').textContent = t.dpPlaceholder
   document.getElementById('dp-confirm-btn').textContent = t.dpConfirm
   document.getElementById('lbl-time').textContent       = t.dpTime
@@ -704,6 +759,7 @@ async function submitReservation() {
     await reservationCreate({ customer_name: name, party_size: guests, date_time: dt, notes, phone })
     document.getElementById('res-form').classList.add('hidden')
     document.getElementById('res-success').classList.remove('hidden')
+    launchConfetti()
   } catch(e) {
     errEl.textContent = e.message; errEl.classList.remove('hidden')
   } finally {
@@ -726,6 +782,48 @@ function resetResForm() {
   const saved = localStorage.getItem('bb_lang')
   if (saved && LANG[saved]) setLang(saved)
 })()
+
+/* ── D: Confetti burst ──────────────────────────── */
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas')
+  const ctx    = canvas.getContext('2d')
+  canvas.width  = window.innerWidth
+  canvas.height = window.innerHeight
+  const COLORS = ['#d9784a','#2f5438','#c9a96e','#3a8fa3','#f5edd8','#e8d5a3']
+  const pieces = Array.from({length: 90}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height * 0.4 - canvas.height * 0.1,
+    r: Math.random() * 5 + 3,
+    d: Math.random() * 80 + 20,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    tilt: Math.random() * 10 - 10,
+    tiltAngle: 0,
+    tiltAngleInc: Math.random() * 0.07 + 0.05,
+    vx: Math.random() * 2 - 1,
+    vy: Math.random() * 2 + 1.5,
+  }))
+  let frame, elapsed = 0
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    pieces.forEach(p => {
+      p.tiltAngle += p.tiltAngleInc
+      p.x += p.vx + Math.sin(elapsed * 0.01) * 0.5
+      p.y += p.vy
+      p.tilt = Math.sin(p.tiltAngle) * 12
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width }
+      ctx.beginPath()
+      ctx.lineWidth = p.r
+      ctx.strokeStyle = p.color
+      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y)
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2)
+      ctx.stroke()
+    })
+    elapsed++
+    if (elapsed < 180) frame = requestAnimationFrame(draw)
+    else { ctx.clearRect(0, 0, canvas.width, canvas.height); cancelAnimationFrame(frame) }
+  }
+  draw()
+}
 </script>
 </body>
 </html>

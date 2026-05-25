@@ -33,6 +33,12 @@
       background: var(--sand-light);
       min-height: 100vh;
     }
+    .page-content {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .footer { flex-shrink: 0; }
 
     /* Language buttons inside navbar */
     .nav-lang-btn {
@@ -284,9 +290,7 @@
       background: rgba(255,255,255,0.85);
       border: 1px solid rgba(232,213,176,0.5);
       border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
-      transition: box-shadow 0.15s;
     }
-    .menu-item:hover { box-shadow: 0 4px 16px rgba(78,51,32,0.1); }
     .menu-item-img {
       width: 80px; height: 80px; border-radius: 10px; object-fit: cover; flex-shrink: 0;
       background: linear-gradient(135deg,rgba(26,95,122,0.15),rgba(224,123,84,0.15));
@@ -324,8 +328,8 @@
     setTimeout(function() {
       var l = document.getElementById('page-loader')
       l.classList.add('hidden')
-      document.body.style.animation = 'page-fadein 0.4s ease forwards'
-    }, 900)
+      document.body.style.animation = 'page-fadein 0.35s ease forwards'
+    }, 600)
   })
 </script>
 
@@ -357,16 +361,6 @@
     <p id="hdr-sub">Taze · Yerel · Sahil Lezzetleri</p>
   </div>
 
-  <!-- Search dark bar -->
-  <div class="dark-bar">
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" id="search-input" placeholder="Yemek ara…"
-             oninput="onSearch(this.value)" autocomplete="off" />
-      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
-    </div>
-  </div>
-
   <!-- ── CATEGORY GRID VIEW ─────────────────────── -->
   <div id="cat-view">
     <div class="cat-grid-wrap">
@@ -390,20 +384,43 @@
     <div id="items-list"></div>
   </div>
 
-  <!-- ── SEARCH RESULTS VIEW ────────────────────── -->
-  <div class="content-view" id="search-view">
-    <p class="search-count-lbl" id="search-count"></p>
-    <div id="search-list"></div>
-  </div>
-
 </div><!-- /page-content -->
 
-<!-- ══ STICKY BOTTOM FOOTER ══════════════════════ -->
-<footer class="site-footer">
-  <img src="../logo.jpg" alt="Twenty Beach Bistro" />
-  <div class="site-footer-txt">
-    <strong id="footer-tagline">Menü düzenli güncellenir · Fiyatlara KDV dahildir</strong>
-    © <span id="footer-year"></span> Twenty Beach Bistro · All rights reserved.
+<!-- ══ RICH FOOTER ════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-wave">
+    <svg viewBox="0 0 1440 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,25 C180,50 360,0 540,25 C720,50 900,0 1080,25 C1260,50 1380,10 1440,25 L1440,50 L0,50 Z" fill="#2f5438"/>
+    </svg>
+  </div>
+  <div class="footer-inner">
+    <img src="../logo.jpg" alt="Twenty Beach Bistro" class="footer-logo" />
+    <p class="footer-name">Twenty <em>Beach Bistro</em></p>
+    <p class="footer-tagline" id="footer-tagline">Konyaaltı Sahili · Antalya</p>
+    <div class="footer-info">
+      <a href="tel:+905335036237">0 (533) 503 62 37</a>
+      <a href="tel:+902423348585">0 (242) 334 85 85</a>
+      <a href="mailto:hello@twentybeachbistro.com">hello@twentybeachbistro.com</a>
+      <a href="https://maps.app.goo.gl/zwaEZm9qQsDC6G7N9" target="_blank" rel="noopener">Konyaaltı Sahili, Antalya</a>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/twenty.beachh/" target="_blank" rel="noopener" class="footer-social-btn" title="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://maps.app.goo.gl/zwaEZm9qQsDC6G7N9" target="_blank" rel="noopener" class="footer-social-btn" title="Google Maps">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+        </svg>
+      </a>
+      <a href="tel:+905335036237" class="footer-social-btn" title="Telefon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.9v2.02z"/>
+        </svg>
+      </a>
+    </div>
+    <p class="footer-copy">© <span id="footer-year"></span> Twenty Beach Bistro · <span id="footer-rights">Tüm hakları saklıdır</span></p>
   </div>
 </footer>
 
@@ -418,7 +435,7 @@ const T = {
     searchPh:'Yemek ara…', backLabel:'Kategoriler', catLabel:'Kategoriler',
     noItems:'Ürün bulunamadı.',
     searchCount: n => `${n} sonuç`,
-    footerTag:'Menü düzenli güncellenir · Fiyatlara KDV dahildir',
+    footerTag:'Konyaaltı Sahili · Antalya', footerRights:'Tüm hakları saklıdır',
   },
   en: {
     hdrTitle:'Our Menu', hdrSub:'Fresh · Local · Coastal',
@@ -426,7 +443,7 @@ const T = {
     searchPh:'Search items…', backLabel:'Categories', catLabel:'Categories',
     noItems:'No items found.',
     searchCount: n => `${n} result${n===1?'':'s'}`,
-    footerTag:'Menu updated regularly · Prices include tax',
+    footerTag:'Konyaaltı Beach · Antalya', footerRights:'All rights reserved',
   },
   ar: {
     hdrTitle:'قائمة الطعام', hdrSub:'طازج · محلي · نكهات الشاطئ',
@@ -434,7 +451,7 @@ const T = {
     searchPh:'ابحث عن طعام…', backLabel:'الفئات', catLabel:'الفئات',
     noItems:'لا توجد عناصر.',
     searchCount: n => `${n} نتيجة`,
-    footerTag:'يُحدَّث القائمة بانتظام · الأسعار شاملة الضريبة',
+    footerTag:'شاطئ قونيالتي · أنطاليا', footerRights:'جميع الحقوق محفوظة',
   },
   ru: {
     hdrTitle:'Наше меню', hdrSub:'Свежее · Местное · Прибрежное',
@@ -442,7 +459,7 @@ const T = {
     searchPh:'Поиск блюд…', backLabel:'Категории', catLabel:'Категории',
     noItems:'Ничего не найдено.',
     searchCount: n => `Найдено: ${n}`,
-    footerTag:'Меню обновляется регулярно · Цены включают налог',
+    footerTag:'Пляж Коньяалты · Анталья', footerRights:'Все права защищены',
   }
 }
 
@@ -479,10 +496,10 @@ function setLang(lang) {
   document.getElementById('hdr-sub').textContent           = t.hdrSub
   document.getElementById('nav-home').textContent          = t.navHome
   document.getElementById('nav-menu').textContent          = t.navMenu
-  document.getElementById('search-input').placeholder      = t.searchPh
   document.getElementById('back-label').textContent        = t.backLabel
   document.getElementById('cat-section-label').textContent = t.catLabel
   document.getElementById('footer-tagline').textContent    = t.footerTag
+  if (document.getElementById('footer-rights')) document.getElementById('footer-rights').textContent = t.footerRights || ''
   document.documentElement.setAttribute('lang', lang)
   // Rebuild grid so category names update instantly
   if (allCats.length) buildCatGrid()
@@ -500,8 +517,6 @@ function setLang(lang) {
       renderItems(allItems.filter(i => i.category === catObj.name), 'items-list')
     }
   }
-  const sv = document.getElementById('search-input').value.trim()
-  if (sv) onSearch(sv)
 }
 
 /* ── LOAD ─────────────────────────────────────── */
@@ -556,8 +571,13 @@ function buildCatGrid() {
     const displayName = currentLang !== 'tr' && catObj[`name_${currentLang}`]
       ? catObj[`name_${currentLang}`] : catName
 
-    // Category cover image comes from the categories table (separate from food item images)
-    const coverUrl = catObj.image_url || null
+    // Category cover image — resolve relative paths (menu.html is in pages/)
+    const rawUrl   = catObj.image_url || null
+    const coverUrl = rawUrl
+      ? (rawUrl.startsWith('http') || rawUrl.startsWith('/') || rawUrl.startsWith('../')
+          ? rawUrl
+          : '../' + rawUrl)
+      : null
     const emoji    = catObj.emoji || CAT_EMOJI[catName] || '🍽️'
     const bgStyle  = coverUrl
       ? `url('${coverUrl}') center/cover no-repeat`
@@ -573,7 +593,6 @@ function buildCatGrid() {
       <div class="cat-card-overlay"></div>
       <div class="cat-card-shine"></div>
       ${!coverUrl ? `<span class="cat-card-emoji">${emoji}</span>` : ''}
-      <span class="cat-card-count">${catItems.length} ürün</span>
       <span class="cat-card-label">${displayName}</span>
     `
     grid.appendChild(card)
@@ -583,9 +602,7 @@ function buildCatGrid() {
 /* ── SHOW CATEGORY ───────────────────────────── */
 function showCategory(catName) {
   document.getElementById('cat-view').style.display = 'none'
-  document.getElementById('search-view').classList.remove('visible')
   document.getElementById('items-view').classList.add('visible')
-  // Show translated category name in the heading
   const catObj = allCats.find(c => c.name === catName)
   const lang = currentLang
   const displayCat = catObj && lang !== 'tr' && catObj[`name_${lang}`]
@@ -598,38 +615,8 @@ function showCategory(catName) {
 /* ── BACK ─────────────────────────────────────── */
 function showCatGrid() {
   document.getElementById('items-view').classList.remove('visible')
-  document.getElementById('search-view').classList.remove('visible')
   document.getElementById('cat-view').style.display = ''
-  document.getElementById('search-input').value = ''
-  document.getElementById('search-clear').style.display = 'none'
   window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-/* ── SEARCH ──────────────────────────────────── */
-function onSearch(q) {
-  q = q.trim().toLowerCase()
-  document.getElementById('search-clear').style.display = q ? 'block' : 'none'
-  if (!q) {
-    document.getElementById('search-view').classList.remove('visible')
-    document.getElementById('items-view').classList.remove('visible')
-    document.getElementById('cat-view').style.display = ''
-    return
-  }
-  document.getElementById('cat-view').style.display = 'none'
-  document.getElementById('items-view').classList.remove('visible')
-  document.getElementById('search-view').classList.add('visible')
-  const results = allItems.filter(i =>
-    i.name.toLowerCase().includes(q) ||
-    (i.description && i.description.toLowerCase().includes(q)) ||
-    i.category.toLowerCase().includes(q)
-  )
-  document.getElementById('search-count').textContent = T[currentLang].searchCount(results.length)
-  renderItems(results, 'search-list')
-}
-
-function clearSearch() {
-  document.getElementById('search-input').value = ''
-  onSearch('')
 }
 
 /* ── RENDER ITEMS ────────────────────────────── */
@@ -651,8 +638,12 @@ function buildItemEl(item) {
   const displayName = (lang !== 'tr' && item[`name_${lang}`]) ? item[`name_${lang}`] : item.name
   const displayDesc = (lang !== 'tr' && item[`desc_${lang}`]) ? item[`desc_${lang}`]
                     : item.description
-  const img = item.image_url
-    ? `<img src="${item.image_url}" alt="${displayName}" class="menu-item-img" style="font-size:0" loading="lazy"/>`
+  // Resolve relative image paths (menu.html lives in pages/)
+  const resolveImg = url => url
+    ? (url.startsWith('http') || url.startsWith('/') || url.startsWith('../') ? url : '../' + url)
+    : null
+  const img = resolveImg(item.image_url)
+    ? `<img src="${resolveImg(item.image_url)}" alt="${displayName}" class="menu-item-img" style="font-size:0" loading="lazy"/>`
     : `<div class="menu-item-img">${CAT_EMOJI[item.category] || '🍽️'}</div>`
   div.innerHTML = `
     ${img}
