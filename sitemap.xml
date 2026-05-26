@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Home page -->
+  <url>
+    <loc>https://twentybeachbistro.com/</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://twentybeachbistro.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://twentybeachbistro.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://twentybeachbistro.com/?lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://twentybeachbistro.com/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://twentybeachbistro.com/"/>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Menu page -->
+  <url>
+    <loc>https://twentybeachbistro.com/pages/menu.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://twentybeachbistro.com/pages/menu.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://twentybeachbistro.com/pages/menu.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://twentybeachbistro.com/pages/menu.html?lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://twentybeachbistro.com/pages/menu.html?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://twentybeachbistro.com/pages/menu.html"/>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+</urlset>

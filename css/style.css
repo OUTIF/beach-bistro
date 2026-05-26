@@ -1,5 +1,5 @@
-/* ─── Fonts — added weight:200 for upscale descriptions (E) ─────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@200;300;400;600&display=swap');
+/* ─── Fonts — Inter for readability, Playfair for headings ──────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap');
 
 /* ─── Variables ──────────────────────────────────── */
 :root {
@@ -24,7 +24,7 @@ html  { scroll-behavior: smooth; }
 
 /* ── F: Sandy texture background ───────────────── */
 body  {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--brown-dark);
   -webkit-tap-highlight-color: transparent;
   min-height: 100vh;
@@ -100,8 +100,8 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
 /* ─── NAVBAR ─────────────────────────────────────── */
 .navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(47,84,56,0.93);
+  position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(47,84,56,0.97);
   backdrop-filter: blur(10px);
   height: 60px;
   display: flex; align-items: center; justify-content: space-between;
@@ -147,7 +147,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 .btn {
   display: inline-block; padding: 12px 24px;
   border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 1rem;
+  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem;
   border: none; cursor: pointer;
   text-align: center; text-decoration: none;
   transition: transform 0.12s, opacity 0.12s, box-shadow 0.15s;
@@ -192,7 +192,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 .input {
   width: 100%; border: 1.5px solid rgba(201,169,110,0.4);
   border-radius: 12px; padding: 13px 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 1rem;
+  font-family: 'Inter', sans-serif; font-size: 1rem;
   color: var(--brown-dark); background: rgba(255,255,255,0.9);
   outline: none; transition: border-color 0.15s, box-shadow 0.15s;
 }
@@ -215,7 +215,7 @@ label.field-label {
 
 /* ─── LAYOUT UTILS ───────────────────────────────── */
 .page-wrap   { max-width: 520px; margin: 0 auto; padding: 0 16px; }
-.pt-nav      { padding-top: 76px; }
+.pt-nav      { padding-top: 16px; }
 .pb-footer   { padding-bottom: 32px; }
 .gap-stack > * + * { margin-top: 12px; }
 .row         { display: flex; gap: 12px; }

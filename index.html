@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <meta name="theme-color" content="#2f5438" />
 
+  <!-- 1) Palm tree favicon in browser tab -->
+  <link rel="icon" type="image/png" href="palm_tree.png" />
+  <link rel="apple-touch-icon" href="palm_tree.png" />
+
   <title>Twenty Beach Bistro — Antalya Konyaaltı Sahil Restoranı</title>
   <meta name="description" content="Twenty Beach Bistro, Antalya Konyaaltı sahilinde taze deniz ürünleri, kahvaltı ve kokteyller sunan sahil restoranı. Online rezervasyon için tıklayın." />
   <meta name="keywords" content="antalya beach restaurant, konyaaltı restoran, konyaaltı sahil cafe, antalya sahil yemek, twenty beach antalya, twenty beach bistro, antalya deniz kıyısı restoran, konyaaltı yemek, antalya beach bistro" />
@@ -36,10 +40,10 @@
   <style>
     /* ══ HERO ═══════════════════════════════════════ */
     .hero {
-      position: relative; min-height: 100vh;
+      position: relative; min-height: 92vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center; overflow: hidden; padding: 80px 24px;
+      text-align: center; overflow: hidden; padding: 60px 24px;
     }
     .hero-bg { position:absolute;inset:0;background:url('main_page_pic.png') center/cover no-repeat;z-index:0; }
     .hero-overlay { position:absolute;inset:0;backdrop-filter:blur(3px);background:linear-gradient(180deg,rgba(30,55,35,0.55) 0%,rgba(47,84,56,0.40) 40%,rgba(20,35,22,0.75) 100%);z-index:1; }
@@ -275,13 +279,17 @@
     <h1>Twenty<br><em>Beach Bistro</em></h1>
     <p class="hero-tagline" id="hero-tagline">Taze sahil lezzetleri, okyanus manzarası &amp; güneşli atmosfer.</p>
     <div class="hero-badges">
-      <span class="hero-badge" id="badge-1">🏖️ Sahil Kenarı</span>
-      <span class="hero-badge" id="badge-2">🌿 Günlük Taze</span>
-      <span class="hero-badge" id="badge-3">🕐 Her Gün Açık</span>
+      <span class="hero-badge" id="badge-1"> Sahil Kenarı</span>
+      <span class="hero-badge" id="badge-2"> Günlük Taze</span>
+      <span class="hero-badge" id="badge-3"> Her Gün Açık</span>
     </div>
     <a href="pages/menu.html" class="btn btn-coral" id="hero-cta"
        style="font-size:1rem;padding:14px 32px;box-shadow:0 4px 20px rgba(217,120,74,0.5)">
-      Menüyü Gör →
+      Menüyü →
+    </a>
+    <a href="#res-form-anchor" class="btn" id="hero-reserve-cta"
+       style="font-size:1rem;padding:14px 32px;margin-top:10px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.5);color:#fff;backdrop-filter:blur(4px)">
+      Rezervasyon Yap
     </a>
   </div>
   <div class="scroll-hint"><span id="scroll-hint-txt">aşağı kaydır</span><span>↓</span></div>
@@ -327,7 +335,7 @@
   </div>
 
   <!-- Reservation card -->
-  <div class="section">
+  <div class="section" id="res-form-anchor">
     <div class="card gap-stack">
       <h2 id="reserve-title">Masa Rezervasyonu</h2>
 
@@ -468,7 +476,7 @@ const LANG = {
     navHome:'Ana Sayfa', navMenu:'Menü',
     tagline:'Taze sahil lezzetleri, okyanus manzarası & güneşli atmosfer.',
     badge1:'Sahil Kenarı', badge2:'Günlük Taze', badge3:'Her Gün Açık',
-    cta:'Menüyü Gör →', scrollHint:'aşağı kaydır',
+    cta:'Menüyü', reserveCta:'Rezervasyon Yap', scrollHint:'aşağı kaydır',
     findUs:'Bizi Bulun', reserve:'Masa Rezervasyonu',
     lblName:'Adınız', lblDatetime:'Tarih & Saat', lblGuests:'Kişi',
     lblNotes:'Not (isteğe bağlı)', lblPhone:'Telefon Numarası',
@@ -486,7 +494,7 @@ const LANG = {
     navHome:'Home', navMenu:'Menu',
     tagline:'Fresh coastal flavours, ocean views & sun-soaked vibes.',
     badge1:'Beachfront', badge2:'Fresh Daily', badge3:'Open Daily',
-    cta:'See Our Menu →', scrollHint:'scroll',
+    cta:'Menu', reserveCta:'Make a Reservation', scrollHint:'scroll',
     findUs:'Find Us', reserve:'Reserve a Table',
     lblName:'Your Name', lblDatetime:'Date & Time', lblGuests:'Guests',
     lblNotes:'Notes (optional)', lblPhone:'Phone Number',
@@ -504,7 +512,7 @@ const LANG = {
     navHome:'الرئيسية', navMenu:'القائمة',
     tagline:'نكهات شاطئية طازجة، إطلالات على البحر وأجواء مشمسة.',
     badge1:'على الشاطئ', badge2:'طازج يومياً', badge3:'مفتوح يومياً',
-    cta:'اطّلع على القائمة ←', scrollHint:'مرّر للأسفل',
+    cta:'قائمة الطعام', reserveCta:'احجز طاولة الآن', scrollHint:'مرّر للأسفل',
     findUs:'اعثر علينا', reserve:'احجز طاولة',
     lblName:'اسمك', lblDatetime:'التاريخ والوقت', lblGuests:'عدد الأشخاص',
     lblNotes:'ملاحظات (اختياري)', lblPhone:'رقم الهاتف',
@@ -522,7 +530,7 @@ const LANG = {
     navHome:'Главная', navMenu:'Меню',
     tagline:'Свежие прибрежные блюда, вид на океан и солнечная атмосфера.',
     badge1:'На пляже', badge2:'Свежее ежедневно', badge3:'Открыто ежедневно',
-    cta:'Смотреть меню →', scrollHint:'прокрутить',
+    cta:'Смотреть меню', reserveCta:'Забронировать стол', scrollHint:'прокрутить',
     findUs:'Как нас найти', reserve:'Забронировать стол',
     lblName:'Ваше имя', lblDatetime:'Дата и время', lblGuests:'Гостей',
     lblNotes:'Примечания (по желанию)', lblPhone:'Номер телефона',
@@ -552,6 +560,7 @@ function setLang(lang) {
   document.getElementById('badge-2').textContent         = t.badge2
   document.getElementById('badge-3').textContent         = t.badge3
   document.getElementById('hero-cta').textContent        = t.cta
+  document.getElementById('hero-reserve-cta').textContent = t.reserveCta
   document.getElementById('scroll-hint-txt').textContent = t.scrollHint
   document.getElementById('find-us-title').textContent   = t.findUs
   document.getElementById('reserve-title').textContent   = t.reserve
