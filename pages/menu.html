@@ -99,10 +99,28 @@
     /* ══ MENU HEADER ═══════════════════════════════════ */
     .menu-header {
       background: var(--green-dark); color: #fff;
-      padding: 76px 20px 0; text-align: center;
+      padding: 36px 20px 28px;
+      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
     }
-    .menu-header h1 { font-size: 1.9rem; }
-    .menu-header p  { color: rgba(245,237,216,0.6); font-size: 0.85rem; margin-top: 3px; }
+    .menu-header h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .menu-header p {
+      font-family: 'Inter', sans-serif;
+      color: rgba(245,237,216,0.6);
+      font-size: 0.9rem; font-weight: 300;
+      margin-top: 6px; letter-spacing: 0.02em;
+    }
+    @media (max-width: 480px) {
+      .menu-header { padding: 24px 16px 20px; }
+      .menu-header h1 { font-size: 1.65rem; }
+    }
 
     /* ══ DARK TOP BAR (lang + search) ═════════════════ */
     .dark-bar {
@@ -126,7 +144,7 @@
       width: 100%;
       background: rgba(255,255,255,0.13); border: 1.5px solid rgba(255,255,255,0.2);
       border-radius: 11px; padding: 10px 36px 10px 38px;
-      font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: #fff; outline: none;
+      font-size: 0.9rem; font-family: 'Inter', sans-serif; color: #fff; outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
     .search-input::placeholder { color: rgba(255,255,255,0.42); }
@@ -234,8 +252,8 @@
       bottom: 0; left: 0; right: 0;
       padding: 10px 12px 13px;
       color: #fff;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
       font-size: 1rem;
       line-height: 1.2;
       text-shadow: 0 2px 8px rgba(0,0,0,0.55);
@@ -345,12 +363,35 @@
   <div class="navbar-links">
     <a href="../index.html" class="nav-link" id="nav-home">Ana Sayfa</a>
     <a href="menu.html"     class="nav-link active" id="nav-menu">Menü</a>
-    <div class="nav-divider" style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
-    <div class="navbar-lang-group">
-      <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
-      <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
-      <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    <div class="nav-divider" style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 4px"></div>
+    <div class="lang-picker" id="lang-picker">
+      <button class="lang-picker-btn" onclick="toggleLangPicker(event)" aria-label="Select language">
+        <img class="lp-flag" id="lp-flag" src="../flags/tr.webp" alt="TR" />
+        <span class="lp-code" id="lp-code">TR</span>
+        <span class="lp-arrow">▼</span>
+      </button>
+      <div class="lang-dropdown">
+        <button class="lang-option active" data-lang="tr" onclick="pickLang('tr')">
+          <img class="lo-flag" src="../flags/tr.webp" alt="TR" />
+          <span class="lo-name">Türkçe</span>
+          <span class="lo-check">✓</span>
+        </button>
+        <button class="lang-option" data-lang="en" onclick="pickLang('en')">
+          <img class="lo-flag" src="../flags/us.webp" alt="EN" />
+          <span class="lo-name">English</span>
+          <span class="lo-check">✓</span>
+        </button>
+        <button class="lang-option" data-lang="ar" onclick="pickLang('ar')">
+          <img class="lo-flag" src="../flags/sa.webp" alt="AR" />
+          <span class="lo-name">العربية</span>
+          <span class="lo-check">✓</span>
+        </button>
+        <button class="lang-option" data-lang="ru" onclick="pickLang('ru')">
+          <img class="lo-flag" src="../flags/ru.webp" alt="RU" />
+          <span class="lo-name">Русский</span>
+          <span class="lo-check">✓</span>
+        </button>
+      </div>
     </div>
   </div>
 </nav>
@@ -489,10 +530,35 @@ const CAT_BG = {
 
 let allItems = [], allCats = [], currentLang = 'tr'
 
+const LANG_META = {
+  tr: { flag: '../flags/tr.webp', code: 'TR' },
+  en: { flag: '../flags/us.webp', code: 'EN' },
+  ar: { flag: '../flags/sa.webp', code: 'AR' },
+  ru: { flag: '../flags/ru.webp', code: 'RU' },
+}
+function toggleLangPicker(e) {
+  e.stopPropagation()
+  document.getElementById('lang-picker').classList.toggle('open')
+}
+function pickLang(lang) {
+  document.getElementById('lang-picker').classList.remove('open')
+  setLang(lang)
+}
+document.addEventListener('click', function() {
+  const p = document.getElementById('lang-picker')
+  if (p) p.classList.remove('open')
+})
+
 /* ── LANGUAGE ─────────────────────────────────── */
 function setLang(lang) {
   currentLang = lang
-  localStorage.setItem('bb_lang', lang)   // ← persist across pages
+  localStorage.setItem('bb_lang', lang)
+  const m = LANG_META[lang]
+  document.getElementById('lp-flag').src = m.flag
+  document.getElementById('lp-code').textContent = m.code
+  document.querySelectorAll('.lang-option').forEach(o =>
+    o.classList.toggle('active', o.dataset.lang === lang)
+  )
   const t = T[lang]
   document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
   document.getElementById('hdr-title').textContent         = t.hdrTitle
@@ -664,7 +730,7 @@ function buildItemEl(item) {
 // ── Apply saved language on page load, then load menu ──
 ;(function() {
   const saved = localStorage.getItem('bb_lang')
-  if (saved && T[saved] && saved !== 'tr') setLang(saved)
+  if (saved && T[saved] && saved !== 'tr') pickLang(saved)
 })()
 
 loadMenu()

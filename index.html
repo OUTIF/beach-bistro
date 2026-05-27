@@ -261,12 +261,35 @@
   <div class="navbar-links">
     <a href="index.html"      class="nav-link active" id="nav-home">Ana Sayfa</a>
     <a href="pages/menu.html" class="nav-link"        id="nav-menu">Menü</a>
-    <div class="nav-divider" style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 2px"></div>
-    <div class="navbar-lang-group">
-      <button class="nav-lang-btn active" data-lang="tr" onclick="setLang('tr')">TR</button>
-      <button class="nav-lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="nav-lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
-      <button class="nav-lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    <div class="nav-divider" style="width:1px;height:18px;background:rgba(255,255,255,0.2);margin:0 4px"></div>
+    <div class="lang-picker" id="lang-picker">
+      <button class="lang-picker-btn" onclick="toggleLangPicker(event)" aria-label="Select language">
+        <img class="lp-flag" id="lp-flag" src="flags/tr.webp" alt="TR" />
+        <span class="lp-code" id="lp-code">TR</span>
+        <span class="lp-arrow">▼</span>
+      </button>
+      <div class="lang-dropdown">
+        <button class="lang-option active" data-lang="tr" onclick="pickLang('tr')">
+          <img class="lo-flag" src="flags/tr.webp" alt="TR" />
+          <span class="lo-name">Türkçe</span>
+          <span class="lo-check">✓</span>
+        </button>
+        <button class="lang-option" data-lang="en" onclick="pickLang('en')">
+          <img class="lo-flag" src="flags/us.webp" alt="EN" />
+          <span class="lo-name">English</span>
+          <span class="lo-check">✓</span>
+        </button>
+        <button class="lang-option" data-lang="ar" onclick="pickLang('ar')">
+          <img class="lo-flag" src="flags/sa.webp" alt="AR" />
+          <span class="lo-name">العربية</span>
+          <span class="lo-check">✓</span>
+        </button>
+        <button class="lang-option" data-lang="ru" onclick="pickLang('ru')">
+          <img class="lo-flag" src="flags/ru.webp" alt="RU" />
+          <span class="lo-name">Русский</span>
+          <span class="lo-check">✓</span>
+        </button>
+      </div>
     </div>
   </div>
 </nav>
@@ -279,13 +302,13 @@
     <h1>Twenty<br><em>Beach Bistro</em></h1>
     <p class="hero-tagline" id="hero-tagline">Taze sahil lezzetleri, okyanus manzarası &amp; güneşli atmosfer.</p>
     <div class="hero-badges">
-      <span class="hero-badge" id="badge-1"> Sahil Kenarı</span>
-      <span class="hero-badge" id="badge-2"> Günlük Taze</span>
-      <span class="hero-badge" id="badge-3"> Her Gün Açık</span>
+      <span class="hero-badge" id="badge-1">🏖️ Sahil Kenarı</span>
+      <span class="hero-badge" id="badge-2">🌿 Günlük Taze</span>
+      <span class="hero-badge" id="badge-3">🕐 Her Gün Açık</span>
     </div>
     <a href="pages/menu.html" class="btn btn-coral" id="hero-cta"
        style="font-size:1rem;padding:14px 32px;box-shadow:0 4px 20px rgba(217,120,74,0.5)">
-      Menüyü →
+      Menüyü Gör →
     </a>
     <a href="#res-form-anchor" class="btn" id="hero-reserve-cta"
        style="font-size:1rem;padding:14px 32px;margin-top:10px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.5);color:#fff;backdrop-filter:blur(4px)">
@@ -476,7 +499,7 @@ const LANG = {
     navHome:'Ana Sayfa', navMenu:'Menü',
     tagline:'Taze sahil lezzetleri, okyanus manzarası & güneşli atmosfer.',
     badge1:'Sahil Kenarı', badge2:'Günlük Taze', badge3:'Her Gün Açık',
-    cta:'Menüyü', reserveCta:'Rezervasyon Yap', scrollHint:'aşağı kaydır',
+    cta:'Menüyü Gör →', reserveCta:'Rezervasyon Yap', scrollHint:'aşağı kaydır',
     findUs:'Bizi Bulun', reserve:'Masa Rezervasyonu',
     lblName:'Adınız', lblDatetime:'Tarih & Saat', lblGuests:'Kişi',
     lblNotes:'Not (isteğe bağlı)', lblPhone:'Telefon Numarası',
@@ -494,7 +517,7 @@ const LANG = {
     navHome:'Home', navMenu:'Menu',
     tagline:'Fresh coastal flavours, ocean views & sun-soaked vibes.',
     badge1:'Beachfront', badge2:'Fresh Daily', badge3:'Open Daily',
-    cta:'Menu', reserveCta:'Make a Reservation', scrollHint:'scroll',
+    cta:'See Our Menu →', reserveCta:'Make a Reservation', scrollHint:'scroll',
     findUs:'Find Us', reserve:'Reserve a Table',
     lblName:'Your Name', lblDatetime:'Date & Time', lblGuests:'Guests',
     lblNotes:'Notes (optional)', lblPhone:'Phone Number',
@@ -512,7 +535,7 @@ const LANG = {
     navHome:'الرئيسية', navMenu:'القائمة',
     tagline:'نكهات شاطئية طازجة، إطلالات على البحر وأجواء مشمسة.',
     badge1:'على الشاطئ', badge2:'طازج يومياً', badge3:'مفتوح يومياً',
-    cta:'قائمة الطعام', reserveCta:'احجز طاولة الآن', scrollHint:'مرّر للأسفل',
+    cta:'اطّلع على القائمة ←', reserveCta:'احجز طاولة الآن', scrollHint:'مرّر للأسفل',
     findUs:'اعثر علينا', reserve:'احجز طاولة',
     lblName:'اسمك', lblDatetime:'التاريخ والوقت', lblGuests:'عدد الأشخاص',
     lblNotes:'ملاحظات (اختياري)', lblPhone:'رقم الهاتف',
@@ -530,7 +553,7 @@ const LANG = {
     navHome:'Главная', navMenu:'Меню',
     tagline:'Свежие прибрежные блюда, вид на океан и солнечная атмосфера.',
     badge1:'На пляже', badge2:'Свежее ежедневно', badge3:'Открыто ежедневно',
-    cta:'Смотреть меню', reserveCta:'Забронировать стол', scrollHint:'прокрутить',
+    cta:'Смотреть меню →', reserveCta:'Забронировать стол', scrollHint:'прокрутить',
     findUs:'Как нас найти', reserve:'Забронировать стол',
     lblName:'Ваше имя', lblDatetime:'Дата и время', lblGuests:'Гостей',
     lblNotes:'Примечания (по желанию)', lblPhone:'Номер телефона',
@@ -546,13 +569,40 @@ const LANG = {
   }
 }
 
+const LANG_META = {
+  tr: { flag: 'flags/tr.webp', code: 'TR' },
+  en: { flag: 'flags/us.webp', code: 'EN' },
+  ar: { flag: 'flags/sa.webp', code: 'AR' },
+  ru: { flag: 'flags/ru.webp', code: 'RU' },
+}
+
+function toggleLangPicker(e) {
+  e.stopPropagation()
+  document.getElementById('lang-picker').classList.toggle('open')
+}
+function pickLang(lang) {
+  document.getElementById('lang-picker').classList.remove('open')
+  setLang(lang)
+}
+// Close on outside click
+document.addEventListener('click', function() {
+  const p = document.getElementById('lang-picker')
+  if (p) p.classList.remove('open')
+})
+
 let currentLang = 'tr'
 
 function setLang(lang) {
   currentLang = lang
   localStorage.setItem('bb_lang', lang)
   const t = LANG[lang]
-  document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang))
+  const m = LANG_META[lang]
+  // Update picker button
+  document.getElementById('lp-flag').src = m.flag
+  document.getElementById('lp-code').textContent = m.code
+  document.querySelectorAll('.lang-option').forEach(o =>
+    o.classList.toggle('active', o.dataset.lang === lang)
+  )
   document.getElementById('nav-home').textContent        = t.navHome
   document.getElementById('nav-menu').textContent        = t.navMenu
   document.getElementById('hero-tagline').textContent    = t.tagline
@@ -789,7 +839,7 @@ function resetResForm() {
 // ── Apply saved language on page load ──────────────
 ;(function() {
   const saved = localStorage.getItem('bb_lang')
-  if (saved && LANG[saved]) setLang(saved)
+  if (saved && LANG[saved]) pickLang(saved)
 })()
 
 /* ── D: Confetti burst ──────────────────────────── */

@@ -133,14 +133,83 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 .nav-link:hover  { color: #fff; background: rgba(255,255,255,0.1); }
 .nav-link.active { background: var(--coral); color: #fff; }
 
-/* Mobile navbar — everything visible, just more compact */
+/* ── Language dropdown picker ────────────────────── */
+.lang-picker { position: relative; flex-shrink: 0; }
+.lang-picker-btn {
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 4px 8px 4px 6px;
+  cursor: pointer; color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.lang-picker-btn:hover { background: rgba(255,255,255,0.2); }
+.lang-picker-btn .lp-flag {
+  width: 22px; height: 16px;
+  object-fit: cover; border-radius: 3px;
+  display: inline-block; flex-shrink: 0;
+}
+.lang-option .lo-flag {
+  width: 28px; height: 20px;
+  object-fit: cover; border-radius: 3px;
+  display: inline-block; flex-shrink: 0;
+}
+.lang-picker-btn .lp-arrow {
+  font-size: 0.5rem; opacity: 0.6; margin-left: 1px;
+  transition: transform 0.2s; display: inline-block;
+}
+.lang-picker.open .lp-arrow { transform: rotate(180deg); }
+
+/* Dropdown panel */
+.lang-dropdown {
+  display: none;
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: #1a3828;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+  min-width: 170px;
+  z-index: 200;
+  padding: 6px;
+}
+.lang-picker.open .lang-dropdown { display: block; animation: dropdown-in 0.15s ease; }
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lang-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  cursor: pointer; color: rgba(255,255,255,0.7);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem; font-weight: 500;
+  transition: background 0.12s, color 0.12s;
+  -webkit-tap-highlight-color: transparent;
+  border: none; background: none; width: 100%; text-align: left;
+  border-radius: 10px;
+}
+.lang-option:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.lang-option.active { color: #fff; background: rgba(217,120,74,0.2); }
+.lang-option.active .lo-check { color: var(--coral); font-size: 0.7rem; margin-left: auto; }
+.lang-option:not(.active) .lo-check { display: none; }
+.lang-picker-btn .lp-code { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.02em; }
+.lang-option .lo-name { flex: 1; }
+
+/* Mobile */
 @media (max-width: 520px) {
-  .navbar { padding: 0 8px; gap: 4px; }
-  .navbar-logo { height: 30px; width: 30px; }
-  .navbar-brand { font-size: 0.82rem; gap: 4px; }
-  .nav-link { font-size: 0.68rem; padding: 5px 7px; }
+  .navbar { padding: 0 10px; gap: 6px; height: 56px; }
+  .navbar-logo { height: 34px; width: 34px; }
+  .navbar-brand { font-size: 0.92rem; gap: 6px; }
+  .nav-link { font-size: 0.75rem; padding: 6px 9px; }
   .nav-divider { display: none !important; }
-  .nav-lang-btn { font-size: 0.62rem !important; padding: 3px 5px !important; }
+  .lang-picker-btn .lp-flag { font-size: 1.3rem; }
 }
 
 /* ─── BUTTONS ────────────────────────────────────── */
